@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#176B5B">
+
+<title>Generador de Menús Nutricionales</title>
+
+<style>
+:root{
+    --primary:#176B5B;
+    --primary-dark:#0F5145;
+    --secondary:#E8F5F1;
+    --accent:#F2A65A;
+    --background:#F5F7F6;
+    --card:#FFFFFF;
+    --text:#20302C;
+    --muted:#6B7773;
+    --border:#D9E2DF;
+    --danger:#B94A48;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--background);
+    color:var(--text);
+}
+
+header{
+    background:var(--primary);
+    color:white;
+    padding:18px 20px;
+}
+
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+}
+
+header h1{
+    margin:0;
+    font-size:24px;
+}
+
+header p{
+    margin:6px 0 0;
+    font-size:14px;
+    opacity:.9;
+}
+
+main{
+    max-width:1200px;
+    margin:20px auto;
+    padding:0 16px 40px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.card h2{
+    margin:0 0 16px;
+    color:var(--primary);
+    font-size:19px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.field label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:15px;
+    background:white;
+}
+
+.field input:focus,
+.field select:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(23,107,91,.12);
+}
+
+.restrictions-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+}
+
+.restrictions-header h2{
+    margin:0;
+}
+
+.toggle{
+    color:var(--primary);
+    font-weight:bold;
+    font-size:13px;
+}
+
+.restrictions{
+    display:none;
+    margin-top:16px;
+    border-top:1px solid var(--border);
+    padding-top:16px;
+}
+
+.restrictions.open{
+    display:block;
+}
+
+.restriction-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.restriction{
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px;
+    background:#FAFCFB;
+}
+
+.restriction label{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+button{
+    border:0;
+    border-radius:9px;
+    padding:12px 18px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.primary{
+    background:var(--primary);
+    color:white;
+}
+
+.primary:hover{
+    background:var(--primary-dark);
+}
+
+.secondary{
+    background:var(--secondary);
+    color:var(--primary);
+}
+
+.results{
+    display:none;
+}
+
+.results.visible{
+    display:block;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:850px;
+}
+
+th{
+    background:var(--primary);
+    color:white;
+    padding:12px;
+    text-align:left;
+    font-size:13px;
+}
+
+td{
+    border-bottom:1px solid var(--border);
+    padding:13px;
+    vertical-align:top;
+    font-size:13px;
+}
+
+tr:nth-child(even){
+    background:#FAFCFB;
+}
+
+.menu-title{
+    font-weight:bold;
+    color:var(--primary);
+}
+
+.meta{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.notice{
+    background:#FFF8EA;
+    border:1px solid #F4D7A0;
+    color:#765820;
+    border-radius:9px;
+    padding:12px;
+    font-size:12px;
+    margin-top:15px;
+}
+
+.empty{
+    text-align:center;
+    color:var(--muted);
+    padding:25px;
+}
+
+footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:11px;
+    padding:20px;
+}
+
+@media(max-width:850px){
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .restriction-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:520px){
+    header h1{
+        font-size:20px;
+    }
+
+    main{
+        margin-top:12px;
+        padding:0 10px 30px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .restriction-grid{
+        grid-template-columns:1fr;
+    }
+
+    button{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+        <h1>Generador de Menús Nutricionales</h1>
+        <p>Herramienta de apoyo para la elaboración de planes alimentarios</p>
+    </div>
+</header>
+
+<main>
+
+    <section class="card">
+
+        <h2>Configuración de la dieta</h2>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label for="dietType">Tipo de dieta</label>
+                <select id="dietType">
+                    <option value="renal">Renal</option>
+                    <option value="obesidad">Sobrepeso / Obesidad</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="calories">Calorías objetivo</label>
+                <input
+                    id="calories"
+                    type="number"
+                    min="1"
+                    placeholder="Ej. 1600"
+                >
+            </div>
+
+            <div class="field">
+                <label for="protein">Proteína objetivo (g)</label>
+                <input
+                    id="protein"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    placeholder="Ej. 65"
+                >
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <div
+            class="restrictions-header"
+            onclick="toggleRestrictions()"
+        >
+            <h2>Restricciones</h2>
+            <span class="toggle" id="restrictionToggle">
+                Mostrar ▼
+            </span>
+        </div>
+
+        <div
+            class="restrictions"
+            id="restrictionsPanel"
+        >
+
+            <p style="font-size:13px;color:var(--muted);margin-top:0;">
+                Selecciona únicamente las restricciones que quieras aplicar
+                a esta dieta.
+            </p>
+
+            <div class="restriction-grid">
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="sodio">
+                        Sodio / productos con sodio
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="embutidos">
+                        Embutidos
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="lacteos">
+                        Lácteos / quesos
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="carnes_rojas">
+                        Carnes rojas
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="mariscos">
+                        Mariscos
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="azucares">
+                        Azúcares / dulces
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="pan">
+                        Pan / galletas / harinas
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="salsas">
+                        Salsas / condimentos comerciales
+                    </label>
+                </div>
+
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="leguminosas">
+                        Leguminosas
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <div class="actions">
+
+            <button
+                class="primary"
+                onclick="generateMenus()"
+            >
+                GENERAR 5 MENÚS
+            </button>
+
+            <button
+                class="secondary"
+                onclick="clearForm()"
+            >
+                LIMPIAR
+            </button>
+
+        </div>
+
+        <div class="notice">
+            Esta versión es el prototipo inicial. Los menús clínicamente
+            válidos se incorporarán después de integrar la Bitácora de
+            Preparaciones confirmada y revisada.
+        </div>
+
+    </section>
+
+    <section
+        class="card results"
+        id="results"
+    >
+
+        <h2>Opciones de menú</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Tiempo</th>
+                        <th>Menú 1</th>
+                        <th>Menú 2</th>
+                        <th>Menú 3</th>
+                        <th>Menú 4</th>
+                        <th>Menú 5</th>
+                    </tr>
+                </thead>
+
+                <tbody id="menuTableBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="actions" style="margin-top:15px;">
+
+            <button
+                class="primary"
+                onclick="generateMenus()"
+            >
+                GENERAR OTROS 5
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    Generador de Menús Nutricionales — Versión inicial
+</footer>
+
+
+<script>
+
+function toggleRestrictions(){
+
+    const panel =
+        document.getElementById("restrictionsPanel");
+
+    const toggle =
+        document.getElementById("restrictionToggle");
+
+    panel.classList.toggle("open");
+
+    if(panel.classList.contains("open")){
+        toggle.textContent = "Ocultar ▲";
+    }else{
+        toggle.textContent = "Mostrar ▼";
+    }
+}
+
+
+function getSelectedRestrictions(){
+
+    return [
+        ...document.querySelectorAll(
+            '#restrictionsPanel input[type="checkbox"]:checked'
+        )
+    ].map(
+        checkbox => checkbox.value
+    );
+}
+
+
+function generateMenus(){
+
+    const calories =
+        document.getElementById("calories").value;
+
+    const protein =
+        document.getElementById("protein").value;
+
+    if(!calories || !protein){
+
+        alert(
+            "Primero captura las calorías y los gramos de proteína."
+        );
+
+        return;
+    }
+
+    const diet =
+        document.getElementById("dietType").value;
+
+    const restrictions =
+        getSelectedRestrictions();
+
+    console.log("Tipo de dieta:", diet);
+    console.log("Calorías:", calories);
+    console.log("Proteína:", protein);
+    console.log("Restricciones:", restrictions);
+
+    const menus = createPrototypeMenus(
+        diet,
+        calories,
+        protein
+    );
+
+    renderMenus(menus);
+}
+
+
+function createPrototypeMenus(
+    diet,
+    calories,
+    protein
+){
+
+    const suffix = Math.floor(
+        Math.random() * 9999
+    );
+
+    return [
+
+        {
+            desayuno:
+                "Desayuno de prueba " + suffix,
+            colacion1:
+                "Colación de prueba",
+            comida:
+                "Comida de prueba",
+            colacion2:
+                "Colación de prueba",
+            cena:
+                "Cena de prueba"
+        },
+
+        {
+            desayuno:
+                "Desayuno de prueba " + (suffix + 1),
+            colacion1:
+                "Colación de prueba",
+            comida:
+                "Comida de prueba",
+            colacion2:
+                "Colación de prueba",
+            cena:
+                "Cena de prueba"
+        },
+
+        {
+            desayuno:
+                "Desayuno de prueba " + (suffix + 2),
+            colacion1:
+                "Colación de prueba",
+            comida:
+                "Comida de prueba",
+            colacion2:
+                "Colación de prueba",
+            cena:
+                "Cena de prueba"
+        },
+
+        {
+            desayuno:
+                "Desayuno de prueba " + (suffix + 3),
+            colacion1:
+                "Colación de prueba",
+            comida:
+                "Comida de prueba",
+            colacion2:
+                "Colación de prueba",
+            cena:
+                "Cena de prueba"
+        },
+
+        {
+            desayuno:
+                "Desayuno de prueba " + (suffix + 4),
+            colacion1:
+                "Colación de prueba",
+            comida:
+                "Comida de prueba",
+            colacion2:
+                "Colación de prueba",
+            cena:
+                "Cena de prueba"
+        }
+
+    ];
+}
+
+
+function renderMenus(menus){
+
+    const tbody =
+        document.getElementById("menuTableBody");
+
+    tbody.innerHTML = "";
+
+    const rows = [
+        ["Desayuno", "desayuno"],
+        ["Colación 1", "colacion1"],
+        ["Comida", "comida"],
+        ["Colación 2", "colacion2"],
+        ["Cena", "cena"]
+    ];
+
+    rows.forEach(row => {
+
+        const tr =
+            document.createElement("tr");
+
+        const first =
+            document.createElement("td");
+
+        first.innerHTML =
+            "<strong>" + row[0] + "</strong>";
+
+        tr.appendChild(first);
+
+        menus.forEach(menu => {
+
+            const td =
+                document.createElement("td");
+
+            td.innerHTML =
+                '<div class="menu-title">' +
+                menu[row[1]] +
+                '</div>' +
+                '<div class="meta">' +
+                'Preparación pendiente de biblioteca' +
+                '</div>';
+
+            tr.appendChild(td);
+
+        });
+
+        tbody.appendChild(tr);
+
+    });
+
+    document
+        .getElementById("results")
+        .classList.add("visible");
+}
+
+
+function clearForm(){
+
+    document.getElementById("calories").value = "";
+    document.getElementById("protein").value = "";
+
+    document.querySelectorAll(
+        '#restrictionsPanel input[type="checkbox"]'
+    ).forEach(
+        checkbox => checkbox.checked = false
+    );
+
+    document
+        .getElementById("results")
+        .classList.remove("visible");
+}
+
+</script>
+
+</body>
+</html>
