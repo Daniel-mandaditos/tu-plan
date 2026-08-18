@@ -287,7 +287,352 @@ footer{
         width:100%;
     }
 }
+
+/* V0.6 — Vista más amigable para pacientes */
+.menu-title{
+    font-size:16px;
+    line-height:1.35;
+}
+.prep-title{
+    font-size:17px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:5px;
+}
+.prep-components{
+    font-size:14px;
+    line-height:1.4;
+    color:var(--text);
+}
+.prep-accomp{
+    margin-top:7px;
+    font-size:14px;
+    line-height:1.4;
+}
+.prep-accomp strong{
+    color:var(--primary);
+}
+.meta{
+    font-size:12.5px;
+    line-height:1.35;
+    margin-top:8px;
+}
+td{
+    line-height:1.35;
+}
+@media(max-width:520px){
+    .prep-title{font-size:18px;}
+    .prep-components,.prep-accomp{font-size:15px;}
+    .meta{font-size:13px;}
+}
+
+
+.macro-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.macro-box{background:#FAFCFB;border:1px solid var(--border);border-radius:9px;padding:10px;font-size:13px}
+.macro-box strong{color:var(--primary)}
+@media(max-width:650px){.macro-summary{grid-template-columns:1fr}}
+
+
+
+
+@media print {
+  @page {
+    size: letter landscape;
+    margin: 7mm;
+  }
+
+  html, body {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Ocultar todo lo que no debe salir en la hoja */
+  form,
+  .controls,
+  .form-actions,
+  .action-buttons,
+  button,
+  .no-print,
+  .macro-summary,
+  .notice,
+  footer {
+    display: none !important;
+  }
+
+  /* Ocultar datos técnicos por platillo */
+  .meal-macros,
+  .macro-line,
+  .nutrition-line,
+  .meal-totals,
+  .small.macro,
+  .kcal-line {
+    display: none !important;
+  }
+
+  /* Ocultar TOTAL DEL DÍA completo */
+  tr.print-hide-total,
+  .print-hide-total {
+    display: none !important;
+  }
+
+  .container,
+  .card,
+  .panel,
+  .results-card,
+  #results,
+  .results,
+  .menu-results {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  h1, h2, h3 {
+    margin: 0 0 8px 0 !important;
+    break-after: avoid !important;
+  }
+
+  table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 9.2pt !important;
+  }
+
+  th, td {
+    vertical-align: top !important;
+    padding: 5px 6px !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  th:first-child,
+  td:first-child {
+    width: 8% !important;
+  }
+
+  .prep-title {
+    font-size: 10.5pt !important;
+    line-height: 1.15 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .prep-components,
+  .guarnicion,
+  .verduras,
+  td {
+    line-height: 1.22 !important;
+  }
+
+  /* Evitar encabezados/pies automáticos del documento */
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}
+
 </style>
+
+<style id="print-v166-fix">
+@media print {
+  @page { size: Letter landscape; margin: 5mm; }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Imprimir exclusivamente la tabla de menús */
+  body > * { display: none !important; }
+  main { display: block !important; margin: 0 !important; padding: 0 !important; }
+  main > * { display: none !important; }
+  #results {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  #results h2 { 
+    display: block !important;
+    margin: 0 0 3mm 0 !important;
+    font-size: 15px !important;
+  }
+
+  #results .table-wrapper {
+    display: block !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  #results table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 8.2px !important;
+    line-height: 1.12 !important;
+  }
+
+  #results th, #results td {
+    padding: 3px 5px !important;
+    vertical-align: top !important;
+  }
+
+  #results th:first-child, #results td:first-child { width: 8% !important; }
+  #results th:not(:first-child), #results td:not(:first-child) { width: 18.4% !important; }
+
+  #results .prep-title {
+    font-size: 9.1px !important;
+    line-height: 1.08 !important;
+    margin: 0 0 2px 0 !important;
+  }
+
+  #results .prep-components,
+  #results .prep-accomp {
+    font-size: 8.2px !important;
+    line-height: 1.12 !important;
+    margin: 0 0 2px 0 !important;
+  }
+
+  /* Quitar calorías/macros de cada platillo */
+  #results .meta { display: none !important; }
+
+  /* Quitar la fila de restricciones: dejar únicamente los cinco tiempos */
+  #menuTableBody > tr:first-child { display: none !important; }
+
+  /* Quitar TOTAL DEL DÍA completo */
+  #menuTableBody > tr:last-child { display: none !important; }
+
+  /* Nada de botones al final */
+  #results .actions, #results button { display: none !important; }
+
+  /* Mantener todo en una sola hoja */
+  #results, #results table, #results tbody, #results tr, #results td {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
+</style>
+
+
+<style id="print-v167-height-fix">
+@media print {
+  /* Conservamos Carta horizontal y el ancho que ya quedó correcto */
+  @page { size: Letter landscape; margin: 5mm; }
+
+  #results h2 {
+    font-size: 18px !important;
+    margin: 0 0 5mm 0 !important;
+  }
+
+  /* Aumentamos principalmente el tamaño vertical/legibilidad */
+  #results table {
+    font-size: 10.4px !important;
+    line-height: 1.25 !important;
+  }
+
+  #results th,
+  #results td {
+    padding: 6px 5px !important;
+  }
+
+  #results .prep-title {
+    font-size: 11.2px !important;
+    line-height: 1.18 !important;
+    margin-bottom: 3px !important;
+  }
+
+  #results .prep-components,
+  #results .prep-accomp {
+    font-size: 10.4px !important;
+    line-height: 1.22 !important;
+    margin-bottom: 3px !important;
+  }
+
+  /* Las colaciones reciben un poco más de aire vertical */
+  #menuTableBody > tr:nth-child(3) td,
+  #menuTableBody > tr:nth-child(5) td {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+</style>
+
+
+<style id="print-v168-height-fill">
+@media print {
+  @page { size: Letter landscape; margin: 5mm; }
+
+  #results h2 {
+    font-size: 20px !important;
+    margin: 0 0 5mm 0 !important;
+  }
+
+  #results table {
+    font-size: 11.5px !important;
+    line-height: 1.28 !important;
+  }
+
+  #results th {
+    font-size: 12px !important;
+    padding: 7px 6px !important;
+  }
+
+  #results td {
+    padding: 8px 6px !important;
+  }
+
+  #results .prep-title {
+    font-size: 12.2px !important;
+    line-height: 1.18 !important;
+    margin-bottom: 4px !important;
+  }
+
+  #results .prep-components,
+  #results .prep-accomp {
+    font-size: 11.2px !important;
+    line-height: 1.24 !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Aprovechar mejor la altura de Carta horizontal */
+  #menuTableBody > tr:nth-child(2) { height: 34mm !important; } /* Desayuno */
+  #menuTableBody > tr:nth-child(3) { height: 20mm !important; } /* Colación 1 */
+  #menuTableBody > tr:nth-child(4) { height: 46mm !important; } /* Comida */
+  #menuTableBody > tr:nth-child(5) { height: 20mm !important; } /* Colación 2 */
+  #menuTableBody > tr:nth-child(6) { height: 34mm !important; } /* Cena */
+
+  #menuTableBody > tr:nth-child(2) td,
+  #menuTableBody > tr:nth-child(4) td,
+  #menuTableBody > tr:nth-child(6) td {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  #menuTableBody > tr:nth-child(3) td,
+  #menuTableBody > tr:nth-child(5) td {
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -336,7 +681,13 @@ footer{
                 >
             </div>
 
-        </div>
+        
+<div class="macro-summary">
+ <div class="macro-box"><strong>Proteína</strong><br><span id="proteinCalc">Captura los datos</span></div>
+ <div class="macro-box"><strong>Grasa</strong><br><span id="fatCalc">Máximo 30% del VCT</span></div>
+ <div class="macro-box"><strong>Carbohidratos</strong><br><span id="carbCalc">Diferencia restante</span></div>
+</div>
+</div>
 
     </section>
 
@@ -427,6 +778,13 @@ footer{
                     </label>
                 </div>
 
+                <div class="restriction">
+                    <label>
+                        <input type="checkbox" value="huevo">
+                        Huevo
+                    </label>
+                </div>
+
             </div>
 
         </div>
@@ -437,7 +795,17 @@ footer{
 
         <div class="actions">
 
-            <button
+            
+<div class="action-buttons no-print" style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;">
+  <button type="button" id="printMenuBtn" onclick="printMenus()" style="background:#146c5b;color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;">
+    IMPRIMIR / GUARDAR PDF
+  </button>
+</div>
+
+<div class="no-print" style="font-size:13px;color:#5b675f;margin-top:-6px;margin-bottom:14px;">
+  Se abrirá la vista de impresión en formato horizontal. Para PDF, en <strong>Destino</strong> elige <strong>Guardar como PDF</strong>.
+</div>
+<button
                 class="primary"
                 onclick="generateMenus()"
             >
@@ -454,9 +822,9 @@ footer{
         </div>
 
         <div class="notice">
-            Esta versión es el prototipo inicial. Los menús clínicamente
-            válidos se incorporarán después de integrar la Bitácora de
-            Preparaciones confirmada y revisada.
+            V1.6.9 funcional de prueba — incluye salida limpia para imprimir o guardar los menús como PDF desde el navegador. Algunos alimentos añadidos para ampliar variedad
+            permanecen marcados internamente como PROVISIONALES y deberán validarse
+            antes de considerarse base clínica definitiva.
         </div>
 
     </section>
@@ -506,230 +874,1230 @@ footer{
 </main>
 
 <footer>
-    Generador de Menús Nutricionales — Versión inicial
+    Generador de Menús Nutricionales — V1.6.9 Proteína única + porciones equilibradas
 </footer>
 
 
 <script>
+const FOOD_DB = [
+ {id:'AL01',name:'Tortilla de maíz',kcal:64.2,p:1.38,c:13.89,f:0.30,eq:'1 cereal',tags:['pan'],portion:'1 pieza'},
+ {id:'AL02',name:'Clara de huevo',kcal:26,p:5.45,c:0.36,f:0.08,eq:'1 AOA',tags:[],portion:'2 piezas'},
+ {id:'AL03',name:'Arroz blanco cocido',kcal:35,p:1,c:7.9,f:0.1,eq:'1 cereal',tags:[],portion:'¼ taza'},
+ {id:'AL04',name:'Filete de pescado',kcal:40,p:8,c:0,f:0.8,eq:'1 AOA',tags:['mariscos'],portion:'40 g'},
+ {id:'AL05',name:'Queso panela',kcal:111.2,p:10.6,c:1,f:7.2,eq:'1 AOA',tags:['lacteos'],portion:'40 g'},
+ {id:'AL06',name:'Jamón de pavo',kcal:64,p:9.45,c:0.2,f:2.55,eq:'1 AOA',tags:['embutidos','sodio'],portion:'2 rebanadas'},
+ {id:'AL07',name:'Brócoli cocido',kcal:26,p:1.8,c:5,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza'},
+ {id:'AL08',name:'Ejote cocido',kcal:22,p:1.2,c:4,f:0.1,eq:'1 verdura',tags:[],portion:'½ taza'},
+ {id:'AL09',name:'Calabacita cocida',kcal:20,p:1.2,c:4,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza'},
+ {id:'AL10',name:'Nopal cocido',kcal:22,p:1.5,c:4,f:0.2,eq:'1 verdura',tags:[],portion:'1 pieza'}
+,
+ {id:'AL11',name:'Pechuga de pollo cocida',kcal:66,p:12.4,c:0,f:1.4,eq:'1 AOA',tags:[],portion:'40 g',status:'PROVISIONAL'},
+ {id:'AL12',name:'Aguacate',kcal:48,p:0.6,c:2.6,f:4.4,eq:'grasa',tags:[],portion:'30 g',status:'PROVISIONAL'},
+ {id:'AL13',name:'Aceite de oliva',kcal:40,p:0,c:0,f:4.5,eq:'grasa',tags:[],portion:'1 cucharadita',status:'PROVISIONAL'},
+ {id:'AL14',name:'Huevo entero',kcal:72,p:6.3,c:0.4,f:4.8,eq:'1 AOA',tags:['huevo'],portion:'1 pieza',status:'PROVISIONAL'}
+,
+
+ {id:'AL15',name:'Atún en agua escurrido',kcal:58,p:13,c:0,f:0.5,eq:'1 AOA',tags:['sodio'],portion:'50 g',status:'PROVISIONAL'},
+ {id:'AL16',name:'Bistec de res magro cocido',kcal:88,p:12,c:0,f:4.3,eq:'1 AOA',tags:['carnes_rojas'],portion:'50 g',status:'PROVISIONAL'},
+ {id:'AL17',name:'Carne molida magra cocida',kcal:100,p:13,c:0,f:5.2,eq:'1 AOA',tags:['carnes_rojas'],portion:'50 g',status:'PROVISIONAL'},
+ {id:'AL18',name:'Lomo de cerdo cocido',kcal:85,p:13,c:0,f:3.5,eq:'1 AOA',tags:['carnes_rojas'],portion:'50 g',status:'PROVISIONAL'},
+ {id:'AL19',name:'Camarón cocido',kcal:60,p:12,c:0.5,f:0.8,eq:'1 AOA',tags:['mariscos'],portion:'60 g',status:'PROVISIONAL'},
+ {id:'AL20',name:'Pasta cocida',kcal:80,p:2.8,c:15.5,f:0.5,eq:'1 cereal',tags:['pan'],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL21',name:'Papa cocida',kcal:87,p:2,c:20,f:0.1,eq:'1 cereal',tags:[],portion:'100 g',status:'PROVISIONAL'},
+ {id:'AL22',name:'Camote cocido',kcal:90,p:1.6,c:21,f:0.1,eq:'1 cereal',tags:[],portion:'100 g',status:'PROVISIONAL'},
+ {id:'AL23',name:'Avena cocida',kcal:75,p:2.5,c:13,f:1.5,eq:'1 cereal',tags:[],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL24',name:'Tostada horneada',kcal:58,p:1.5,c:12,f:0.5,eq:'1 cereal',tags:['pan'],portion:'1 pieza',status:'PROVISIONAL'},
+ {id:'AL25',name:'Chayote cocido',kcal:19,p:0.8,c:4.5,f:0.1,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL26',name:'Coliflor cocida',kcal:25,p:2,c:5,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL27',name:'Espinaca cocida',kcal:21,p:2.7,c:3.4,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL28',name:'Champiñones cocidos',kcal:22,p:3,c:3.3,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL29',name:'Jitomate picado',kcal:18,p:0.9,c:3.9,f:0.2,eq:'1 verdura',tags:[],portion:'1 taza',status:'PROVISIONAL'},
+ {id:'AL30',name:'Pimiento morrón cocido',kcal:24,p:0.8,c:5.5,f:0.2,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'}
+
+];
+
+const SNACK_DB = [
+  {id:'SN01',name:'Manzana',display:'1 manzana mediana',kcal:95,p:0.5,c:25,f:0.3,tags:['fruta']},
+  {id:'SN02',name:'Pera',display:'1 pera mediana',kcal:100,p:0.6,c:27,f:0.2,tags:['fruta']},
+  {id:'SN03',name:'Papaya',display:'1 taza de papaya',kcal:62,p:0.7,c:16,f:0.4,tags:['fruta']},
+  {id:'SN04',name:'Fresas',display:'1 taza de fresas',kcal:49,p:1.0,c:12,f:0.5,tags:['fruta']},
+  {id:'SN05',name:'Melón',display:'1 taza de melón',kcal:54,p:1.3,c:13,f:0.3,tags:['fruta']},
+  {id:'SN06',name:'Pepino',display:'1 taza de pepino',kcal:16,p:0.7,c:4,f:0.1,tags:['verdura']},
+  {id:'SN07',name:'Jícama',display:'1 taza de jícama',kcal:49,p:0.9,c:11,f:0.1,tags:['verdura']},
+  {id:'SN08',name:'Zanahoria',display:'1 zanahoria mediana',kcal:25,p:0.6,c:6,f:0.1,tags:['verdura']},
+  {id:'SN09',name:'Naranja',display:'1 naranja mediana',kcal:62,p:1.2,c:15.4,f:0.2,tags:['fruta']},
+  {id:'SN10',name:'Mandarina',display:'2 mandarinas pequeñas',kcal:80,p:1.2,c:20,f:0.4,tags:['fruta']},
+  {id:'SN11',name:'Piña',display:'1 taza de piña',kcal:82,p:0.9,c:21.6,f:0.2,tags:['fruta']},
+  {id:'SN12',name:'Sandía',display:'1½ tazas de sandía',kcal:69,p:1.4,c:17.3,f:0.3,tags:['fruta']},
+  {id:'SN13',name:'Durazno',display:'1 durazno mediano',kcal:59,p:1.4,c:14,f:0.4,tags:['fruta']},
+  {id:'SN14',name:'Uvas',display:'¾ taza de uvas',kcal:78,p:0.8,c:20.5,f:0.2,tags:['fruta']}
+];
 
 function toggleRestrictions(){
-
-    const panel =
-        document.getElementById("restrictionsPanel");
-
-    const toggle =
-        document.getElementById("restrictionToggle");
-
-    panel.classList.toggle("open");
-
-    if(panel.classList.contains("open")){
-        toggle.textContent = "Ocultar ▲";
-    }else{
-        toggle.textContent = "Mostrar ▼";
-    }
+ const panel=document.getElementById('restrictionsPanel');
+ const toggle=document.getElementById('restrictionToggle');
+ panel.classList.toggle('open');
+ toggle.textContent=panel.classList.contains('open')?'Ocultar ▲':'Mostrar ▼';
 }
-
-
 function getSelectedRestrictions(){
-
-    return [
-        ...document.querySelectorAll(
-            '#restrictionsPanel input[type="checkbox"]:checked'
-        )
-    ].map(
-        checkbox => checkbox.value
-    );
+ return [...document.querySelectorAll('#restrictionsPanel input[type="checkbox"]:checked')]
+   .map(x=>String(x.value).trim().toLowerCase())
+   .filter(Boolean);
 }
 
+const RESTRICTION_RULES = {
+ lacteos: ['AL05'],
+ embutidos: ['AL06'],
+ // Sodio: por ahora bloquea los alimentos del catálogo marcados explícitamente como altos en sodio.
+ sodio: ['AL06','AL15'],
+ mariscos: ['AL19'],
+ // Pan/galletas/harinas: en el catálogo actual aplica a pasta y tostadas horneadas.
+ pan: ['AL20','AL24'],
+ carnes_rojas: ['AL16','AL17','AL18'],
+ // No hay azúcares/dulces añadidos en FOOD_DB ni SNACK_DB actuales.
+ azucares: [],
+ // No hay salsas/condimentos comerciales cargados todavía.
+ salsas: [],
+ // No hay leguminosas cargadas todavía.
+ leguminosas: [],
+ huevo: ['AL02','AL14']
+};
+
+const RESTRICTION_LABELS = {
+ lacteos:'Lácteos / quesos',
+ embutidos:'Embutidos',
+ sodio:'Sodio / productos con sodio',
+ mariscos:'Mariscos',
+ pan:'Pan / galletas / harinas',
+ carnes_rojas:'Carnes rojas',
+ azucares:'Azúcares / dulces',
+ salsas:'Salsas / condimentos comerciales',
+ leguminosas:'Leguminosas',
+ huevo:'Huevo'
+};
+
+
+const RESTRICTION_STATUS = {
+  lacteos:{catalogItems:true},
+  embutidos:{catalogItems:true},
+  sodio:{catalogItems:true},
+  mariscos:{catalogItems:true},
+  pan:{catalogItems:true},
+  carnes_rojas:{catalogItems:true},
+  azucares:{catalogItems:false,note:'El catálogo actual no contiene azúcares ni dulces añadidos.'},
+  salsas:{catalogItems:false,note:'El catálogo actual no contiene salsas ni condimentos comerciales.'},
+  leguminosas:{catalogItems:false,note:'El catálogo actual no contiene leguminosas.'},
+  huevo:{catalogItems:true}
+};
+
+function restrictionCatalogNotes(restrictions){
+  return restrictions
+    .filter(r=>RESTRICTION_STATUS[r] && RESTRICTION_STATUS[r].catalogItems===false)
+    .map(r=>RESTRICTION_STATUS[r].note);
+}
+
+function filteredFoods(restrictions){
+ const blockedIds = new Set();
+ restrictions.forEach(r=>{
+   (RESTRICTION_RULES[r] || []).forEach(id=>blockedIds.add(id));
+ });
+ return FOOD_DB.filter(f=>!blockedIds.has(f.id));
+}
+
+function forbiddenFoodIds(restrictions){
+ const blockedIds = new Set();
+ restrictions.forEach(r=>{
+   (RESTRICTION_RULES[r] || []).forEach(id=>blockedIds.add(id));
+ });
+ return blockedIds;
+}
+
+function validateRestrictions(menus, restrictions){
+ const blocked=forbiddenFoodIds(restrictions);
+ const violations=[];
+ menus.forEach((menu,mi)=>{
+   menu.meals.forEach(meal=>{
+     meal.items.forEach(item=>{
+       if(blocked.has(item.food.id)){
+         violations.push(`Menú ${mi+1} / ${meal.name}: ${item.food.name}`);
+       }
+     });
+   });
+ });
+ return violations;
+}
+function totals(items){
+ return items.reduce((a,x)=>({
+   kcal:a.kcal+x.food.kcal*x.qty,
+   p:a.p+x.food.p*x.qty,
+   c:a.c+x.food.c*x.qty,
+   f:a.f+x.food.f*x.qty
+ }),{kcal:0,p:0,c:0,f:0});
+}
+function score(t,cal,p){
+ return Math.abs(t.kcal-cal) + Math.abs(t.p-p)*10;
+}
+function cloneItems(items){
+ return items.map(x=>({food:x.food,qty:x.qty}));
+}
+function randomChoice(arr){
+ return arr[Math.floor(Math.random()*arr.length)];
+}
+
+/*
+  V0.2:
+  - Ya no muestra el total diario dentro de cada tiempo.
+  - Primero construye cada tiempo con su propio objetivo.
+  - Después calcula el total diario.
+  - Busca combinaciones en pasos de 0.5 porción.
+  - Usa distintas semillas para producir menús realmente diferentes.
+*/
+function makeMeal(targetCal,targetP,foods,seed){
+ const proteins=foods.filter(f=>f.eq==='1 AOA');
+ const cereals=foods.filter(f=>f.eq==='1 cereal');
+ const vegs=foods.filter(f=>f.eq==='1 verdura');
+ if(!proteins.length || !cereals.length || !vegs.length) return null;
+
+ const rng = mulberry32(1000+seed*7919);
+ let best=null;
+
+ // Generamos candidatos razonables y conservamos el mejor.
+ for(let i=0;i<3500;i++){
+   const items=[];
+   const used={};
+
+   // Cada comida contiene al menos un AOA, un cereal y una verdura.
+   const pFood = proteins[Math.floor(rng()*proteins.length)];
+   const cFood = cereals[Math.floor(rng()*cereals.length)];
+   const vFood = vegs[Math.floor(rng()*vegs.length)];
+
+   items.push({food:pFood,qty:0.5+Math.floor(rng()*4)*0.5});
+   items.push({food:cFood,qty:0.5+Math.floor(rng()*5)*0.5});
+   items.push({food:vFood,qty:0.5+Math.floor(rng()*4)*0.5});
+
+   // Una porción adicional de AOA/cereal/verdura, o una combinación de ellas.
+   const extraCount = Math.floor(rng()*3);
+   for(let e=0;e<extraCount;e++){
+      const pool=[proteins,cereals,vegs][Math.floor(rng()*3)];
+      const f=randomChoiceSeeded(pool,rng);
+      const q=0.5+Math.floor(rng()*3)*0.5;
+      items.push({food:f,qty:q});
+   }
+
+   const merged=[];
+   items.forEach(x=>{
+     const existing=merged.find(y=>y.food.id===x.food.id);
+     if(existing) existing.qty+=x.qty;
+     else merged.push({...x});
+   });
+
+   const t=totals(merged);
+   const s=score(t,targetCal,targetP);
+
+   if(!best || s<best.s) best={s,items:merged,t};
+ }
+ return best;
+}
+
+function randomChoiceSeeded(arr,rng){
+ return arr[Math.floor(rng()*arr.length)];
+}
+
+function mulberry32(a){
+ return function(){
+   let t=a+=0x6D2B79F5;
+   t=Math.imul(t^t>>>15,t|1);
+   t^=(t+Math.imul(t^t>>>7,t|61));
+   return ((t^t>>>14)>>>0)/4294967296;
+ };
+}
+
+
+const MEAL_TEMPLATES = {
+  desayuno:[
+    {name:'Claras con nopales', items:[
+      {id:'AL02',min:2,max:3,step:0.5},{id:'AL10',min:0.5,max:1,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Huevos con nopales', items:[
+      {id:'AL14',min:2,max:2,step:1},{id:'AL10',min:0.5,max:1,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Huevos con champiñones', items:[
+      {id:'AL14',min:2,max:2,step:1},{id:'AL28',min:1,max:2,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Huevos a la mexicana', items:[
+      {id:'AL14',min:2,max:2,step:1},{id:'AL29',min:0.5,max:1,step:0.5},
+      {id:'AL30',min:0.5,max:1,step:0.5},{id:'AL01',min:2,max:3,step:1},
+      {id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Tacos de panela con nopales', items:[
+      {id:'AL05',min:1,max:1.5,step:0.5},{id:'AL01',min:2,max:3,step:1},
+      {id:'AL10',min:0.5,max:1,step:0.5},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Tostadas de atún con aguacate', items:[
+      {id:'AL15',min:1.5,max:2,step:0.5},{id:'AL24',min:2,max:3,step:1},
+      {id:'AL29',min:0.5,max:1,step:0.5},{id:'AL12',min:0.5,max:0.5,step:0.5}
+    ]},
+    {name:'Avena con huevo y fruta aparte', items:[
+      {id:'AL14',min:2,max:2,step:1},{id:'AL23',min:1,max:2,step:0.5},
+      {id:'AL12',min:0,max:0.5,step:0.5}
+    ]}
+  ],
+  comida:[
+    {name:'Pollo con arroz y brócoli', items:[
+      {id:'AL11',min:2,max:3,step:0.5},{id:'AL03',min:2,max:4,step:1},
+      {id:'AL07',min:1,max:2,step:0.5},{id:'AL12',min:0,max:0.5,step:0.5},
+      {id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Pollo con pasta y calabacita', items:[
+      {id:'AL11',min:2,max:3,step:0.5},{id:'AL20',min:1,max:2,step:0.5},
+      {id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Pollo con papa y chayote', items:[
+      {id:'AL11',min:2,max:3,step:0.5},{id:'AL21',min:1,max:1.5,step:0.5},
+      {id:'AL25',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Pescado con arroz y brócoli', items:[
+      {id:'AL04',min:2,max:3,step:0.5},{id:'AL03',min:2,max:4,step:1},
+      {id:'AL07',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Pescado con camote y ejotes', items:[
+      {id:'AL04',min:2,max:3,step:0.5},{id:'AL22',min:1,max:1.5,step:0.5},
+      {id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Bistec con nopales y arroz', items:[
+      {id:'AL16',min:2,max:3,step:0.5},{id:'AL10',min:0.5,max:1,step:0.5},
+      {id:'AL03',min:2,max:4,step:1},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Picadillo con papa y verduras', items:[
+      {id:'AL17',min:2,max:3,step:0.5},{id:'AL21',min:0.5,max:1,step:0.5},
+      {id:'AL09',min:1,max:2,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}
+    ]},
+    {name:'Lomo de cerdo con camote y chayote', items:[
+      {id:'AL18',min:2,max:3,step:0.5},{id:'AL22',min:1,max:1.5,step:0.5},
+      {id:'AL25',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Camarones con arroz y calabacita', items:[
+      {id:'AL19',min:2,max:3,step:0.5},{id:'AL03',min:2,max:4,step:1},
+      {id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+    ]},
+    {name:'Tacos de panela con nopales', items:[
+      {id:'AL05',min:1.5,max:2,step:0.5},{id:'AL01',min:3,max:4,step:1},
+      {id:'AL10',min:0.5,max:1,step:0.5},{id:'AL12',min:0,max:0.5,step:0.5},
+      {id:'AL13',min:0,max:1,step:1}
+    ]}
+  ],
+  cena:[
+    {name:'Pollo con verduras', items:[
+      {id:'AL11',min:1.5,max:2.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Pescado con calabacita', items:[
+      {id:'AL04',min:1.5,max:2.5,step:0.5},{id:'AL09',min:1,max:2,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Atún con tostadas y verduras', items:[
+      {id:'AL15',min:1.5,max:2,step:0.5},{id:'AL24',min:2,max:3,step:1},
+      {id:'AL29',min:0.5,max:1,step:0.5},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Bistec con nopales', items:[
+      {id:'AL16',min:1.5,max:2.5,step:0.5},{id:'AL10',min:0.5,max:1,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Lomo de cerdo con verduras', items:[
+      {id:'AL18',min:1.5,max:2.5,step:0.5},{id:'AL25',min:1,max:2,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Tacos de queso panela', items:[
+      {id:'AL05',min:1,max:1.5,step:0.5},{id:'AL01',min:2,max:3,step:1},
+      {id:'AL09',min:0.5,max:1,step:0.5},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Claras con champiñones', items:[
+      {id:'AL02',min:2,max:3,step:0.5},{id:'AL28',min:1,max:2,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]},
+    {name:'Huevos con espinaca', items:[
+      {id:'AL14',min:2,max:2,step:1},{id:'AL27',min:1,max:2,step:0.5},
+      {id:'AL01',min:2,max:3,step:1},{id:'AL12',min:0,max:0.5,step:0.5}
+    ]}
+  ]
+};
+
+function templateAllowed(template, foods){
+  const allowed = new Set(foods.map(f=>f.id));
+  return template.items.every(x=>allowed.has(x.id));
+}
+
+// Regla clínica: cada desayuno, comida y cena usa una sola fuente principal de proteína (AOA).
+function hasSingleMainProtein(template, foods){
+  const byId=Object.fromEntries(foods.map(f=>[f.id,f]));
+  const proteinIds=template.items
+    .map(x=>x.id)
+    .filter(id=>byId[id] && byId[id].eq==='1 AOA');
+  return new Set(proteinIds).size <= 1;
+}
+
+function sampleStep(min,max,step,rng){
+  const n=Math.round((max-min)/step);
+  return min + Math.floor(rng()*(n+1))*step;
+}
+
+
+function expandedTemplate(template,key){
+  const proteinIds=new Set(['AL04','AL11','AL15','AL19']);
+  const carbIds=new Set(['AL01','AL03','AL20','AL21','AL22','AL23','AL24']);
+  return {...template,items:template.items.map(spec=>{
+    const s={...spec};
+
+    if(proteinIds.has(s.id)){
+      s.max=Math.max(s.max,key==='comida'?4.5:4);
+      s.step=0.5;
+    } else if(carbIds.has(s.id)){
+      // Límites prácticos: no resolver todo con tortillas/tostadas.
+      if(s.id==='AL01'){
+        s.max=Math.min(Math.max(s.max,4),4);     // máx. 4 tortillas por tiempo
+        s.step=1;
+      } else if(s.id==='AL24'){
+        s.max=Math.min(Math.max(s.max,4),4);     // máx. 4 tostadas por tiempo
+        s.step=1;
+      } else if(s.id==='AL03'){
+        s.max=Math.max(s.max,6);                 // arroz puede absorber parte del ajuste
+        s.step=1;                                // 1/4 taza por paso
+      } else if(['AL20','AL21','AL22'].includes(s.id)){
+        s.max=Math.max(s.max,3);                 // pasta/papa/camote
+      } else if(s.id==='AL23'){
+        s.max=Math.max(s.max,2.5);               // avena
+      }
+    }
+    return s;
+  })};
+}
+
+function makeMealFromTemplate(template,key,name,foods,rng){
+  const byId={};
+  foods.forEach(f=>byId[f.id]=f);
+  const items=template.items.map(spec=>({
+    food:byId[spec.id],
+    qty:sampleStep(spec.min,spec.max,spec.step,rng)
+  }));
+  return {
+    key,name,
+    templateName:template.name,
+    items,
+    totals:totals(items)
+  };
+}
+function buildDay(calories,protein,restrictions,seed,expanded=false){
+ const foods=filteredFoods(restrictions);
+ if(!foods.length) return {meals:[],daily:{kcal:0,p:0,c:0,f:0}};
+
+ const rng=mulberry32(22000+seed*104729);
+
+ // Colaciones simples. También se filtran por restricciones usando sus tags.
+ const snackAllowed = SNACK_DB.filter(sn=>{
+   return !restrictions.some(r=>(sn.tags||[]).includes(r));
+ });
+ if(!snackAllowed.length){
+   return {meals:[],daily:{kcal:0,p:0,c:0,f:0},error:'No hay colaciones compatibles con las restricciones.'};
+ }
+ const snack1=snackAllowed[Math.floor(rng()*snackAllowed.length)];
+ let snack2=snackAllowed[Math.floor(rng()*snackAllowed.length)];
+ if(snack2.id===snack1.id){
+   snack2=snackAllowed[(snackAllowed.indexOf(snack2)+1)%snackAllowed.length];
+ }
+
+ const availableBreakfast=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods)).map(t=>expanded?expandedTemplate(t,'desayuno'):t);
+ const availableLunch=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods)).map(t=>expanded?expandedTemplate(t,'comida'):t);
+ const availableDinner=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods)).map(t=>expanded?expandedTemplate(t,'cena'):t);
+
+ if(!availableBreakfast.length || !availableLunch.length || !availableDinner.length){
+   return {meals:[],daily:{kcal:0,p:0,c:0,f:0},error:'No hay suficientes plantillas compatibles con las restricciones.'};
+ }
+
+ const byId=Object.fromEntries(foods.map(f=>[f.id,f]));
+
+ function dayTotals(meals){
+   return meals.reduce((a,m)=>({
+     kcal:a.kcal+m.totals.kcal,
+     p:a.p+m.totals.p,
+     c:a.c+m.totals.c,
+     f:a.f+m.totals.f
+   }),{kcal:0,p:0,c:0,f:0});
+ }
+
+ function recompute(meal){
+   meal.totals=totals(meal.items);
+   return meal;
+ }
+
+ function getItem(meal,id){
+   return meal.items.find(x=>x.food.id===id);
+ }
+
+ function setOrAdd(meal,id,qty){
+   if(!byId[id] || qty<=0) return;
+   const ex=getItem(meal,id);
+   if(ex) ex.qty=qty;
+   else meal.items.push({food:byId[id],qty});
+   recompute(meal);
+ }
+
+ // Ajuste energético: SOLO carbohidratos/grasas, nunca agrega una segunda proteína.
+ // Límites prácticos por tiempo.
+ const addonLimits = expanded ? {
+   desayuno:{AL01:4,AL03:7,AL20:3,AL21:3,AL22:3,AL23:2.5,AL24:4,AL12:0.5,AL13:1},
+   comida:{AL01:4,AL03:8,AL20:3.5,AL21:3,AL22:3,AL12:0.5,AL13:1},
+   cena:{AL01:4,AL03:7,AL20:3,AL21:3,AL22:3,AL24:4,AL12:0.5,AL13:1}
+ } : {
+   desayuno:{AL01:4,AL03:4,AL20:2,AL21:1.5,AL22:1.5,AL23:2,AL24:3,AL12:0.5,AL13:1},
+   comida:{AL01:4,AL03:5,AL20:2.5,AL21:2,AL22:2,AL12:0.5,AL13:1},
+   cena:{AL01:4,AL03:4,AL20:2,AL21:1.5,AL22:1.5,AL24:3,AL12:0.5,AL13:1}
+ };
+
+ function tryEnergyAdjustment(mainMeals){
+   let meals=mainMeals.map(m=>({
+     ...m,
+     items:m.items.map(x=>({food:x.food,qty:x.qty})),
+     totals:{...m.totals}
+   }));
+
+   const order=[
+     ['AL03',1],   // arroz
+     ['AL21',0.5], // papa
+     ['AL22',0.5], // camote
+     ['AL20',0.5], // pasta
+     ['AL23',0.5], // avena
+     ['AL01',1],   // tortilla después de otras guarniciones
+     ['AL24',1],   // tostada después de otras guarniciones
+     ['AL12',0.5], // aguacate
+     ['AL13',1]    // aceite, último recurso
+   ];
+
+   for(let pass=0;pass<40;pass++){
+     const main=dayTotals(meals);
+     const dailyKcal=main.kcal+snack1.kcal+snack2.kcal;
+     const dailyP=main.p+snack1.p+snack2.p;
+     const calDef=calories-dailyKcal;
+
+     if(Math.abs(calDef)<=calories*0.02) break;
+     if(calDef<0) break; // no recortar aquí; la búsqueda ya maneja exceso.
+
+     let bestMove=null;
+
+     meals.forEach((meal,mi)=>{
+       for(const [id,step] of order){
+         if(!byId[id]) continue;
+         const lim=addonLimits[meal.key]?.[id];
+         if(!lim) continue;
+         const ex=getItem(meal,id);
+         const q=ex?ex.qty:0;
+         const newQ=q+step;
+         if(newQ>lim) continue;
+
+         const food=byId[id];
+         const addK=food.kcal*step;
+         const addP=food.p*step;
+
+         // No permitir que el ajuste energético saque la proteína del ±2%.
+         if(Math.abs((dailyP+addP)-protein)>protein*0.02) continue;
+         const projectedFat = meals.reduce((s,m)=>s+m.totals.f,0) + snack1.f + snack2.f + food.f*step;
+         const projectedKcal = dailyKcal + addK;
+         const projectedFatPct = projectedKcal>0 ? (projectedFat*9/projectedKcal)*100 : 0;
+         if(projectedFatPct>30.0001) continue;
+
+         const newErr=Math.abs((dailyKcal+addK)-calories);
+         const oldErr=Math.abs(dailyKcal-calories);
+         if(newErr>=oldErr) continue;
+
+         // Preferir aceite/aguacate cuando la proteína ya está bien.
+         const moveScore=newErr + addP*25 + (id==='AL13'?0:(id==='AL12'?2:5));
+         if(!bestMove || moveScore<bestMove.score){
+           bestMove={score:moveScore,mi,id,newQ};
+         }
+       }
+     });
+
+     if(!bestMove) break;
+     setOrAdd(meals[bestMove.mi],bestMove.id,bestMove.newQ);
+   }
+
+   return meals;
+ }
+
+ function scoreDay(mainMeals){
+   const d=dayTotals(mainMeals);
+   const dailyKcal=d.kcal+snack1.kcal+snack2.kcal;
+   const dailyP=d.p+snack1.p+snack2.p;
+   const calErr=Math.abs(dailyKcal-calories)/Math.max(calories,1);
+   const pErr=Math.abs(dailyP-protein)/Math.max(protein,1);
+   const fatPct=(d.f*9/dailyKcal)*100;
+   const fatExcess=Math.max(0,fatPct-30)/30;
+
+   // Penaliza menús que concentran demasiadas tortillas/tostadas en un solo tiempo.
+   let practicalBurden=0;
+   mainMeals.forEach(meal=>{
+     const tortilla=meal.items.find(x=>x.food.id==='AL01');
+     const tostada=meal.items.find(x=>x.food.id==='AL24');
+     const tq=(tortilla?tortilla.qty:0);
+     const sq=(tostada?tostada.qty:0);
+     if(tq>4) practicalBurden += (tq-4)*0.8;
+     if(sq>4) practicalBurden += (sq-4)*0.8;
+     if(tq+sq>5) practicalBurden += (tq+sq-5)*0.5;
+   });
+
+   // Balance deseado entre tiempos fuertes.
+   const mealTargets=[0.28,0.42,0.30];
+   let balance=0;
+   mainMeals.forEach((meal,i)=>{
+     const target=(calories-snack1.kcal-snack2.kcal)*mealTargets[i];
+     balance += Math.abs(meal.totals.kcal-target)/Math.max(target,1)*0.10;
+   });
+
+   // Preferencia ligera de variedad según semilla; no sacrifica el objetivo.
+   const prefB=seed%availableBreakfast.length;
+   const prefL=(seed+1)%availableLunch.length;
+   const prefD=(seed+2)%availableDinner.length;
+   let variety=0;
+   if(mainMeals[0].templateName!==availableBreakfast[prefB].name) variety+=0.08;
+   if(mainMeals[1].templateName!==availableLunch[prefL].name) variety+=0.08;
+   if(mainMeals[2].templateName!==availableDinner[prefD].name) variety+=0.08;
+
+   const calBand=Math.max(0,calErr-0.02);
+   const pBand=Math.max(0,pErr-0.02);
+   return calErr*25 + pErr*30 + calBand*180 + pBand*220 + fatExcess*600 + practicalBurden + balance + variety;
+ }
+
+ let best=null;
+
+ for(let attempt=0;attempt<(expanded?5000:12000);attempt++){
+   const bt=availableBreakfast[Math.floor(rng()*availableBreakfast.length)];
+   const lt=availableLunch[Math.floor(rng()*availableLunch.length)];
+   const dt=availableDinner[Math.floor(rng()*availableDinner.length)];
+
+   let breakfast=makeMealFromTemplate(bt,'desayuno','Desayuno',foods,rng);
+   let lunch=makeMealFromTemplate(lt,'comida','Comida',foods,rng);
+   let dinner=makeMealFromTemplate(dt,'cena','Cena',foods,rng);
+
+   let mainMeals=tryEnergyAdjustment([breakfast,lunch,dinner]);
+   const main=dayTotals(mainMeals);
+
+   const daily={
+     kcal:main.kcal+snack1.kcal+snack2.kcal,
+     p:main.p+snack1.p+snack2.p,
+     c:main.c+snack1.c+snack2.c,
+     f:main.f+snack1.f+snack2.f
+   };
+   const s=scoreDay(mainMeals);
+
+   if(!best || s<best.score){
+     best={
+       score:s,
+       meals:[
+         mainMeals[0],
+         {key:'colacion1',name:'Colación 1',snack:snack1,items:[],totals:{kcal:snack1.kcal,p:snack1.p,c:snack1.c,f:snack1.f}},
+         mainMeals[1],
+         {key:'colacion2',name:'Colación 2',snack:snack2,items:[],totals:{kcal:snack2.kcal,p:snack2.p,c:snack2.c,f:snack2.f}},
+         mainMeals[2]
+       ],
+       daily
+     };
+   }
+
+   if(Math.abs(daily.kcal-calories)<=calories*0.02 &&
+      Math.abs(daily.p-protein)<=protein*0.02){
+     break;
+   }
+ }
+
+ return best;
+}
+
+function fmtItem(x){
+ if(!x) return '';
+ const q = Number.isInteger(x.qty) ? x.qty : x.qty.toFixed(1).replace('.0','');
+ return `${x.food.name} (${x.food.portion}${x.qty!==1?' × '+q:''})`;
+}
+
+function fmtMeal(items){
+ return items.map(fmtItem).join(' + ');
+}
+
+
+
+// V0.7 — Preparaciones culinarias lógicas y lectura amigable
+function formatNumber(n){
+  const rounded=Math.round(n*100)/100;
+  const whole=Math.floor(rounded + 1e-9);
+  const frac=Math.round((rounded-whole)*4)/4;
+  const glyph={0.25:'¼',0.5:'½',0.75:'¾'}[frac] || '';
+  if(whole===0 && glyph) return glyph;
+  if(glyph) return `${whole}${glyph}`;
+  return Number.isInteger(rounded)?String(rounded):String(Math.round(rounded*10)/10);
+}
+function formatCup(cups){
+  const q=Math.max(0.25,Math.round(cups*4)/4);
+  const whole=Math.floor(q);
+  const frac=Math.round((q-whole)*4)/4;
+  const glyph={0.25:'¼',0.5:'½',0.75:'¾'}[frac] || '';
+  let value='';
+  if(whole===0) value=glyph || '¼';
+  else value=`${whole}${glyph}`;
+  return `${value} ${q<=1?'taza':'tazas'}`;
+}
+function qtyValue(item){
+  const q=item.qty, id=item.food.id;
+  if(id==='AL01') return {kind:'tortilla',value:q};
+  if(id==='AL02') return {kind:'clara',value:2*q};
+  if(id==='AL03') return {kind:'arroz',value:.25*q};
+  if(id==='AL04') return {kind:'pescado',value:40*q};
+  if(id==='AL05') return {kind:'panela',value:40*q};
+  if(id==='AL06') return {kind:'jamon',value:2*q};
+  if(['AL07','AL08','AL09'].includes(id)) return {kind:id,value:.5*q};
+  if(id==='AL10') return {kind:'nopal',value:q};
+  if(id==='AL11') return {kind:'AL11',value:q};
+  if(id==='AL12') return {kind:'AL12',value:q};
+  if(id==='AL13') return {kind:'AL13',value:q};
+  if(id==='AL14') return {kind:'AL14',value:q};
+  if(id==='AL15') return {kind:'AL15',value:q};
+  if(id==='AL16') return {kind:'AL16',value:q};
+  if(id==='AL17') return {kind:'AL17',value:q};
+  if(id==='AL18') return {kind:'AL18',value:q};
+  if(id==='AL19') return {kind:'AL19',value:q};
+  if(id==='AL20') return {kind:'AL20',value:q};
+  if(id==='AL21') return {kind:'AL21',value:q};
+  if(id==='AL22') return {kind:'AL22',value:q};
+  if(id==='AL23') return {kind:'AL23',value:q};
+  if(id==='AL24') return {kind:'AL24',value:q};
+  if(id==='AL25') return {kind:'AL25',value:q};
+  if(id==='AL26') return {kind:'AL26',value:q};
+  if(id==='AL27') return {kind:'AL27',value:q};
+  if(id==='AL28') return {kind:'AL28',value:q};
+  if(id==='AL29') return {kind:'AL29',value:q};
+  if(id==='AL30') return {kind:'AL30',value:q};
+  return {kind:id,value:q};
+}
+function displayQty(item){
+  const v=qtyValue(item), n=v.value;
+  switch(v.kind){
+    case 'tortilla': { const p=Math.max(1,Math.round(n)); return `${p} ${p===1?'tortilla':'tortillas'}`; }
+    case 'clara': return `${formatNumber(n)} ${n===1?'clara de huevo':'claras de huevo'}`;
+    case 'arroz': return `${formatCup(n)} de arroz cocido`;
+    case 'pescado': return `${formatNumber(n)} g de pescado`;
+    case 'panela': return `${formatNumber(n)} g de queso panela`;
+    case 'jamon': return `${formatNumber(n)} ${n===1?'rebanada':'rebanadas'} de jamón de pavo`;
+    case 'AL07': return `${formatCup(n)} de brócoli cocido`;
+    case 'AL08': return `${formatCup(n)} de ejotes cocidos`;
+    case 'AL09': return `${formatCup(n)} de calabacita cocida`;
+    case 'nopal': return `${formatNumber(n)} ${n===1?'nopal cocido':'nopales cocidos'}`;
+    case 'AL11': return `${formatNumber(40*n)} g de pechuga de pollo`;
+    case 'AL12': return `${formatNumber(30*n)} g de aguacate`;
+    case 'AL13': return `${formatNumber(n)} ${n===1?'cucharadita':'cucharaditas'} de aceite de oliva`;
+    case 'AL14': return `${formatNumber(n)} ${n===1?'huevo':'huevos'}`;
+    case 'AL15': return `${formatNumber(50*n)} g de atún en agua`;
+    case 'AL16': return `${formatNumber(50*n)} g de bistec de res`;
+    case 'AL17': return `${formatNumber(50*n)} g de carne molida magra`;
+    case 'AL18': return `${formatNumber(50*n)} g de lomo de cerdo`;
+    case 'AL19': return `${formatNumber(60*n)} g de camarón`;
+    case 'AL20': return `${formatCup(0.5*n)} de pasta cocida`;
+    case 'AL21': return `${formatNumber(100*n)} g de papa cocida`;
+    case 'AL22': return `${formatNumber(100*n)} g de camote cocido`;
+    case 'AL23': return `${formatCup(0.5*n)} de avena cocida`;
+    case 'AL24': { const p=Math.max(1,Math.round(n)); return `${p} ${p===1?'tostada horneada':'tostadas horneadas'}`; }
+    case 'AL25': return `${formatCup(0.5*n)} de chayote cocido`;
+    case 'AL26': return `${formatCup(0.5*n)} de coliflor cocida`;
+    case 'AL27': return `${formatCup(0.5*n)} de espinaca cocida`;
+    case 'AL28': return `${formatCup(0.5*n)} de champiñones cocidos`;
+    case 'AL29': return `${formatCup(1*n)} de jitomate picado`;
+    case 'AL30': return `${formatCup(0.5*n)} de pimiento morrón`;
+    default: return item.food.name;
+  }
+}
+function itemMap(items){
+  const m={};
+  items.forEach(x=>m[x.food.id]=x);
+  return m;
+}
+function mealPreparation(items){
+  const m=itemMap(items);
+  const has=id=>!!m[id];
+  const val=id=>has(id)?qtyValue(m[id]).value:0;
+  const used=new Set();
+  let title='', components=[];
+
+  // Prefer a substantial, recognizable main dish.
+  if(has('AL04') && has('AL03') && val('AL04')>=40){
+    title='Filete de pescado con arroz';
+    used.add('AL04'); used.add('AL03');
+    components=[displayQty(m.AL04),displayQty(m.AL03)];
+    // Fold one vegetable into the dish when available.
+    const veg=['AL07','AL09','AL08','AL10'].find(has);
+    if(veg){
+      const vegName={AL07:'brócoli',AL09:'calabacita',AL08:'ejotes',AL10:'nopales'}[veg];
+      title+=` y ${vegName}`;
+      used.add(veg); components.push(displayQty(m[veg]));
+    }
+  } else if(has('AL02') && has('AL06') && val('AL02')>=1 && val('AL06')>=1){
+    title='Claras con jamón';
+    used.add('AL02'); used.add('AL06');
+    components=[displayQty(m.AL02),displayQty(m.AL06)];
+  } else if(has('AL02') && has('AL10') && val('AL02')>=1){
+    title='Claras con nopales';
+    used.add('AL02'); used.add('AL10');
+    components=[displayQty(m.AL02),displayQty(m.AL10)];
+  } else if(has('AL05') && has('AL01') && val('AL05')>=40 && val('AL01')>=1 && val('AL01')<=4){
+    if(has('AL10')){
+      title='Tacos de panela con nopales';
+      used.add('AL10');
+    } else {
+      title='Tacos de queso panela';
+    }
+    used.add('AL05'); used.add('AL01');
+    components=[displayQty(m.AL05),displayQty(m.AL01)];
+    if(has('AL10')) components.push(displayQty(m.AL10));
+  } else if(has('AL04') && val('AL04')>=40){
+    title='Filete de pescado con verduras';
+    used.add('AL04'); components=[displayQty(m.AL04)];
+    const veg=['AL07','AL09','AL08','AL10'].find(has);
+    if(veg){ used.add(veg); components.push(displayQty(m[veg])); }
+  } else if(has('AL02') && val('AL02')>=1){
+    title='Claras de huevo con guarnición';
+    used.add('AL02'); components=[displayQty(m.AL02)];
+    const veg=['AL10','AL07','AL09','AL08'].find(has);
+    if(veg){ used.add(veg); components.push(displayQty(m[veg])); }
+  } else if(has('AL05') && val('AL05')>=40){
+    title='Queso panela con guarnición';
+    used.add('AL05'); components=[displayQty(m.AL05)];
+    const veg=['AL10','AL07','AL09','AL08'].find(has);
+    if(veg){ used.add(veg); components.push(displayQty(m[veg])); }
+  } else if(has('AL06')){
+    title='Jamón de pavo con guarnición';
+    used.add('AL06'); components=[displayQty(m.AL06)];
+  } else {
+    title='Platillo sugerido';
+    const first=items.slice(0,2);
+    first.forEach(x=>used.add(x.food.id));
+    components=first.map(displayQty);
+  }
+
+  const rest=items.filter(x=>!used.has(x.food.id));
+
+  // Group the rest more naturally instead of a giant "Acompañado de" sentence.
+  const carbs=rest.filter(x=>['AL01','AL03'].includes(x.food.id));
+  const veggies=rest.filter(x=>['AL07','AL08','AL09','AL10'].includes(x.food.id));
+  const proteins=rest.filter(x=>['AL02','AL04','AL05','AL06'].includes(x.food.id));
+  let lines=[];
+  if(proteins.length) lines.push('<strong>Complemento:</strong> '+proteins.map(displayQty).join(' + '));
+  if(carbs.length) lines.push('<strong>Guarnición:</strong> '+carbs.map(displayQty).join(' + '));
+  if(veggies.length) lines.push('<strong>Verduras:</strong> '+veggies.map(displayQty).join(' + '));
+
+  return {
+    title,
+    components:'('+components.join(' + ')+')',
+    accomp:lines.join('<br>')
+  };
+}
+
+const TITLE_REQUIREMENTS = [
+  {pattern:/atún/i, ids:['AL15']},
+  {pattern:/aguacate/i, ids:['AL12']},
+  {pattern:/queso|panela/i, ids:['AL05']},
+  {pattern:/pollo/i, ids:['AL11']},
+  {pattern:/pescado/i, ids:['AL04']},
+  {pattern:/bistec/i, ids:['AL16']},
+  {pattern:/picadillo|carne molida/i, ids:['AL17']},
+  {pattern:/cerdo|lomo/i, ids:['AL18']},
+  {pattern:/camarón/i, ids:['AL19']},
+  {pattern:/huevo/i, ids:['AL14','AL02']},
+  {pattern:/nopal/i, ids:['AL10']},
+  {pattern:/champiñ/i, ids:['AL28']},
+  {pattern:/espinaca/i, ids:['AL27']},
+  {pattern:/brócoli/i, ids:['AL07']},
+  {pattern:/calabacita/i, ids:['AL09']},
+  {pattern:/chayote/i, ids:['AL25']},
+  {pattern:/camote/i, ids:['AL22']},
+  {pattern:/papa/i, ids:['AL21']},
+  {pattern:/arroz/i, ids:['AL03']},
+  {pattern:/pasta/i, ids:['AL20']},
+  {pattern:/avena/i, ids:['AL23']},
+  {pattern:/tostada/i, ids:['AL24']},
+  {pattern:/verduras/i, ids:['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30']}
+];
+
+function titleMatchesIngredients(title, items){
+  const present=Object.fromEntries(items.map(x=>[x.food.id,x]));
+
+  const mandatory=TEMPLATE_MANDATORY_IDS[title] || [];
+  if(mandatory.length){
+    if(!mandatory.every(id=>present[id] && Number(present[id].qty)>0)) return false;
+  }
+
+  for(const rule of TITLE_REQUIREMENTS){
+    if(rule.pattern.test(title)){
+      const ok=rule.ids.some(id=>present[id] && Number(present[id].qty)>0);
+      if(!ok) return false;
+    }
+  }
+  return true;
+}
+
+function safePreparationTitle(title, items){
+  if(titleMatchesIngredients(title, items)) return title;
+  // Use a neutral fallback that never promises a missing ingredient.
+  const proteinIds=['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19'];
+  const p=items.find(x=>proteinIds.includes(x.food.id));
+  return p ? `${p.food.name} con guarnición` : 'Platillo sugerido';
+}
+
+function formatPatientMeal(items){
+  const result=mealPreparation(items);
+  return result;
+}
+
+
+function calculateMacroTargets(calories,protein){
+ calories=Number(calories); protein=Number(protein);
+ if(!calories || protein<0) return null;
+ const proteinKcal=protein*4, proteinPct=proteinKcal/calories*100;
+ const fatPctMax=30, fatKcalMax=calories*.30, fatGMax=fatKcalMax/9;
+ const carbPct=Math.max(0,100-proteinPct-fatPctMax);
+ const carbKcal=calories*carbPct/100, carbG=carbKcal/4;
+ return {proteinKcal,proteinPct,fatGMax,fatKcalMax,carbPct,carbKcal,carbG};
+}
+function updateMacroSummary(){
+ const c=+document.getElementById('calories').value,p=+document.getElementById('protein').value,t=calculateMacroTargets(c,p);
+ if(!t)return;
+ document.getElementById('proteinCalc').innerHTML=`${p.toFixed(1)} g = ${Math.round(t.proteinKcal)} kcal = <b>${t.proteinPct.toFixed(1)}%</b>`;
+ document.getElementById('fatCalc').innerHTML=`Máx. ${t.fatGMax.toFixed(1)} g = ${Math.round(t.fatKcalMax)} kcal = <b>30%</b>`;
+ document.getElementById('carbCalc').innerHTML=`${t.carbG.toFixed(1)} g = ${Math.round(t.carbKcal)} kcal = <b>${t.carbPct.toFixed(1)}%</b>`;
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ ['calories','protein'].forEach(id=>document.getElementById(id).addEventListener('input',updateMacroSummary));
+});
+
+function hasPracticalPortions(day){
+  if(!day || !day.meals) return false;
+  for(const meal of day.meals){
+    for(const item of (meal.items||[])){
+      if((item.food.id==='AL01' || item.food.id==='AL24') &&
+         Math.abs(item.qty-Math.round(item.qty))>0.0001) return false;
+      // Rice base portion = 1/4 cup: multiplier must be whole.
+      if(item.food.id==='AL03' &&
+         Math.abs(item.qty-Math.round(item.qty))>0.0001) return false;
+    }
+  }
+  return true;
+}
+
+
+function formatVisibleComponentsForTitle(title, items, fallback){
+  const present=Object.fromEntries(items.map(x=>[x.food.id,x]));
+  const mandatory=TEMPLATE_MANDATORY_IDS[title] || [];
+
+  if(mandatory.length){
+    const named=mandatory
+      .filter(id=>present[id] && Number(present[id].qty)>0)
+      .map(id=>displayQty(present[id]));
+    if(named.length===mandatory.length){
+      return '('+named.join(' + ')+')';
+    }
+  }
+
+  const ids=[];
+  for(const rule of TITLE_REQUIREMENTS){
+    if(rule.pattern.test(title)){
+      const found=rule.ids.find(id=>present[id] && Number(present[id].qty)>0);
+      if(found && !ids.includes(found)) ids.push(found);
+    }
+  }
+
+  // For generic "con verduras", ensure one actual vegetable is always visible.
+  if(/verduras/i.test(title)){
+    const vegIds=['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30'];
+    const veg=vegIds.find(id=>present[id] && Number(present[id].qty)>0);
+    if(veg && !ids.includes(veg)) ids.push(veg);
+  }
+
+  if(!ids.length) return fallback;
+  return '('+ids.map(id=>displayQty(present[id])).join(' + ')+')';
+}
+
+
+const TEMPLATE_MANDATORY_IDS = {
+  'Claras con nopales':['AL02','AL10'],
+  'Huevos con nopales':['AL14','AL10'],
+  'Huevos con champiñones':['AL14','AL28'],
+  'Huevos a la mexicana':['AL14','AL29','AL30'],
+  'Tacos de panela con nopales':['AL05','AL01','AL10'],
+  'Tostadas de atún con aguacate':['AL15','AL24','AL12'],
+  'Avena con huevo y fruta aparte':['AL14','AL23'],
+  'Pollo con arroz y brócoli':['AL11','AL03','AL07'],
+  'Pollo con pasta y calabacita':['AL11','AL20','AL09'],
+  'Pollo con papa y chayote':['AL11','AL21','AL25'],
+  'Pescado con arroz y brócoli':['AL04','AL03','AL07'],
+  'Pescado con camote y ejotes':['AL04','AL22','AL08'],
+  'Bistec con nopales y arroz':['AL16','AL10','AL03'],
+  'Picadillo con papa y verduras':['AL17','AL21'],
+  'Lomo de cerdo con camote y chayote':['AL18','AL22','AL25'],
+  'Camarones con arroz y calabacita':['AL19','AL03','AL09'],
+  'Pollo con verduras':['AL11','AL08'],
+  'Pescado con calabacita':['AL04','AL09'],
+  'Atún con tostadas y verduras':['AL15','AL24'],
+  'Bistec con nopales':['AL16','AL10'],
+  'Lomo de cerdo con verduras':['AL18','AL25'],
+  'Tacos de queso panela':['AL05','AL01'],
+  'Claras con champiñones':['AL02','AL28'],
+  'Huevos con espinaca':['AL14','AL27']
+};
+
+
+function hasNamedVegetableIfRequired(meal){
+  if(!meal || !meal.templateName) return true;
+  if(!/verduras/i.test(meal.templateName)) return true;
+  const vegIds=new Set(['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30']);
+  return (meal.items||[]).some(x=>vegIds.has(x.food.id) && Number(x.qty)>0);
+}
+
+function hasMandatoryTemplateIngredients(meal){
+  if(!meal || !meal.templateName) return true;
+  const required=TEMPLATE_MANDATORY_IDS[meal.templateName] || [];
+  const map=Object.fromEntries((meal.items||[]).map(x=>[x.food.id,x]));
+  return required.every(id=>map[id] && Number(map[id].qty)>0);
+}
+
+let generationRunCounter = 0;
 
 function generateMenus(){
+ generationRunCounter++;
+ const generationSeedBase = (Date.now() % 1000000000) + generationRunCounter * 1000003;
+ const calories=Number(document.getElementById('calories').value);
+ const protein=Number(document.getElementById('protein').value);
 
-    const calories =
-        document.getElementById("calories").value;
+ if(!calories || !protein){
+   alert('Primero captura las calorías y los gramos de proteína.');
+   return;
+ }
 
-    const protein =
-        document.getElementById("protein").value;
+ const diet=document.getElementById('dietType').value;
+ const restrictions=getSelectedRestrictions();
+ const candidates=[];
 
-    if(!calories || !protein){
+ // Búsqueda en dos niveles: normal y, solo si hace falta, porciones ampliadas.
+ for(let pass=0;pass<2;pass++){
+   if(pass===1 && candidates.length>=5) break;
+   const expanded=pass===1;
+   const tries=expanded?70:180;
 
-        alert(
-            "Primero captura las calorías y los gramos de proteína."
-        );
+   for(let i=0;i<tries;i++){
+     const day=buildDay(calories,protein,restrictions,generationSeedBase+i+1+pass*10000,expanded);
+     if(!day || !day.meals || !day.meals.length) continue;
 
-        return;
-    }
+     const fatPct=(day.daily.f*9/day.daily.kcal)*100;
+     const requiredOk=(day.meals||[])
+       .filter(m=>['desayuno','comida','cena'].includes(m.key))
+       .every(m=>hasMandatoryTemplateIngredients(m) && hasNamedVegetableIfRequired(m));
 
-    const diet =
-        document.getElementById("dietType").value;
+     const valid =
+       Math.abs(day.daily.kcal-calories)<=calories*0.02 &&
+       Math.abs(day.daily.p-protein)<=protein*0.02 &&
+       fatPct<=30.0001 &&
+       hasPracticalPortions(day) &&
+       requiredOk;
 
-    const restrictions =
-        getSelectedRestrictions();
+     if(valid){
+       candidates.push({...day,diet,number:candidates.length+1,searchMode:expanded?'ampliada':'normal'});
+     }
+   }
+ }
 
-    console.log("Tipo de dieta:", diet);
-    console.log("Calorías:", calories);
-    console.log("Proteína:", protein);
-    console.log("Restricciones:", restrictions);
+ if(!candidates.length){
+   alert(
+  restrictions.length
+    ? 'No se encontró un menú válido después de probar porciones normales y ampliadas. Se respetaron todas las restricciones y los límites nutricionales.'
+    : 'No se encontró un menú dentro del rango nutricional objetivo. El motor necesita ajustar la grasa y los carbohidratos para esta combinación.'
+);
+   return;
+ }
 
-    const menus = createPrototypeMenus(
-        diet,
-        calories,
-        protein
-    );
+ function signature(menu){
+   const strong=menu.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+   return strong.map(m=>m.templateName||'').join('|');
+ }
 
-    renderMenus(menus);
+ function proteinsByMeal(menu){
+   const protIds=new Set(['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19']);
+   return menu.meals
+     .filter(m=>['desayuno','comida','cena'].includes(m.key))
+     .map(m=>{
+       const p=m.items.find(x=>protIds.has(x.food.id));
+       return p?p.food.id:'';
+     });
+ }
+
+ function diversityPenalty(menu,selected){
+   let penalty=0;
+   const sig=signature(menu);
+   const prots=proteinsByMeal(menu);
+
+   selected.forEach(prev=>{
+     const psig=signature(prev);
+     if(sig===psig) penalty+=100;
+
+     const pprots=proteinsByMeal(prev);
+     prots.forEach((p,idx)=>{
+       if(p && p===pprots[idx]) penalty+=8; // same protein in same meal slot
+     });
+
+     // Penalize repeated template names across the whole day.
+     const currTemplates=menu.meals
+       .filter(m=>['desayuno','comida','cena'].includes(m.key))
+       .map(m=>m.templateName||'');
+     const prevTemplates=prev.meals
+       .filter(m=>['desayuno','comida','cena'].includes(m.key))
+       .map(m=>m.templateName||'');
+     currTemplates.forEach(t=>{
+       if(t && prevTemplates.includes(t)) penalty+=4;
+     });
+   });
+
+   // Favor closeness to target as secondary criterion.
+   penalty += Math.abs(menu.daily.kcal-calories)/10;
+   penalty += Math.abs(menu.daily.p-protein)*2;
+
+   return penalty;
+ }
+
+ const selected=[];
+ while(selected.length<5 && candidates.length){
+   let bestIdx=0, bestScore=Infinity;
+   candidates.forEach((m,idx)=>{
+     const s=diversityPenalty(m,selected);
+     if(s<bestScore){
+       bestScore=s;
+       bestIdx=idx;
+     }
+   });
+   selected.push(candidates.splice(bestIdx,1)[0]);
+ }
+
+ // If fewer than 5 valid unique-ish menus exist, fill from remaining valid candidates.
+ while(selected.length<5 && candidates.length){
+   selected.push(candidates.shift());
+ }
+
+ const violations=validateRestrictions(selected,restrictions);
+ if(violations.length){
+   alert('ERROR DE RESTRICCIONES: se detectaron alimentos prohibidos.\n\n'+violations.join('\n'));
+   return;
+ }
+
+ renderMenus(selected,calories,protein,restrictions);
 }
 
+function renderMenus(menus,goalCal,goalP,restrictions=[]){
+ const tbody=document.getElementById('menuTableBody');
+ tbody.innerHTML='';
 
-function createPrototypeMenus(
-    diet,
-    calories,
-    protein
-){
+ // Show the restrictions actually captured by the browser.
+ const infoTr=document.createElement('tr');
+ const infoTd=document.createElement('td');
+ infoTd.colSpan=6;
+ const labels=restrictions.map(r=>RESTRICTION_LABELS[r]||r);
+ infoTd.innerHTML='<strong>Restricciones aplicadas:</strong> '+(labels.length?labels.join(' · '):'Ninguna');
+ infoTd.style.fontSize='13px';
+ infoTd.style.padding='10px';
+ infoTd.style.background='#f5f8f7';
+ infoTr.appendChild(infoTd);
+ tbody.appendChild(infoTr);
 
-    const suffix = Math.floor(
-        Math.random() * 9999
-    );
+ const rows=[
+   ['Desayuno','desayuno'],
+   ['Colación 1','colacion1'],
+   ['Comida','comida'],
+   ['Colación 2','colacion2'],
+   ['Cena','cena']
+ ];
 
-    return [
+ rows.forEach(row=>{
+   const tr=document.createElement('tr');
+   const first=document.createElement('td');
+   first.innerHTML='<strong>'+row[0]+'</strong>';
+   tr.appendChild(first);
 
-        {
-            desayuno:
-                "Desayuno de prueba " + suffix,
-            colacion1:
-                "Colación de prueba",
-            comida:
-                "Comida de prueba",
-            colacion2:
-                "Colación de prueba",
-            cena:
-                "Cena de prueba"
-        },
+   menus.forEach(menu=>{
+     const meal=menu.meals.find(m=>m.key===row[1]);
+     const td=document.createElement('td');
+     const mt=meal?meal.totals:{kcal:0,p:0,c:0,f:0};
+     if(meal.snack){
+       td.innerHTML=
+         '<div class="prep-title">'+meal.snack.name+'</div>'+
+         '<div class="prep-components">'+meal.snack.display+'</div>'+
+         '<div class="meta">'+Math.round(mt.kcal)+' kcal</div>';
+     }else{
+       const friendly=formatPatientMeal(meal.items);
+       if(meal.templateName){ friendly.title=safePreparationTitle(meal.templateName, meal.items); }
+       td.innerHTML=
+         '<div class="prep-title">'+friendly.title+'</div>'+
+         '<div class="prep-components">'+formatVisibleComponentsForTitle(friendly.title, meal.items, friendly.components)+'</div>'+
+         (friendly.accomp?'<div class="prep-accomp">'+friendly.accomp+'</div>':'')+
+         '<div class="meta">'+
+         Math.round(mt.kcal)+' kcal · '+mt.p.toFixed(1)+' g proteína · '+
+         mt.c.toFixed(1)+' g HC · '+mt.f.toFixed(1)+' g grasa'+
+         '</div>';
+     }
+     tr.appendChild(td);
+   });
 
-        {
-            desayuno:
-                "Desayuno de prueba " + (suffix + 1),
-            colacion1:
-                "Colación de prueba",
-            comida:
-                "Comida de prueba",
-            colacion2:
-                "Colación de prueba",
-            cena:
-                "Cena de prueba"
-        },
+   tbody.appendChild(tr);
+ });
 
-        {
-            desayuno:
-                "Desayuno de prueba " + (suffix + 2),
-            colacion1:
-                "Colación de prueba",
-            comida:
-                "Comida de prueba",
-            colacion2:
-                "Colación de prueba",
-            cena:
-                "Cena de prueba"
-        },
+ // Fila adicional: total diario real de cada menú.
+ const tr=document.createElement('tr');
+ const first=document.createElement('td');
+ first.innerHTML='<strong>TOTAL DEL DÍA</strong>';
+ tr.appendChild(first);
 
-        {
-            desayuno:
-                "Desayuno de prueba " + (suffix + 3),
-            colacion1:
-                "Colación de prueba",
-            comida:
-                "Comida de prueba",
-            colacion2:
-                "Colación de prueba",
-            cena:
-                "Cena de prueba"
-        },
+ menus.forEach(menu=>{
+   const td=document.createElement('td');
+   const t=menu.daily;
+   const calDiff=t.kcal-goalCal;
+   const pDiff=t.p-goalP;
+   td.innerHTML=
+     '<div class="menu-title">'+Math.round(t.kcal)+' kcal · '+t.p.toFixed(1)+' g proteína</div>'+
+     '<div class="meta">'+
+     ((Math.abs(t.kcal-goalCal)<=goalCal*0.02 && Math.abs(t.p-goalP)<=goalP*0.02 && ((t.f*9/t.kcal)*100)<=30.0001)
+       ? '<strong>✓ Dentro de objetivo</strong><br>'
+       : '<strong>⚠ Fuera de objetivo; requiere ajuste</strong><br>')+
+     'HC '+t.c.toFixed(1)+' g · grasa '+t.f.toFixed(1)+' g ('+((t.f*9/t.kcal)*100).toFixed(1)+'%)<br>'+
+     'Objetivo: '+goalCal+' kcal / '+goalP+' g P (±2%)<br>'+
+     'Diferencia: '+(calDiff>=0?'+':'')+Math.round(calDiff)+' kcal · '+(pDiff>=0?'+':'')+pDiff.toFixed(1)+' g P</div>';
+   tr.appendChild(td);
+ });
+ tbody.appendChild(tr);
 
-        {
-            desayuno:
-                "Desayuno de prueba " + (suffix + 4),
-            colacion1:
-                "Colación de prueba",
-            comida:
-                "Comida de prueba",
-            colacion2:
-                "Colación de prueba",
-            cena:
-                "Cena de prueba"
-        }
-
-    ];
+ document.getElementById('results').classList.add('visible');
 }
-
-
-function renderMenus(menus){
-
-    const tbody =
-        document.getElementById("menuTableBody");
-
-    tbody.innerHTML = "";
-
-    const rows = [
-        ["Desayuno", "desayuno"],
-        ["Colación 1", "colacion1"],
-        ["Comida", "comida"],
-        ["Colación 2", "colacion2"],
-        ["Cena", "cena"]
-    ];
-
-    rows.forEach(row => {
-
-        const tr =
-            document.createElement("tr");
-
-        const first =
-            document.createElement("td");
-
-        first.innerHTML =
-            "<strong>" + row[0] + "</strong>";
-
-        tr.appendChild(first);
-
-        menus.forEach(menu => {
-
-            const td =
-                document.createElement("td");
-
-            td.innerHTML =
-                '<div class="menu-title">' +
-                menu[row[1]] +
-                '</div>' +
-                '<div class="meta">' +
-                'Preparación pendiente de biblioteca' +
-                '</div>';
-
-            tr.appendChild(td);
-
-        });
-
-        tbody.appendChild(tr);
-
-    });
-
-    document
-        .getElementById("results")
-        .classList.add("visible");
-}
-
 
 function clearForm(){
+ document.getElementById('calories').value='';
+ document.getElementById('protein').value='';
+ document.querySelectorAll('#restrictionsPanel input[type="checkbox"]').forEach(x=>x.checked=false);
+ document.getElementById('results').classList.remove('visible');
+}
 
-    document.getElementById("calories").value = "";
-    document.getElementById("protein").value = "";
+function printMenus(){
+  const results =
+    document.getElementById('results') ||
+    document.querySelector('.results') ||
+    document.querySelector('.menu-results');
 
-    document.querySelectorAll(
-        '#restrictionsPanel input[type="checkbox"]'
-    ).forEach(
-        checkbox => checkbox.checked = false
-    );
+  if(!results || !results.innerText.trim()){
+    alert('Primero genera los menús.');
+    return;
+  }
 
-    document
-        .getElementById("results")
-        .classList.remove("visible");
+  window.print();
 }
 
 </script>
