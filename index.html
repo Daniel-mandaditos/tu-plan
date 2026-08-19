@@ -655,8 +655,9 @@ td{
             <div class="field">
                 <label for="dietType">Tipo de dieta</label>
                 <select id="dietType">
-                    <option value="renal">Renal</option>
                     <option value="obesidad">Sobrepeso / Obesidad</option>
+                    <option value="fodmap">Dieta baja en FODMAPs</option>
+                    <option value="renal" disabled>Renal — Próximamente</option>
                 </select>
             </div>
 
@@ -780,9 +781,19 @@ td{
 
                 <div class="restriction">
                     <label>
-                        <input type="checkbox" value="huevo">
-                        Huevo
+                        <input type="checkbox" value="huevo_entero">
+                        Huevo entero
                     </label>
+                </div>
+
+                <div class="restriction">
+                    <label><input type="checkbox" value="oleaginosas"> Oleaginosas</label>
+                </div>
+                <div class="restriction">
+                    <label><input type="checkbox" value="bajo_ig"> Alimentos de bajo índice glicémico</label>
+                </div>
+                <div class="restriction">
+                    <label><input type="checkbox" value="sin_fruta_noche"> Sin fruta en la noche</label>
                 </div>
 
             </div>
@@ -822,14 +833,20 @@ td{
         </div>
 
         <div class="notice">
-            V1.6.9 funcional de prueba — incluye salida limpia para imprimir o guardar los menús como PDF desde el navegador. Algunos alimentos añadidos para ampliar variedad
+            V1.7 PRUEBA 37B FODMAP EJEMPLO CLÍNICO CORREGIDA — FODMAP estricto + ajuste progresivo + porciones prácticas + Bajo IG — incluye biblioteca FODMAP estricta basada solo en alimentos verdes, filtro Bajo IG corregido y Sin fruta en la noche; conserva la salida limpia para imprimir o guardar los menús como PDF. Algunos alimentos añadidos para ampliar variedad
             permanecen marcados internamente como PROVISIONALES y deberán validarse
             antes de considerarse base clínica definitiva.
         </div>
 
     </section>
 
-    <section
+    
+<div id="diagnosticPanel" class="no-print" style="display:block;margin:14px 0;padding:14px;border:1px solid #d9e2df;border-radius:10px;background:#f8fbfa;font-size:13px;line-height:1.45;">
+  <strong>Diagnóstico del motor</strong>
+  <div id="diagnosticText" style="margin-top:8px;">Listo para diagnóstico. Genera FODMAP 1600 kcal / 90 g y aquí aparecerá el resultado.</div>
+</div>
+
+<section
         class="card results"
         id="results"
     >
@@ -874,7 +891,7 @@ td{
 </main>
 
 <footer>
-    Generador de Menús Nutricionales — V1.6.9 Proteína única + porciones equilibradas
+    Generador de Menús Nutricionales — V1.7 PRUEBA 37B FODMAP EJEMPLO CLÍNICO CORREGIDA — MOTOR RÁPIDO — No sustituye la versión publicada
 </footer>
 
 
@@ -912,8 +929,33 @@ const FOOD_DB = [
  {id:'AL27',name:'Espinaca cocida',kcal:21,p:2.7,c:3.4,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
  {id:'AL28',name:'Champiñones cocidos',kcal:22,p:3,c:3.3,f:0.3,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
  {id:'AL29',name:'Jitomate picado',kcal:18,p:0.9,c:3.9,f:0.2,eq:'1 verdura',tags:[],portion:'1 taza',status:'PROVISIONAL'},
- {id:'AL30',name:'Pimiento morrón cocido',kcal:24,p:0.8,c:5.5,f:0.2,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'}
+ {id:'AL30',name:'Pimiento morrón cocido',kcal:24,p:0.8,c:5.5,f:0.2,eq:'1 verdura',tags:[],portion:'½ taza',status:'PROVISIONAL'},
+ {id:'AL31',name:'Quinoa cocida',kcal:55,p:2,c:10,f:0.9,eq:'1 cereal',tags:['bajo_ig','fodmap_verde'],portion:'¼ taza',status:'V1.7'},
+ {id:'AL32',name:'Pepino',kcal:16,p:0.7,c:4,f:0.1,eq:'1 verdura',tags:['bajo_ig','fodmap_verde'],portion:'1 taza',status:'V1.7'},
+ {id:'AL33',name:'Zanahoria',kcal:25,p:0.6,c:6,f:0.1,eq:'1 verdura',tags:['bajo_ig','fodmap_verde'],portion:'1 pieza mediana',status:'V1.7'},
+ {id:'AL34',name:'Pavo cocido',kcal:66,p:12.4,c:0,f:1.4,eq:'1 AOA',tags:['bajo_ig','fodmap_verde'],portion:'40 g',status:'V1.7'},
+ {id:'AL35',name:'Arroz integral cocido',kcal:70,p:2,c:15,f:0,eq:'1 cereal',tags:['bajo_ig'],portion:'¼ taza',status:'V1.7'},
+ {id:'AL36',name:'Pasta integral cocida',kcal:70,p:2,c:15,f:0,eq:'1 cereal',tags:['bajo_ig','pan'],portion:'½ taza',status:'V1.7'},
+ {id:'AL37',name:'Pan integral',kcal:70,p:2,c:15,f:0,eq:'1 cereal',tags:['bajo_ig','pan'],portion:'1 rebanada',status:'V1.7'},
+ {id:'AL38',name:'Salmón cocido',kcal:103,p:11,c:0,f:6,eq:'1 AOA',tags:['mariscos','fodmap_verde'],portion:'50 g',status:'PROVISIONAL_EJEMPLO_CLINICO'},
+ {id:'AL39',name:'Pollo muslo/pierna sin piel cocido',kcal:90,p:12,c:0,f:4.5,eq:'1 AOA',tags:['fodmap_verde'],portion:'50 g',status:'PROVISIONAL_EJEMPLO_CLINICO'},
+ {id:'AL40',name:'Fideo libre de gluten cocido',kcal:90,p:2,c:19,f:0.5,eq:'1 cereal',tags:['fodmap_verde','pan'],portion:'½ taza',status:'PROVISIONAL_EJEMPLO_CLINICO'}
 
+];
+
+const FODMAP_SNACK_DB = [
+  {id:'FS01',name:'Guayaba',display:'1 guayaba',kcal:60,p:0,c:15,f:0,tags:['fruta']},
+  {id:'FS02',name:'Kiwi',display:'1 kiwi',kcal:60,p:0,c:15,f:0,tags:['fruta']},
+  {id:'FS03',name:'Higo',display:'1 porción de higo',kcal:60,p:0,c:15,f:0,tags:['fruta']},
+  {id:'FS04',name:'Granada roja',display:'1 porción de granada roja',kcal:60,p:0,c:15,f:0,tags:['fruta']},
+  {id:'FS05',name:'Plátano',display:'1 plátano',kcal:60,p:0,c:15,f:0,tags:['fruta']},
+  {id:'FS06',name:'Toronja',display:'1 porción de toronja',kcal:60,p:0,c:15,f:0,tags:['fruta']},
+  {id:'FS07',name:'Pepino',display:'1 pieza de pepino',kcal:16,p:0.7,c:4,f:0.1,tags:['verdura']},
+  {id:'FS08',name:'Zanahoria',display:'1 zanahoria mediana',kcal:25,p:0.6,c:6,f:0.1,tags:['verdura']},
+  {id:'FS09',name:'Papaya',display:'1 rebanada de papaya',kcal:60,p:0.7,c:15,f:0.3,tags:['fruta']},
+  {id:'FS10',name:'Naranja',display:'1 naranja',kcal:62,p:1.2,c:15.4,f:0.2,tags:['fruta']},
+  {id:'FS11',name:'Mandarina',display:'1 mandarina',kcal:40,p:0.6,c:10,f:0.2,tags:['fruta']},
+  {id:'FS12',name:'Piña',display:'1 taza de piña',kcal:82,p:0.9,c:21.6,f:0.2,tags:['fruta']}
 ];
 
 const SNACK_DB = [
@@ -930,7 +972,8 @@ const SNACK_DB = [
   {id:'SN11',name:'Piña',display:'1 taza de piña',kcal:82,p:0.9,c:21.6,f:0.2,tags:['fruta']},
   {id:'SN12',name:'Sandía',display:'1½ tazas de sandía',kcal:69,p:1.4,c:17.3,f:0.3,tags:['fruta']},
   {id:'SN13',name:'Durazno',display:'1 durazno mediano',kcal:59,p:1.4,c:14,f:0.4,tags:['fruta']},
-  {id:'SN14',name:'Uvas',display:'¾ taza de uvas',kcal:78,p:0.8,c:20.5,f:0.2,tags:['fruta']}
+  {id:'SN14',name:'Uvas',display:'¾ taza de uvas',kcal:78,p:0.8,c:20.5,f:0.2,tags:['fruta']},
+  {id:'SN15',name:'Kiwi',display:'1 kiwi mediano',kcal:60,p:1.1,c:14.7,f:0.5,tags:['fruta','bajo_ig']}
 ];
 
 function toggleRestrictions(){
@@ -960,7 +1003,10 @@ const RESTRICTION_RULES = {
  salsas: [],
  // No hay leguminosas cargadas todavía.
  leguminosas: [],
- huevo: ['AL02','AL14']
+ huevo_entero: ['AL14'],
+ oleaginosas: [],
+ bajo_ig: [],
+ sin_fruta_noche: []
 };
 
 const RESTRICTION_LABELS = {
@@ -973,7 +1019,10 @@ const RESTRICTION_LABELS = {
  azucares:'Azúcares / dulces',
  salsas:'Salsas / condimentos comerciales',
  leguminosas:'Leguminosas',
- huevo:'Huevo'
+ huevo_entero:'Huevo entero',
+ oleaginosas:'Oleaginosas',
+ bajo_ig:'Alimentos de bajo índice glicémico',
+ sin_fruta_noche:'Sin fruta en la noche'
 };
 
 
@@ -987,7 +1036,10 @@ const RESTRICTION_STATUS = {
   azucares:{catalogItems:false,note:'El catálogo actual no contiene azúcares ni dulces añadidos.'},
   salsas:{catalogItems:false,note:'El catálogo actual no contiene salsas ni condimentos comerciales.'},
   leguminosas:{catalogItems:false,note:'El catálogo actual no contiene leguminosas.'},
-  huevo:{catalogItems:true}
+  huevo_entero:{catalogItems:true},
+ oleaginosas:{catalogItems:false,note:'No hay oleaginosas cargadas todavía en la base estable.'},
+ bajo_ig:{catalogItems:true},
+ sin_fruta_noche:{catalogItems:true}
 };
 
 function restrictionCatalogNotes(restrictions){
@@ -996,12 +1048,16 @@ function restrictionCatalogNotes(restrictions){
     .map(r=>RESTRICTION_STATUS[r].note);
 }
 
+const FODMAP_GREEN_IDS = new Set(['AL01','AL02','AL03','AL04','AL08','AL09','AL10','AL11','AL13','AL15','AL16','AL17','AL18','AL19','AL21','AL24','AL25','AL27','AL29','AL31','AL32','AL33','AL34','AL38','AL39','AL40']);
+const LOW_IG_IDS = new Set(['AL02','AL04','AL07','AL08','AL09','AL10','AL11','AL13','AL14','AL15','AL16','AL17','AL18','AL19','AL25','AL26','AL27','AL28','AL29','AL30','AL31','AL32','AL33','AL34','AL35','AL36','AL37']);
+
 function filteredFoods(restrictions){
  const blockedIds = new Set();
- restrictions.forEach(r=>{
-   (RESTRICTION_RULES[r] || []).forEach(id=>blockedIds.add(id));
- });
- return FOOD_DB.filter(f=>!blockedIds.has(f.id));
+ restrictions.forEach(r=>{ (RESTRICTION_RULES[r] || []).forEach(id=>blockedIds.add(id)); });
+ let foods=FOOD_DB.filter(f=>!blockedIds.has(f.id));
+ if(restrictions.includes('bajo_ig')) foods=foods.filter(f=>LOW_IG_IDS.has(f.id));
+ if(restrictions.includes('__fodmap__')) foods=foods.filter(f=>FODMAP_GREEN_IDS.has(f.id));
+ return foods;
 }
 
 function forbiddenFoodIds(restrictions){
@@ -1225,6 +1281,114 @@ const MEAL_TEMPLATES = {
   ]
 };
 
+// V1.7 — plantillas específicas FODMAP: únicamente ingredientes del conjunto verde.
+MEAL_TEMPLATES.desayuno.push(
+ {name:'Claras con calabacita y tortilla',items:[{id:'AL02',min:2,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL01',min:2,max:4,step:1}]},
+ {name:'Tacos de pavo con tomate',items:[{id:'AL34',min:1.5,max:3,step:0.5},{id:'AL01',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Quinoa con pollo y calabacita',items:[{id:'AL11',min:1.5,max:3,step:0.5},{id:'AL31',min:1,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]}
+);
+MEAL_TEMPLATES.comida.push(
+ {name:'Pollo con quinoa y calabacita',items:[{id:'AL11',min:2,max:4,step:0.5},{id:'AL31',min:1,max:4,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pescado con arroz y ejotes',items:[{id:'AL04',min:2,max:4,step:0.5},{id:'AL03',min:2,max:6,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pavo con quinoa y zanahoria',items:[{id:'AL34',min:2,max:4,step:0.5},{id:'AL31',min:1,max:4,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]}
+);
+MEAL_TEMPLATES.cena.push(
+ {name:'Pollo con calabacita y quinoa',items:[{id:'AL11',min:1.5,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL31',min:1,max:3,step:0.5}]},
+ {name:'Pescado con ejotes y arroz',items:[{id:'AL04',min:1.5,max:3,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL03',min:2,max:5,step:1}]},
+ {name:'Pavo con tomate y quinoa',items:[{id:'AL34',min:1.5,max:3,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL31',min:1,max:3,step:0.5}]}
+);
+
+
+
+// V1.7 PRUEBA 37 — PREPARACIONES DEL EJEMPLO CLÍNICO FODMAP.
+MEAL_TEMPLATES.desayuno.push(
+ {name:'Claras con chayote y tortilla',items:[{id:'AL02',min:2,max:3,step:0.5},{id:'AL25',min:1,max:2,step:0.5},{id:'AL01',min:2,max:3,step:1}]},
+ {name:'Pollo asado con zanahoria y tortilla',items:[{id:'AL11',min:1.5,max:2.5,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL01',min:2,max:3,step:1}]},
+ {name:'Claras con ejotes y tortilla',items:[{id:'AL02',min:2,max:3,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL01',min:2,max:3,step:1}]},
+ {name:'Claras con zanahoria y tortilla',items:[{id:'AL02',min:2,max:3,step:0.5},{id:'AL33',min:0.5,max:1.5,step:0.5},{id:'AL01',min:2,max:3,step:1}]},
+ {name:'Bistec con papa y tortilla',items:[{id:'AL16',min:1,max:2,step:0.5},{id:'AL21',min:0.5,max:1,step:0.5},{id:'AL01',min:2,max:3,step:1}]}
+);
+
+MEAL_TEMPLATES.comida.push(
+ {name:'Salmón con arroz, ejotes y zanahoria',items:[{id:'AL38',min:2,max:3,step:0.5},{id:'AL03',min:2,max:5,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+ {name:'Pollo muslo/pierna con arroz y zanahoria',items:[{id:'AL39',min:2,max:3,step:0.5},{id:'AL03',min:2,max:5,step:1},{id:'AL33',min:1,max:2,step:0.5}]},
+ {name:'Caldo de pollo con chayote, zanahoria, arroz y tortilla',items:[{id:'AL11',min:2,max:3,step:0.5},{id:'AL25',min:1,max:2,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL03',min:2,max:5,step:1},{id:'AL01',min:1,max:2,step:1}]},
+ {name:'Res con espinaca, papa y arroz',items:[{id:'AL16',min:2,max:3,step:0.5},{id:'AL27',min:1,max:2,step:0.5},{id:'AL21',min:0.5,max:1.5,step:0.5},{id:'AL03',min:2,max:5,step:1}]},
+ {name:'Lomo de cerdo con nopales, papa y arroz',items:[{id:'AL18',min:2,max:3,step:0.5},{id:'AL10',min:0.5,max:1.5,step:0.5},{id:'AL21',min:0.5,max:1.5,step:0.5},{id:'AL03',min:2,max:5,step:1}]},
+ {name:'Fideo sin gluten con res, espinaca y papa',items:[{id:'AL40',min:1,max:2,step:0.5},{id:'AL16',min:2,max:3,step:0.5},{id:'AL27',min:1,max:2,step:0.5},{id:'AL21',min:0.5,max:1.5,step:0.5}]}
+);
+
+MEAL_TEMPLATES.cena.push(
+ {name:'Tortillas con pechuga de pollo',items:[{id:'AL11',min:1.5,max:2.5,step:0.5},{id:'AL01',min:2,max:2,step:1}]},
+ {name:'Tortillas con pescado asado',items:[{id:'AL04',min:1.5,max:2.5,step:0.5},{id:'AL01',min:2,max:2,step:1}]},
+ {name:'Tostadas de pollo deshebrado',items:[{id:'AL11',min:1.5,max:2.5,step:0.5},{id:'AL24',min:2,max:2,step:1}]},
+ {name:'Tacos de papa con nopales y pollo',items:[{id:'AL11',min:1.5,max:2.5,step:0.5},{id:'AL21',min:0.5,max:1,step:0.5},{id:'AL10',min:0.5,max:1.5,step:0.5},{id:'AL01',min:2,max:2,step:1}]},
+ {name:'Tostadas de pollo con ejotes',items:[{id:'AL11',min:1.5,max:2.5,step:0.5},{id:'AL24',min:2,max:2,step:1},{id:'AL08',min:1,max:2,step:0.5}]}
+);
+
+// V1.7 PRUEBA 6 — Biblioteca FODMAP ESTRICTA.
+// Construida solo con ingredientes marcados VERDE en la tabla de las nutriólogas.
+MEAL_TEMPLATES.desayuno.push(
+ {name:'Tostadas de pollo con tomate',items:[{id:'AL11',min:1.5,max:3,step:0.5},{id:'AL24',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Tacos de pollo con calabacita',items:[{id:'AL11',min:1.5,max:3,step:0.5},{id:'AL01',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Claras con tomate y tortilla',items:[{id:'AL02',min:2,max:4,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL01',min:2,max:4,step:1}]},
+ {name:'Papa con claras y tomate',items:[{id:'AL02',min:2,max:4,step:0.5},{id:'AL21',min:0.5,max:2,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Tostadas de atún con pepino',items:[{id:'AL15',min:1.5,max:3,step:0.5},{id:'AL24',min:2,max:4,step:1},{id:'AL32',min:0.5,max:1,step:0.5}]}
+);
+MEAL_TEMPLATES.comida.push(
+ {name:'Pollo con arroz y calabacita',items:[{id:'AL11',min:2,max:4.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pollo con papa y zanahoria',items:[{id:'AL11',min:2,max:4.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pavo con arroz y ejotes',items:[{id:'AL34',min:2,max:4.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pavo con papa y calabacita',items:[{id:'AL34',min:2,max:4.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Pescado blanco con arroz y zanahoria',items:[{id:'AL04',min:2,max:4.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pescado blanco con papa y ejotes',items:[{id:'AL04',min:2,max:4.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL08',min:1,max:2,step:0.5}]},
+ {name:'Atún con arroz, pepino y tomate',items:[{id:'AL15',min:1.5,max:3.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Camarones con arroz y calabacita',items:[{id:'AL19',min:1.5,max:3.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Camarones con quinoa y zanahoria',items:[{id:'AL19',min:1.5,max:3.5,step:0.5},{id:'AL31',min:2,max:5,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+ {name:'Cerdo magro con papa y ejotes',items:[{id:'AL18',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL08',min:1,max:2,step:0.5}]},
+ {name:'Res magra con arroz y calabacita',items:[{id:'AL16',min:1.5,max:3.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Res magra con papa y zanahoria',items:[{id:'AL16',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+ {name:'Tacos de pescado con tomate y pepino',items:[{id:'AL04',min:2,max:4,step:0.5},{id:'AL01',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL32',min:0.5,max:1,step:0.5}]}
+);
+MEAL_TEMPLATES.cena.push(
+ {name:'Pollo con calabacita y zanahoria',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+ {name:'Pollo con pepino y tomate',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Pescado blanco con calabacita',items:[{id:'AL04',min:1.5,max:3.5,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Pescado con ejotes y zanahoria',items:[{id:'AL04',min:1.5,max:3.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+ {name:'Atún con pepino y tomate',items:[{id:'AL15',min:1.5,max:3,step:0.5},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Camarones con calabacita',items:[{id:'AL19',min:1.5,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Pavo con ejotes',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5}]},
+ {name:'Res magra con calabacita',items:[{id:'AL16',min:1.5,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Claras con tomate y calabacita',items:[{id:'AL02',min:2,max:4,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]}
+);
+
+// V1.7 PRUEBA 6 — plantillas específicas para la restricción Bajo IG.
+// Esta biblioteca es independiente de FODMAP.
+MEAL_TEMPLATES.desayuno.push(
+ {name:'Pan integral con pollo y verduras',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL37',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Pan integral con atún y verduras',items:[{id:'AL15',min:1.5,max:3,step:0.5},{id:'AL37',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Pasta integral con claras y verduras',items:[{id:'AL02',min:2,max:4,step:0.5},{id:'AL36',min:2,max:4,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Arroz integral con huevo y verduras',items:[{id:'AL14',min:2,max:2,step:1},{id:'AL35',min:2,max:5,step:1},{id:'AL27',min:1,max:2,step:0.5}]}
+);
+MEAL_TEMPLATES.comida.push(
+ {name:'Pollo con arroz integral y verduras',items:[{id:'AL11',min:2,max:4.5,step:0.5},{id:'AL35',min:3,max:7,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pollo con pasta integral y calabacita',items:[{id:'AL11',min:2,max:4.5,step:0.5},{id:'AL36',min:2,max:4,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pescado con arroz integral y verduras',items:[{id:'AL04',min:2,max:4.5,step:0.5},{id:'AL35',min:3,max:7,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+ {name:'Pavo con pasta integral y verduras',items:[{id:'AL34',min:2,max:4.5,step:0.5},{id:'AL36',min:2,max:4,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]}
+);
+MEAL_TEMPLATES.cena.push(
+ {name:'Pollo con arroz integral y verduras',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL35',min:2,max:6,step:1},{id:'AL08',min:1,max:2,step:0.5}]},
+ {name:'Pescado con pasta integral y verduras',items:[{id:'AL04',min:1.5,max:3.5,step:0.5},{id:'AL36',min:1.5,max:3.5,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+ {name:'Atún con pan integral y verduras',items:[{id:'AL15',min:1.5,max:3,step:0.5},{id:'AL37',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5}]},
+ {name:'Pavo con arroz integral y verduras',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL35',min:2,max:6,step:1},{id:'AL33',min:1,max:2,step:0.5}]}
+);
+
+const FODMAP_TEMPLATE_NAMES = {
+ desayuno:new Set(['Tostadas de pollo con tomate','Tacos de pollo con calabacita','Tacos de pavo con tomate','Claras con calabacita y tortilla','Claras con tomate y tortilla','Quinoa con pollo y calabacita','Papa con claras y tomate','Tostadas de atún con pepino','Claras con chayote y tortilla','Pollo asado con zanahoria y tortilla','Claras con ejotes y tortilla','Claras con zanahoria y tortilla','Bistec con papa y tortilla']),
+ comida:new Set(['Pollo con arroz y calabacita','Pollo con papa y zanahoria','Pollo con quinoa y calabacita','Pavo con arroz y ejotes','Pavo con papa y calabacita','Pescado blanco con arroz y zanahoria','Pescado blanco con papa y ejotes','Atún con arroz, pepino y tomate','Camarones con arroz y calabacita','Camarones con quinoa y zanahoria','Cerdo magro con papa y ejotes','Res magra con arroz y calabacita','Res magra con papa y zanahoria','Tacos de pescado con tomate y pepino','Tacos de pollo con calabacita','Pavo con quinoa y zanahoria','Salmón con arroz, ejotes y zanahoria','Pollo muslo/pierna con arroz y zanahoria','Caldo de pollo con chayote, zanahoria, arroz y tortilla','Res con espinaca, papa y arroz','Lomo de cerdo con nopales, papa y arroz','Fideo sin gluten con res, espinaca y papa']),
+ cena:new Set(['Pollo con calabacita y zanahoria','Pollo con pepino y tomate','Pescado blanco con calabacita','Pescado con ejotes y zanahoria','Atún con pepino y tomate','Camarones con calabacita','Pavo con ejotes','Res magra con calabacita','Claras con tomate y calabacita','Pollo con calabacita y quinoa','Pescado con ejotes y arroz','Pavo con tomate y quinoa','Tortillas con pechuga de pollo','Tortillas con pescado asado','Tostadas de pollo deshebrado','Tacos de papa con nopales y pollo','Tostadas de pollo con ejotes'])
+};
+
 function templateAllowed(template, foods){
   const allowed = new Set(foods.map(f=>f.id));
   return template.items.every(x=>allowed.has(x.id));
@@ -1246,8 +1410,8 @@ function sampleStep(min,max,step,rng){
 
 
 function expandedTemplate(template,key){
-  const proteinIds=new Set(['AL04','AL11','AL15','AL19']);
-  const carbIds=new Set(['AL01','AL03','AL20','AL21','AL22','AL23','AL24']);
+  const proteinIds=new Set(['AL04','AL11','AL15','AL19','AL34','AL38','AL39']);
+  const carbIds=new Set(['AL01','AL03','AL20','AL21','AL22','AL23','AL24','AL31','AL35','AL36','AL37','AL40']);
   return {...template,items:template.items.map(spec=>{
     const s={...spec};
 
@@ -1265,8 +1429,14 @@ function expandedTemplate(template,key){
       } else if(s.id==='AL03'){
         s.max=Math.max(s.max,6);                 // arroz puede absorber parte del ajuste
         s.step=1;                                // 1/4 taza por paso
-      } else if(['AL20','AL21','AL22'].includes(s.id)){
+      } else if(['AL20','AL21','AL22','AL31','AL36'].includes(s.id)){
         s.max=Math.max(s.max,3);                 // pasta/papa/camote
+      } else if(s.id==='AL35'){
+        s.max=Math.max(s.max,8);
+        s.step=1;
+      } else if(s.id==='AL37'){
+        s.max=Math.min(Math.max(s.max,4),4);
+        s.step=1;
       } else if(s.id==='AL23'){
         s.max=Math.max(s.max,2.5);               // avena
       }
@@ -1296,25 +1466,45 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
  const rng=mulberry32(22000+seed*104729);
 
  // Colaciones simples. También se filtran por restricciones usando sus tags.
- const snackAllowed = SNACK_DB.filter(sn=>{
+ const snackSource = restrictions.includes('__fodmap__') ? FODMAP_SNACK_DB : SNACK_DB;
+ const snackAllowed = snackSource.filter(sn=>{
+   if(restrictions.includes('bajo_ig') && !restrictions.includes('__fodmap__') &&
+      !['Manzana','Pera','Papaya','Pepino','Zanahoria','Naranja','Mandarina','Piña','Kiwi'].includes(sn.name)) return false;
    return !restrictions.some(r=>(sn.tags||[]).includes(r));
  });
  if(!snackAllowed.length){
    return {meals:[],daily:{kcal:0,p:0,c:0,f:0},error:'No hay colaciones compatibles con las restricciones.'};
  }
  const snack1=snackAllowed[Math.floor(rng()*snackAllowed.length)];
- let snack2=snackAllowed[Math.floor(rng()*snackAllowed.length)];
- if(snack2.id===snack1.id){
-   snack2=snackAllowed[(snackAllowed.indexOf(snack2)+1)%snackAllowed.length];
+
+ // "Sin fruta en la noche": la Colación 2 se considera parte de la noche.
+ // Colación 1 conserva fruta o verdura; Colación 2 queda exclusivamente en verduras.
+ const snack2Pool = restrictions.includes('sin_fruta_noche')
+   ? snackAllowed.filter(sn=>(sn.tags||[]).includes('verdura'))
+   : snackAllowed;
+
+ if(!snack2Pool.length){
+   return {meals:[],daily:{kcal:0,p:0,c:0,f:0},error:'No hay verduras compatibles para la Colación 2 con la restricción Sin fruta en la noche.'};
  }
 
- const availableBreakfast=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods)).map(t=>expanded?expandedTemplate(t,'desayuno'):t);
- const availableLunch=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods)).map(t=>expanded?expandedTemplate(t,'comida'):t);
- const availableDinner=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods)).map(t=>expanded?expandedTemplate(t,'cena'):t);
+ let snack2=snack2Pool[Math.floor(rng()*snack2Pool.length)];
+ if(snack2.id===snack1.id && snack2Pool.length>1){
+   snack2=snack2Pool[(snack2Pool.indexOf(snack2)+1)%snack2Pool.length];
+ }
+
+ const fodmapMode=restrictions.includes('__fodmap__');
+ const availableBreakfast=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.desayuno.has(t.name))).map(t=>expanded?expandedTemplate(t,'desayuno'):t);
+ const availableLunch=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.comida.has(t.name))).map(t=>expanded?expandedTemplate(t,'comida'):t);
+ const availableDinner=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.cena.has(t.name))).map(t=>expanded?expandedTemplate(t,'cena'):t);
 
  if(!availableBreakfast.length || !availableLunch.length || !availableDinner.length){
    return {meals:[],daily:{kcal:0,p:0,c:0,f:0},error:'No hay suficientes plantillas compatibles con las restricciones.'};
  }
+
+ // Preferencias de familia disponibles en todo buildDay.
+ const prefB=seed%availableBreakfast.length;
+ const prefL=(seed+1)%availableLunch.length;
+ const prefD=(seed+2)%availableDinner.length;
 
  const byId=Object.fromEntries(foods.map(f=>[f.id,f]));
 
@@ -1347,13 +1537,13 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
  // Ajuste energético: SOLO carbohidratos/grasas, nunca agrega una segunda proteína.
  // Límites prácticos por tiempo.
  const addonLimits = expanded ? {
-   desayuno:{AL01:4,AL03:7,AL20:3,AL21:3,AL22:3,AL23:2.5,AL24:4,AL12:0.5,AL13:1},
-   comida:{AL01:4,AL03:8,AL20:3.5,AL21:3,AL22:3,AL12:0.5,AL13:1},
-   cena:{AL01:4,AL03:7,AL20:3,AL21:3,AL22:3,AL24:4,AL12:0.5,AL13:1}
+   desayuno:{AL01:4,AL03:7,AL20:3,AL21:3,AL22:3,AL23:2.5,AL24:4,AL31:4,AL35:8,AL36:4,AL37:4,AL12:0.5,AL13:1},
+   comida:{AL01:4,AL03:8,AL20:3.5,AL21:3,AL22:3,AL31:5,AL35:9,AL36:4.5,AL37:4,AL12:0.5,AL13:1},
+   cena:{AL01:4,AL03:7,AL20:3,AL21:3,AL22:3,AL24:4,AL31:4,AL35:8,AL36:4,AL37:4,AL12:0.5,AL13:1}
  } : {
-   desayuno:{AL01:4,AL03:4,AL20:2,AL21:1.5,AL22:1.5,AL23:2,AL24:3,AL12:0.5,AL13:1},
-   comida:{AL01:4,AL03:5,AL20:2.5,AL21:2,AL22:2,AL12:0.5,AL13:1},
-   cena:{AL01:4,AL03:4,AL20:2,AL21:1.5,AL22:1.5,AL24:3,AL12:0.5,AL13:1}
+   desayuno:{AL01:4,AL03:4,AL20:2,AL21:1.5,AL22:1.5,AL23:2,AL24:3,AL31:3,AL35:6,AL36:3,AL37:4,AL12:0.5,AL13:1},
+   comida:{AL01:4,AL03:5,AL20:2.5,AL21:2,AL22:2,AL31:4,AL35:7,AL36:3.5,AL37:4,AL12:0.5,AL13:1},
+   cena:{AL01:4,AL03:4,AL20:2,AL21:1.5,AL22:1.5,AL24:3,AL31:3,AL35:6,AL36:3,AL37:4,AL12:0.5,AL13:1}
  };
 
  function tryEnergyAdjustment(mainMeals){
@@ -1363,19 +1553,45 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
      totals:{...m.totals}
    }));
 
+   // PRUEBA 20: si FODMAP ya está casi en la proteína objetivo pero aún faltan
+   // muchas calorías, reservamos margen proteico antes de completar energía.
+   // Se reduce gradualmente UNA porción proteica existente (nunca se elimina)
+   // para poder subir el carbohidrato propio del platillo sin rebasar +2% de proteína.
+   if(fodmapMode){
+     const proteinIds=new Set(['AL02','AL04','AL11','AL15','AL16','AL17','AL18','AL19','AL34']);
+     for(let trim=0;trim<10;trim++){
+       const main=dayTotals(meals);
+       const dailyKcal=main.kcal+snack1.kcal+snack2.kcal;
+       const dailyP=main.p+snack1.p+snack2.p;
+       if(calories-dailyKcal<220 || dailyP<=protein*0.93) break;
+       let candidate=null;
+       meals.forEach((meal,mi)=>meal.items.forEach(x=>{
+         if(!proteinIds.has(x.food.id) || x.qty<=1.5) return;
+         const pDrop=x.food.p*0.5;
+         if(!candidate || pDrop>candidate.pDrop) candidate={mi,id:x.food.id,newQ:x.qty-0.5,pDrop};
+       }));
+       if(!candidate) break;
+       setOrAdd(meals[candidate.mi],candidate.id,candidate.newQ);
+     }
+   }
+
    const order=[
-     ['AL03',1],   // arroz
-     ['AL21',0.5], // papa
+     ['AL13',1],   // aceite de oliva: ajuste energético sin añadir proteína
+     ['AL03',1],   // arroz blanco FODMAP
+     ['AL31',0.5], // quinoa FODMAP
+     ['AL21',0.5], // papa FODMAP
+     ['AL01',1],   // tortilla de maíz FODMAP
+     ['AL24',1],   // tostada horneada FODMAP
+     ['AL35',1],   // arroz integral (Bajo IG)
+     ['AL36',0.5], // pasta integral (Bajo IG)
+     ['AL37',1],   // pan integral (Bajo IG)
      ['AL22',0.5], // camote
      ['AL20',0.5], // pasta
      ['AL23',0.5], // avena
-     ['AL01',1],   // tortilla después de otras guarniciones
-     ['AL24',1],   // tostada después de otras guarniciones
-     ['AL12',0.5], // aguacate
-     ['AL13',1]    // aceite, último recurso
+     ['AL12',0.5]  // aguacate
    ];
 
-   for(let pass=0;pass<40;pass++){
+   for(let pass=0;pass<70;pass++){
      const main=dayTotals(meals);
      const dailyKcal=main.kcal+snack1.kcal+snack2.kcal;
      const dailyP=main.p+snack1.p+snack2.p;
@@ -1389,19 +1605,47 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
      meals.forEach((meal,mi)=>{
        for(const [id,step] of order){
          if(!byId[id]) continue;
-         const lim=addonLimits[meal.key]?.[id];
+         // FODMAP: aumentar únicamente el cereal/tubérculo que ya pertenece al platillo.
+         // Así evitamos agregar una segunda guarnición solo para completar calorías.
+         if(fodmapMode && ['AL01','AL03','AL21','AL24','AL31'].includes(id) && !getItem(meal,id)) continue;
+         let lim=addonLimits[meal.key]?.[id];
          if(!lim) continue;
+         if(fodmapMode){
+           const practicalFodmapCaps={
+             // AL03 = 1/4 taza arroz; AL21 = 100 g papa; AL31 = 1/4 taza quinoa.
+             desayuno:{AL01:5,AL03:6,AL21:2,AL24:4,AL31:4,AL13:1},
+             comida:{AL01:5,AL03:7,AL21:2.5,AL24:4,AL31:5,AL13:1},
+             cena:{AL01:4,AL03:6,AL21:2,AL24:3,AL31:4,AL13:1}
+           };
+           if(practicalFodmapCaps[meal.key]?.[id]!=null) lim=Math.min(lim,practicalFodmapCaps[meal.key][id]);
+         }
          const ex=getItem(meal,id);
          const q=ex?ex.qty:0;
          const newQ=q+step;
          if(newQ>lim) continue;
 
+         // PRUEBA 16: en FODMAP el aceite es solo ajuste fino.
+         // Máximo 1 cucharadita por tiempo y 3 cucharaditas añadidas al día.
+         if(fodmapMode && id==='AL13'){
+           const currentDailyOil=meals.reduce((sum,m)=>{
+             const oil=getItem(m,'AL13');
+             return sum+(oil?oil.qty:0);
+           },0);
+           const deltaOil=newQ-q;
+           if(currentDailyOil+deltaOil>3.0001) continue;
+         }
+
          const food=byId[id];
          const addK=food.kcal*step;
          const addP=food.p*step;
 
-         // No permitir que el ajuste energético saque la proteína del ±2%.
-         if(Math.abs((dailyP+addP)-protein)>protein*0.02) continue;
+         // PRUEBA 7: si la proteína todavía está por debajo del rango, permitir
+         // que el carbohidrato avance gradualmente hacia el objetivo. Antes se
+         // exigía quedar dentro del ±2% en CADA paso y eso bloqueaba FODMAP.
+         const proteinUpper=protein*1.02;
+         const projectedP=dailyP+addP;
+         if(projectedP>proteinUpper+0.0001) continue;
+         if(dailyP>=protein*0.98 && Math.abs(projectedP-protein)>Math.abs(dailyP-protein)+0.0001) continue;
          const projectedFat = meals.reduce((s,m)=>s+m.totals.f,0) + snack1.f + snack2.f + food.f*step;
          const projectedKcal = dailyKcal + addK;
          const projectedFatPct = projectedKcal>0 ? (projectedFat*9/projectedKcal)*100 : 0;
@@ -1412,7 +1656,10 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
          if(newErr>=oldErr) continue;
 
          // Preferir aceite/aguacate cuando la proteína ya está bien.
-         const moveScore=newErr + addP*25 + (id==='AL13'?0:(id==='AL12'?2:5));
+         const fodmapPref = fodmapMode
+           ? (id==='AL13' ? 0 : (['AL01','AL03','AL21','AL24','AL31'].includes(id) ? 4 : 8))
+           : (id==='AL13' ? 0 : (id==='AL12' ? 2 : 5));
+         const moveScore=newErr + addP*25 + fodmapPref;
          if(!bestMove || moveScore<bestMove.score){
            bestMove={score:moveScore,mi,id,newQ};
          }
@@ -1435,16 +1682,46 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
    const fatPct=(d.f*9/dailyKcal)*100;
    const fatExcess=Math.max(0,fatPct-30)/30;
 
-   // Penaliza menús que concentran demasiadas tortillas/tostadas en un solo tiempo.
+   // PRUEBA 14: conservar la capacidad energética de V13, pero priorizar
+   // porciones habituales de alimentos antes de completar energía con aceite.
    let practicalBurden=0;
    mainMeals.forEach(meal=>{
+     if(fodmapMode){
+       const starchIds=['AL01','AL03','AL21','AL24','AL31'];
+       const starchFamilies=meal.items.filter(x=>starchIds.includes(x.food.id) && x.qty>0).length;
+       if(starchFamilies>1) practicalBurden += (starchFamilies-1)*7;
+     }
+
      const tortilla=meal.items.find(x=>x.food.id==='AL01');
      const tostada=meal.items.find(x=>x.food.id==='AL24');
-     const tq=(tortilla?tortilla.qty:0);
-     const sq=(tostada?tostada.qty:0);
-     if(tq>4) practicalBurden += (tq-4)*0.8;
-     if(sq>4) practicalBurden += (sq-4)*0.8;
-     if(tq+sq>5) practicalBurden += (tq+sq-5)*0.5;
+     const arroz=meal.items.find(x=>x.food.id==='AL03');
+     const papa=meal.items.find(x=>x.food.id==='AL21');
+     const quinoa=meal.items.find(x=>x.food.id==='AL31');
+     const aceite=meal.items.find(x=>x.food.id==='AL13');
+
+     const tq=tortilla?tortilla.qty:0;
+     const sq=tostada?tostada.qty:0;
+     const aq=arroz?arroz.qty:0;   // cada unidad = 1/4 taza
+     const pq=papa?papa.qty:0;     // cada unidad = 100 g
+     const qq=quinoa?quinoa.qty:0; // cada unidad = 1/4 taza
+     const oq=aceite?aceite.qty:0; // cucharaditas
+
+     if(tq>4) practicalBurden += (tq-4)*1.5;
+     if(sq>4) practicalBurden += (sq-4)*1.5;
+     if(tq+sq>5) practicalBurden += (tq+sq-5)*1.2;
+
+     // No se bloquean estas cantidades: solo se penalizan para que el motor
+     // elija primero opciones más naturales cuando exista alternativa.
+     // Preferencias prácticas (NO son bloqueos clínicos).
+     // El motor puede superarlas si es necesario para cumplir ±2%.
+     if(aq>5) practicalBurden += (aq-5)*2.2; // preferir <=1.25 tazas arroz
+     if(pq>2) practicalBurden += (pq-2)*7.0; // preferir <=200 g papa
+     if(qq>4) practicalBurden += (qq-4)*2.0; // preferir <=1 taza quinoa
+
+     // Aceite como ajuste final: 1 cdita es normal; 2 todavía posible;
+     // 3 o más se penalizan con fuerza para evitar que sostenga las kcal.
+     if(oq>1) practicalBurden += (oq-1)*4.5;
+     if(oq>2) practicalBurden += (oq-2)*14.0;
    });
 
    // Balance deseado entre tiempos fuertes.
@@ -1452,17 +1729,17 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
    let balance=0;
    mainMeals.forEach((meal,i)=>{
      const target=(calories-snack1.kcal-snack2.kcal)*mealTargets[i];
-     balance += Math.abs(meal.totals.kcal-target)/Math.max(target,1)*0.10;
+     balance += Math.abs(meal.totals.kcal-target)/Math.max(target,1)*1.55;
    });
 
    // Preferencia ligera de variedad según semilla; no sacrifica el objetivo.
-   const prefB=seed%availableBreakfast.length;
-   const prefL=(seed+1)%availableLunch.length;
-   const prefD=(seed+2)%availableDinner.length;
    let variety=0;
-   if(mainMeals[0].templateName!==availableBreakfast[prefB].name) variety+=0.08;
-   if(mainMeals[1].templateName!==availableLunch[prefL].name) variety+=0.08;
-   if(mainMeals[2].templateName!==availableDinner[prefD].name) variety+=0.08;
+   // V33: cada semilla "pide" una familia distinta ANTES del optimizador.
+   // La comida recibe el mayor peso para evitar que todos los candidatos
+   // terminen en la misma plantilla.
+   if(mainMeals[0].templateName!==availableBreakfast[prefB].name) variety+=2.5;
+   if(mainMeals[1].templateName!==availableLunch[prefL].name) variety+=6.0;
+   if(mainMeals[2].templateName!==availableDinner[prefD].name) variety+=4.0;
 
    const calBand=Math.max(0,calErr-0.02);
    const pBand=Math.max(0,pErr-0.02);
@@ -1471,7 +1748,7 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
 
  let best=null;
 
- for(let attempt=0;attempt<(expanded?5000:12000);attempt++){
+ for(let attempt=0;attempt<(expanded?(fodmapMode?520:700):(fodmapMode?380:900));attempt++){
    const bt=availableBreakfast[Math.floor(rng()*availableBreakfast.length)];
    const lt=availableLunch[Math.floor(rng()*availableLunch.length)];
    const dt=availableDinner[Math.floor(rng()*availableDinner.length)];
@@ -1507,7 +1784,13 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
 
    if(Math.abs(daily.kcal-calories)<=calories*0.02 &&
       Math.abs(daily.p-protein)<=protein*0.02){
-     break;
+     if(!fodmapMode){
+       break;
+     }
+     const lunchMatch=mainMeals[1].templateName===availableLunch[prefL].name;
+     const dinnerMatch=mainMeals[2].templateName===availableDinner[prefD].name;
+     // En FODMAP solo cortar temprano cuando la solución también aporta diversidad.
+     if(lunchMatch || dinnerMatch) break;
    }
  }
 
@@ -1611,6 +1894,16 @@ function displayQty(item){
     case 'AL28': return `${formatCup(0.5*n)} de champiñones cocidos`;
     case 'AL29': return `${formatCup(1*n)} de jitomate picado`;
     case 'AL30': return `${formatCup(0.5*n)} de pimiento morrón`;
+    case 'AL31': return `${formatCup(0.25*n)} de quinoa cocida`;
+    case 'AL32': return `${formatCup(1*n)} de pepino`;
+    case 'AL33': return `${formatNumber(n)} ${n===1?'zanahoria mediana':'zanahorias medianas'}`;
+    case 'AL34': return `${formatNumber(40*n)} g de pavo cocido`;
+    case 'AL35': return `${formatCup(0.25*n)} de arroz integral cocido`;
+    case 'AL36': return `${formatCup(0.5*n)} de pasta integral cocida`;
+    case 'AL37': return `${formatNumber(n)} ${n===1?'rebanada':'rebanadas'} de pan integral`;
+    case 'AL38': return `${formatNumber(50*n)} g de salmón`;
+    case 'AL39': return `${formatNumber(50*n)} g de pollo muslo/pierna sin piel`;
+    case 'AL40': return `${formatCup(0.5*n)} de fideo libre de gluten`;
     default: return item.food.name;
   }
 }
@@ -1684,13 +1977,15 @@ function mealPreparation(items){
   const rest=items.filter(x=>!used.has(x.food.id));
 
   // Group the rest more naturally instead of a giant "Acompañado de" sentence.
-  const carbs=rest.filter(x=>['AL01','AL03'].includes(x.food.id));
-  const veggies=rest.filter(x=>['AL07','AL08','AL09','AL10'].includes(x.food.id));
-  const proteins=rest.filter(x=>['AL02','AL04','AL05','AL06'].includes(x.food.id));
+  const carbs=rest.filter(x=>['AL01','AL03','AL20','AL21','AL22','AL23','AL24','AL31','AL35','AL36','AL37'].includes(x.food.id));
+  const veggies=rest.filter(x=>['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30','AL32','AL33'].includes(x.food.id));
+  const proteins=rest.filter(x=>['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19','AL34'].includes(x.food.id));
   let lines=[];
   if(proteins.length) lines.push('<strong>Complemento:</strong> '+proteins.map(displayQty).join(' + '));
   if(carbs.length) lines.push('<strong>Guarnición:</strong> '+carbs.map(displayQty).join(' + '));
   if(veggies.length) lines.push('<strong>Verduras:</strong> '+veggies.map(displayQty).join(' + '));
+  const aceite=rest.find(x=>x.food.id==='AL13' && x.qty>0);
+  if(aceite) lines.push('<strong>Aceite de oliva:</strong> '+displayQty(aceite));
 
   return {
     title,
@@ -1704,6 +1999,7 @@ const TITLE_REQUIREMENTS = [
   {pattern:/aguacate/i, ids:['AL12']},
   {pattern:/queso|panela/i, ids:['AL05']},
   {pattern:/pollo/i, ids:['AL11']},
+  {pattern:/pavo/i, ids:['AL34']},
   {pattern:/pescado/i, ids:['AL04']},
   {pattern:/bistec/i, ids:['AL16']},
   {pattern:/picadillo|carne molida/i, ids:['AL17']},
@@ -1718,11 +2014,15 @@ const TITLE_REQUIREMENTS = [
   {pattern:/chayote/i, ids:['AL25']},
   {pattern:/camote/i, ids:['AL22']},
   {pattern:/papa/i, ids:['AL21']},
-  {pattern:/arroz/i, ids:['AL03']},
-  {pattern:/pasta/i, ids:['AL20']},
+  {pattern:/arroz integral/i, ids:['AL35']},
+  {pattern:/arroz/i, ids:['AL03','AL35']},
+  {pattern:/pasta integral/i, ids:['AL36']},
+  {pattern:/pasta/i, ids:['AL20','AL36']},
+  {pattern:/quinoa/i, ids:['AL31']},
+  {pattern:/pan integral/i, ids:['AL37']},
   {pattern:/avena/i, ids:['AL23']},
   {pattern:/tostada/i, ids:['AL24']},
-  {pattern:/verduras/i, ids:['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30']}
+  {pattern:/verduras/i, ids:['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30','AL32','AL33']}
 ];
 
 function titleMatchesIngredients(title, items){
@@ -1745,9 +2045,15 @@ function titleMatchesIngredients(title, items){
 function safePreparationTitle(title, items){
   if(titleMatchesIngredients(title, items)) return title;
   // Use a neutral fallback that never promises a missing ingredient.
-  const proteinIds=['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19'];
+  const proteinIds=['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19','AL34'];
+  const vegIds=['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30','AL32','AL33'];
+  const carbIds=['AL01','AL03','AL20','AL21','AL22','AL23','AL24','AL31','AL35','AL36','AL37'];
   const p=items.find(x=>proteinIds.includes(x.food.id));
-  return p ? `${p.food.name} con guarnición` : 'Platillo sugerido';
+  const v=items.find(x=>vegIds.includes(x.food.id));
+  const c=items.find(x=>carbIds.includes(x.food.id));
+  if(p && v) return `${p.food.name} con ${v.food.name.toLowerCase()}`;
+  if(p && c) return `${p.food.name} con ${c.food.name.toLowerCase()}`;
+  return p ? p.food.name : 'Platillo sugerido';
 }
 
 function formatPatientMeal(items){
@@ -1755,6 +2061,79 @@ function formatPatientMeal(items){
   return result;
 }
 
+
+
+function cleanDuplicateAccomp(accomp, visibleComponents){
+  if(!accomp) return '';
+  const norm=v=>String(v||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+
+  const visible=norm(visibleComponents);
+
+  return accomp.split('<br>').map(line=>{
+    const m=line.match(/^\s*<strong>([^<]+):<\/strong>\s*(.*)$/i);
+    const label=m?m[1]:'';
+    const body=m?m[2]:line;
+
+    const parts=body.split(/\s+\+\s+/).map(x=>x.trim()).filter(Boolean);
+    const remaining=parts.filter(p=>!visible.includes(norm(p)));
+
+    if(!remaining.length) return '';
+    if(m) return `<strong>${label}:</strong> ${remaining.join(' + ')}`;
+    return remaining.join(' + ');
+  }).filter(Boolean).join('<br>');
+}
+
+
+function cleanFriendlyTitle(title, items){
+  const qty=(id)=>{
+    const x=(items||[]).find(i=>i.food && i.food.id===id);
+    return x ? Number(x.qty||0) : 0;
+  };
+  const hasTortilla=qty('AL01')>0;
+  const hasTostada=qty('AL24')>0;
+
+  // El título nunca promete un alimento que ya no esté presente
+  // después del ajuste nutricional.
+  if(title==='Tortillas con pechuga de pollo'){
+    return hasTortilla ? 'Tacos de pollo' : 'Pechuga de pollo';
+  }
+  if(title==='Tortillas con pescado asado'){
+    return hasTortilla ? 'Tacos de pescado asado' : 'Pescado asado';
+  }
+  if(title==='Tostadas de pollo deshebrado'){
+    return hasTostada ? 'Tostadas de pollo deshebrado' : 'Pollo deshebrado';
+  }
+  if(title==='Tostadas de pollo con ejotes'){
+    return hasTostada ? 'Tostadas de pollo con ejotes' : 'Pollo con ejotes';
+  }
+
+  // Evita mostrar el nombre genérico "Platillo sugerido" al paciente.
+  // Si el optimizador arma una combinación nueva, genera un título amigable
+  // a partir de los alimentos que realmente quedaron en el platillo.
+  if(title==='Platillo sugerido'){
+    const proteinIds=['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19','AL34'];
+    const vegIds=['AL07','AL08','AL09','AL10','AL25','AL26','AL27','AL28','AL29','AL30','AL32','AL33'];
+    const carbIds=['AL01','AL03','AL20','AL21','AL22','AL23','AL24','AL31','AL35','AL36','AL37'];
+    const p=(items||[]).find(x=>x.food && proteinIds.includes(x.food.id));
+    const v=(items||[]).find(x=>x.food && vegIds.includes(x.food.id));
+    const c=(items||[]).find(x=>x.food && carbIds.includes(x.food.id));
+    const clean=n=>String(n||'').replace(/\s+cocid[oa]s?$/i,'').replace(/\s+sin piel$/i,'').trim();
+    if(p && v && c) return `${clean(p.food.name)} con ${clean(c.food.name).toLowerCase()} y ${clean(v.food.name).toLowerCase()}`;
+    if(p && v) return `${clean(p.food.name)} con ${clean(v.food.name).toLowerCase()}`;
+    if(p && c) return `${clean(p.food.name)} con ${clean(c.food.name).toLowerCase()}`;
+    if(p) return clean(p.food.name);
+    const first=(items||[])[0];
+    return first && first.food ? clean(first.food.name) : 'Preparación del día';
+  }
+
+  const map={
+    'Pollo muslo/pierna con arroz y zanahoria':'Pollo con arroz y zanahoria',
+    'Fideo sin gluten con res, espinaca y papa':'Fideo sin gluten con res y verduras'
+  };
+  return map[title]||title;
+}
 
 function calculateMacroTargets(calories,protein){
  calories=Number(calories); protein=Number(protein);
@@ -1868,6 +2247,405 @@ function hasMandatoryTemplateIngredients(meal){
 
 let generationRunCounter = 0;
 
+
+function diagnoseFodmapTarget(calories,protein,restrictions){
+  const foods=filteredFoods(restrictions);
+  const fodmapMode=restrictions.includes('__fodmap__');
+  const result={foodCount:foods.length,breakfastCount:0,lunchCount:0,dinnerCount:0,best:null,optimized:null,stopReason:'No determinado'};
+
+  const snackSource=fodmapMode?FODMAP_SNACK_DB:SNACK_DB;
+  const snackAllowed=snackSource.filter(sn=>!restrictions.some(r=>(sn.tags||[]).includes(r)));
+  if(!snackAllowed.length) return {...result,error:'No hay colaciones compatibles.'};
+
+  const b=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.desayuno.has(t.name)));
+  const l=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.comida.has(t.name)));
+  const d=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.cena.has(t.name)));
+  result.breakfastCount=b.length; result.lunchCount=l.length; result.dinnerCount=d.length;
+
+  const rng=mulberry32(987654);
+  let bestBase=null,bestOptimized=null,bestScore=Infinity;
+
+  // Evaluate the POST-optimization result, which is what actually matters.
+  for(let i=0;i<1200;i++){
+    const s1=snackAllowed[Math.floor(rng()*snackAllowed.length)];
+    const s2=snackAllowed[Math.floor(rng()*snackAllowed.length)];
+    const bt=b[Math.floor(rng()*b.length)], lt=l[Math.floor(rng()*l.length)], dt=d[Math.floor(rng()*d.length)];
+    if(!bt||!lt||!dt) break;
+
+    const bm=makeMealFromTemplate(bt,'desayuno','Desayuno',foods,rng);
+    const lm=makeMealFromTemplate(lt,'comida','Comida',foods,rng);
+    const dm=makeMealFromTemplate(dt,'cena','Cena',foods,rng);
+
+    const baseDaily=[bm,lm,dm].reduce((a,m)=>({
+      kcal:a.kcal+m.totals.kcal,p:a.p+m.totals.p,c:a.c+m.totals.c,f:a.f+m.totals.f
+    }),{kcal:s1.kcal+s2.kcal,p:s1.p+s2.p,c:s1.c+s2.c,f:s1.f+s2.f});
+
+    const baseDay={
+      meals:[
+        bm,
+        {key:'colacion1',name:'Colación 1',snack:s1,items:[],totals:{kcal:s1.kcal,p:s1.p,c:s1.c,f:s1.f}},
+        lm,
+        {key:'colacion2',name:'Colación 2',snack:s2,items:[],totals:{kcal:s2.kcal,p:s2.p,c:s2.c,f:s2.f}},
+        dm
+      ],
+      daily:baseDaily
+    };
+
+    const opt=secondStageFodmapOptimize(baseDay,calories,protein);
+    const od=opt.daily;
+    const fatPct=od.f*9/od.kcal*100;
+    const score=
+      Math.abs(od.kcal-calories) +
+      Math.abs(od.p-protein)*16 +
+      Math.max(0,fatPct-30)*100;
+
+    if(score<bestScore){
+      bestScore=score;
+      bestBase=baseDay;
+      bestOptimized=opt;
+    }
+  }
+
+  if(!bestBase || !bestOptimized) return {...result,error:'No se pudo construir una combinación diagnóstica.'};
+
+  const base=bestBase.daily;
+  const after=bestOptimized.daily;
+  const afterFat=after.f*9/after.kcal*100;
+
+  result.best={
+    kcal:+base.kcal.toFixed(1),protein:+base.p.toFixed(1),fatPct:+(base.f*9/base.kcal*100).toFixed(1),
+    kcalDiff:+(base.kcal-calories).toFixed(1),proteinDiff:+(base.p-protein).toFixed(1),
+    breakfast:bestBase.meals[0].templateName,lunch:bestBase.meals[2].templateName,dinner:bestBase.meals[4].templateName,
+    snack1:bestBase.meals[1].snack.name,snack2:bestBase.meals[3].snack.name
+  };
+
+  result.optimized={
+    kcal:+after.kcal.toFixed(1),protein:+after.p.toFixed(1),fatPct:+afterFat.toFixed(1),
+    kcalDiff:+(after.kcal-calories).toFixed(1),proteinDiff:+(after.p-protein).toFixed(1),
+    deltaKcal:+(after.kcal-base.kcal).toFixed(1),deltaProtein:+(after.p-base.p).toFixed(1)
+  };
+  result.rebalanced=!!bestOptimized.secondStage?.rebalanced;
+  result.finalClosureUsed=!!bestOptimized.secondStage?.finalClosureUsed;
+
+  const kcalOk=Math.abs(after.kcal-calories)<=calories*.02;
+  const pOk=Math.abs(after.p-protein)<=protein*.02;
+  const fatOk=afterFat<=30.0001;
+
+  if(kcalOk&&pOk&&fatOk){
+    result.stopReason='El optimizador YA logra una combinación dentro de objetivo.';
+  }else if(after.p>=protein*1.02-0.01){
+    result.stopReason='La proteína llega al límite superior antes de completar calorías.';
+  }else if(afterFat>=29.99){
+    result.stopReason='La grasa llega al 30% antes de completar calorías.';
+  }else{
+    result.stopReason='Se agotan los aumentos permitidos antes de llegar a la meta.';
+  }
+  return result;
+}
+
+function showDiagnostic(diag,calories,protein){
+  const panel=document.getElementById('diagnosticPanel');
+  const box=document.getElementById('diagnosticText');
+  if(!panel||!box) return;
+  panel.style.display='block';
+  if(diag.error){ box.innerHTML=diag.error; return; }
+
+  const b=diag.best||{}, o=diag.optimized||{};
+  box.innerHTML=
+    `<div><b>Alimentos FODMAP disponibles:</b> ${diag.foodCount}</div>`+
+    `<div><b>Plantillas disponibles:</b> ${diag.breakfastCount} desayunos · ${diag.lunchCount} comidas · ${diag.dinnerCount} cenas</div>`+
+    `<hr style="border:none;border-top:1px solid #d8e1de;margin:10px 0">`+
+    `<div><b>ANTES DEL OPTIMIZADOR:</b> ${b.kcal??'-'} kcal · ${b.protein??'-'} g proteína · ${b.fatPct??'-'}% grasa</div>`+
+    `<div><b>Diferencia:</b> ${b.kcalDiff??'-'} kcal · ${b.proteinDiff??'-'} g proteína</div>`+
+    `<div><b>Platillos:</b> ${b.breakfast??'-'} / ${b.lunch??'-'} / ${b.dinner??'-'}</div>`+
+    `<div><b>Colaciones:</b> ${b.snack1??'-'} / ${b.snack2??'-'}</div>`+
+    `<hr style="border:none;border-top:1px solid #d8e1de;margin:10px 0">`+
+    `<div><b>DESPUÉS DEL OPTIMIZADOR:</b> ${o.kcal??'-'} kcal · ${o.protein??'-'} g proteína · ${o.fatPct??'-'}% grasa</div>`+
+    `<div><b>Diferencia:</b> ${o.kcalDiff??'-'} kcal · ${o.proteinDiff??'-'} g proteína</div>`+
+    `<div><b>Energía añadida:</b> ${o.deltaKcal??'-'} kcal · ${o.deltaProtein??'-'} g proteína</div>`+
+    `<div><b>Rebalanceo proteína→energía:</b> ${diag.rebalanced?'Sí':'No'}</div>`+
+    `<div><b>Cierre final de calorías:</b> ${diag.finalClosureUsed?'Sí':'No'}</div>`+
+    `<div style="margin-top:8px"><b>Motivo de detención:</b> ${diag.stopReason}</div>`;
+}
+function fodmapOilHardLimitOk(day, restrictions){
+  if(!restrictions.includes('__fodmap__')) return true;
+  const strong=(day.meals||[]).filter(m=>['desayuno','comida','cena'].includes(m.key));
+  let totalOil=0;
+  for(const meal of strong){
+    const oil=(meal.items||[]).find(x=>x.food && x.food.id==='AL13');
+    const q=oil?Number(oil.qty||0):0;
+    if(q>1.0001) return false; // tope REAL: 1 cdita por tiempo
+    totalOil+=q;
+  }
+  return totalOil<=3.0001; // tope REAL: 3 cditas por día
+}
+
+function secondStageFodmapOptimize(day,calories,protein){
+  if(!day || !day.meals) return day;
+
+  const meals=day.meals.map(m=>({
+    ...m,
+    items:(m.items||[]).map(x=>({food:x.food,qty:x.qty})),
+    totals:{...m.totals}
+  }));
+
+  const mainMeals=meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+  const starchIds=['AL01','AL03','AL21','AL24','AL31'];
+  const oilId='AL13';
+  const proteinIds=['AL02','AL04','AL11','AL15','AL16','AL17','AL18','AL19','AL34','AL38','AL39'];
+
+  const foodIndex={};
+  FOOD_DB.forEach(f=>foodIndex[f.id]=f);
+
+  function recalcMeal(m){ m.totals=totals(m.items); }
+  function dailyTotals(){
+    return meals.reduce((a,m)=>({
+      kcal:a.kcal+m.totals.kcal,
+      p:a.p+m.totals.p,
+      c:a.c+m.totals.c,
+      f:a.f+m.totals.f
+    }),{kcal:0,p:0,c:0,f:0});
+  }
+  function item(m,id){ return (m.items||[]).find(x=>x.food.id===id); }
+  function setOrAdd(m,id,newQty){
+    if(newQty<=0 || !foodIndex[id]) return false;
+    const ex=item(m,id);
+    if(ex) ex.qty=newQty;
+    else m.items.push({food:foodIndex[id],qty:newQty});
+    recalcMeal(m);
+    return true;
+  }
+  function oilTotal(){
+    return mainMeals.reduce((sum,m)=>{
+      const x=item(m,oilId);
+      return sum+(x?x.qty:0);
+    },0);
+  }
+
+  const caps={
+    desayuno:{AL01:4,AL03:7,AL21:2.5,AL24:4,AL31:5,AL13:1},
+    comida:{AL01:4,AL03:8,AL21:3,AL24:4,AL31:6,AL13:1},
+    cena:{AL01:4,AL03:7,AL21:2.5,AL24:3,AL31:5,AL13:1}
+  };
+
+  // Límites de preferencia práctica. No invalidan el menú:
+  // primero se intenta repartir energía sin rebasarlos.
+  const practicalCaps={
+    desayuno:{AL01:4,AL03:5,AL21:2,AL24:4,AL31:4,AL13:1},
+    comida:{AL01:4,AL03:5,AL21:2.5,AL24:4,AL31:4,AL13:1},
+    cena:{AL01:4,AL03:5,AL21:2,AL24:3,AL31:4,AL13:1}
+  };
+  const steps={AL01:1,AL03:1,AL21:0.5,AL24:1,AL31:0.5,AL13:1};
+
+  const mealShares={desayuno:0.30,comida:0.40,cena:0.30};
+  function mealEnergyGap(m){
+    const target=calories*mealShares[m.key];
+    return target-m.totals.kcal;
+  }
+
+  const before=dailyTotals();
+  let rebalanced=false;
+  let finalClosureUsed=false;
+
+  // ETAPA A: abrir margen de proteína si hace falta.
+  for(let guard=0;guard<6;guard++){
+    const d=dailyTotals();
+    const kcalGap=calories-d.kcal;
+
+    if(kcalGap<90 || d.p < protein*0.955) break;
+
+    let bestReduction=null;
+
+    for(const m of mainMeals){
+      for(const id of proteinIds){
+        const ex=item(m,id);
+        if(!ex) continue;
+
+        const step=0.5;
+        const newQty=ex.qty-step;
+        if(newQty < 1.0-1e-9) continue;
+
+        const food=ex.food;
+        const newDailyP=d.p-food.p*step;
+
+        if(newDailyP < protein*0.93) continue;
+
+        const score=(food.kcal*step) - (food.p*step)*6;
+        if(!bestReduction || score<bestReduction.score){
+          bestReduction={score,m,id,newQty};
+        }
+      }
+    }
+
+    if(!bestReduction) break;
+    setOrAdd(bestReduction.m,bestReduction.id,bestReduction.newQty);
+    rebalanced=true;
+  }
+
+  // ETAPA B: REPARTIDOR ENERGÉTICO.
+  // Paso 1: buscar aumentos dentro de porciones prácticas en TODOS los tiempos.
+  // Paso 2: solo si no existe ningún movimiento práctico, permitir excederlas
+  // dentro de los topes máximos de V31.
+  for(let iter=0;iter<140;iter++){
+    const d=dailyTotals();
+    const kcalGap=calories-d.kcal;
+    const proteinGap=protein-d.p;
+
+    if(Math.abs(kcalGap)<=calories*.02 &&
+       Math.abs(proteinGap)<=protein*.02) break;
+    if(kcalGap<=0) break;
+
+    let best=null;
+
+    for(const practicalOnly of [true,false]){
+      best=null;
+
+      for(const m of mainMeals){
+        for(const id of [...starchIds,oilId]){
+          const ex=item(m,id);
+
+          // No inventar una segunda guarnición de almidón.
+          if(id!==oilId && !ex) continue;
+
+          const step=steps[id];
+          const hardCap=caps[m.key]?.[id];
+          const preferredCap=practicalCaps[m.key]?.[id];
+          if(hardCap==null || preferredCap==null) continue;
+
+          const current=ex?ex.qty:0;
+          const newQty=current+step;
+
+          if(newQty>hardCap+1e-9) continue;
+          if(practicalOnly && newQty>preferredCap+1e-9) continue;
+
+          if(id===oilId){
+            if(newQty>1.0001) continue;
+            if(oilTotal()+step>3.0001) continue;
+          }
+
+          const food=foodIndex[id];
+          const addK=food.kcal*step;
+          const addP=food.p*step;
+          const addF=food.f*step;
+
+          const newK=d.kcal+addK;
+          const newP=d.p+addP;
+          const newF=d.f+addF;
+          const fatPct=newK>0 ? newF*9/newK*100 : 0;
+
+          if(newP>protein*1.02+1e-9) continue;
+          if(fatPct>30.0001) continue;
+          if(Math.abs(calories-newK)>=Math.abs(calories-d.kcal)-1e-9) continue;
+
+          const proteinRoom=Math.max(0,protein*1.02-d.p);
+          const oilPenalty=(id===oilId ? (proteinRoom<0.8 ? 0 : 14) : 0);
+
+          // Favorecer el tiempo más corto respecto a su meta.
+          const gapBonus=Math.max(0,mealEnergyGap(m))*0.16;
+
+          // En fase de respaldo, castigar exceder la porción práctica.
+          let overflowPenalty=0;
+          if(!practicalOnly && newQty>preferredCap){
+            overflowPenalty=(newQty-preferredCap)*24;
+          }
+
+          const score=
+            Math.abs(calories-newK) +
+            Math.abs(protein-newP)*7 +
+            oilPenalty +
+            overflowPenalty -
+            gapBonus;
+
+          if(!best || score<best.score){
+            best={score,m,id,newQty};
+          }
+        }
+      }
+
+      if(best) break; // si existe una opción práctica, nunca usar respaldo
+    }
+
+    if(!best) break;
+    setOrAdd(best.m,best.id,best.newQty);
+  }
+
+  // ETAPA C: CIERRE FINAL.
+  // Si la proteína YA está dentro de ±2% y faltan pocas kcal, permite un ajuste
+  // extraordinario pequeño con el mismo carbohidrato del platillo.
+  // No agrega una nueva familia de guarnición y conserva grasa <=30%.
+  for(let iter=0;iter<12;iter++){
+    const d=dailyTotals();
+    const kcalGap=calories-d.kcal;
+    const pOk=Math.abs(d.p-protein)<=protein*.02;
+
+    if(Math.abs(kcalGap)<=calories*.02 && pOk) break;
+    if(!pOk || kcalGap<=0 || kcalGap>180) break;
+
+    let best=null;
+
+    for(const m of mainMeals){
+      for(const id of starchIds){
+        const ex=item(m,id);
+        if(!ex) continue;
+
+        // Permitir SOLO un pequeño margen extra por encima del tope normal.
+        let extraCap=caps[m.key]?.[id];
+        if(extraCap==null) continue;
+
+        if(id==='AL03') extraCap += 1;       // +1/4 taza arroz
+        if(id==='AL31') extraCap += 0.5;     // +1/8 taza quinoa aprox.
+        if(id==='AL21') extraCap += 0.5;     // +50 g papa
+        if(id==='AL01') extraCap += 0;       // tortilla conserva tope práctico
+        if(id==='AL24') extraCap += 1;       // +1 tostada
+
+        const step=steps[id];
+        const newQty=ex.qty+step;
+        if(newQty>extraCap+1e-9) continue;
+
+        const food=foodIndex[id];
+        const newK=d.kcal+food.kcal*step;
+        const newP=d.p+food.p*step;
+        const newF=d.f+food.f*step;
+        const fatPct=newK>0 ? newF*9/newK*100 : 0;
+
+        if(newP>protein*1.02+1e-9) continue;
+        if(fatPct>30.0001) continue;
+        if(Math.abs(calories-newK)>=Math.abs(calories-d.kcal)-1e-9) continue;
+
+        let concentrationPenalty=0;
+        if(id==='AL21' && newQty>2.5) concentrationPenalty += (newQty-2.5)*12;
+        if(id==='AL31' && newQty>4) concentrationPenalty += (newQty-4)*10;
+        if(id==='AL03' && newQty>6) concentrationPenalty += (newQty-6)*8;
+        const gapBonus=Math.max(0,mealEnergyGap(m))*0.12;
+        const score=Math.abs(calories-newK)+Math.abs(protein-newP)*10+concentrationPenalty-gapBonus;
+        if(!best || score<best.score){
+          best={score,m,id,newQty};
+        }
+      }
+    }
+
+    if(!best) break;
+    setOrAdd(best.m,best.id,best.newQty);
+    finalClosureUsed=true;
+  }
+
+  const after=dailyTotals();
+
+  return {
+    ...day,
+    meals,
+    daily:after,
+    secondStage:{
+      before,
+      after,
+      deltaKcal:after.kcal-before.kcal,
+      deltaProtein:after.p-before.p,
+      rebalanced,
+      finalClosureUsed
+    }
+  };
+}
+
 function generateMenus(){
  generationRunCounter++;
  const generationSeedBase = (Date.now() % 1000000000) + generationRunCounter * 1000003;
@@ -1881,16 +2659,21 @@ function generateMenus(){
 
  const diet=document.getElementById('dietType').value;
  const restrictions=getSelectedRestrictions();
+ if(diet==='renal'){ alert('El módulo Renal todavía no está activo en esta versión de prueba.'); return; }
+ if(diet==='fodmap') restrictions.push('__fodmap__');
  const candidates=[];
 
  // Búsqueda en dos niveles: normal y, solo si hace falta, porciones ampliadas.
  for(let pass=0;pass<2;pass++){
    if(pass===1 && candidates.length>=5) break;
    const expanded=pass===1;
-   const tries=expanded?70:180;
+   const tries=restrictions.includes('__fodmap__') ? (expanded?140:180) : (expanded?24:32);
 
    for(let i=0;i<tries;i++){
-     const day=buildDay(calories,protein,restrictions,generationSeedBase+i+1+pass*10000,expanded);
+     let day=buildDay(calories,protein,restrictions,generationSeedBase+i+1+pass*10000,expanded);
+     if(restrictions.includes('__fodmap__') && day && day.meals && day.meals.length){
+       day=secondStageFodmapOptimize(day,calories,protein);
+     }
      if(!day || !day.meals || !day.meals.length) continue;
 
      const fatPct=(day.daily.f*9/day.daily.kcal)*100;
@@ -1903,20 +2686,73 @@ function generateMenus(){
        Math.abs(day.daily.p-protein)<=protein*0.02 &&
        fatPct<=30.0001 &&
        hasPracticalPortions(day) &&
+       fodmapOilHardLimitOk(day,restrictions) &&
        requiredOk;
 
      if(valid){
-       candidates.push({...day,diet,number:candidates.length+1,searchMode:expanded?'ampliada':'normal'});
+       const strong=day.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+       const familyKey=(strong[1]?.templateName||'')+'||'+(strong[2]?.templateName||'');
+       const sameFamily=candidates.filter(c=>{
+         const cs=c.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+         return ((cs[1]?.templateName||'')+'||'+(cs[2]?.templateName||''))===familyKey;
+       }).length;
+
+       if(sameFamily<3 || candidates.length<5){
+         candidates.push({...day,diet,number:candidates.length+1,searchMode:expanded?'ampliada':'normal'});
+       }
+     }
+   }
+ }
+
+ if(restrictions.includes('__fodmap__') && candidates.length<5){
+   const needed=5-candidates.length;
+   for(let i=0;i<120 && candidates.length<5;i++){
+     let day=buildDay(calories,protein,restrictions,generationSeedBase+50000+i,true);
+     if(day && day.meals && day.meals.length){
+       day=secondStageFodmapOptimize(day,calories,protein);
+     }
+     if(!day || !day.meals || !day.meals.length) continue;
+
+     const fatPct=(day.daily.f*9/day.daily.kcal)*100;
+     const requiredOk=(day.meals||[])
+       .filter(m=>['desayuno','comida','cena'].includes(m.key))
+       .every(m=>hasMandatoryTemplateIngredients(m) && hasNamedVegetableIfRequired(m));
+
+     const valid =
+       Math.abs(day.daily.kcal-calories)<=calories*0.02 &&
+       Math.abs(day.daily.p-protein)<=protein*0.02 &&
+       fatPct<=30.0001 &&
+       hasPracticalPortions(day) &&
+       fodmapOilHardLimitOk(day,restrictions) &&
+       requiredOk;
+
+     if(valid){
+       const strong=day.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+       const familyKey=(strong[1]?.templateName||'')+'||'+(strong[2]?.templateName||'');
+       const sameFamily=candidates.filter(c=>{
+         const cs=c.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+         return ((cs[1]?.templateName||'')+'||'+(cs[2]?.templateName||''))===familyKey;
+       }).length;
+
+       if(sameFamily<3 || candidates.length<5){
+         candidates.push({...day,diet,number:candidates.length+1,searchMode:'refuerzo'});
+       }
      }
    }
  }
 
  if(!candidates.length){
-   alert(
-  restrictions.length
-    ? 'No se encontró un menú válido después de probar porciones normales y ampliadas. Se respetaron todas las restricciones y los límites nutricionales.'
-    : 'No se encontró un menú dentro del rango nutricional objetivo. El motor necesita ajustar la grasa y los carbohidratos para esta combinación.'
-);
+   if(restrictions.includes('__fodmap__')){
+     const diag=diagnoseFodmapTarget(calories,protein,restrictions);
+     showDiagnostic(diag,calories,protein);
+     const panel=document.getElementById('diagnosticPanel');
+     if(panel) panel.scrollIntoView({behavior:'smooth',block:'center'});
+   } else {
+     const box=document.getElementById('diagnosticText');
+     const panel=document.getElementById('diagnosticPanel');
+     if(panel) panel.style.display='block';
+     if(box) box.innerHTML='No se encontró un menú dentro del rango nutricional objetivo para esta configuración.';
+   }
    return;
  }
 
@@ -1926,13 +2762,56 @@ function generateMenus(){
  }
 
  function proteinsByMeal(menu){
-   const protIds=new Set(['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19']);
+   const protIds=new Set(['AL02','AL04','AL05','AL06','AL11','AL14','AL15','AL16','AL17','AL18','AL19','AL34','AL38','AL39']);
    return menu.meals
      .filter(m=>['desayuno','comida','cena'].includes(m.key))
      .map(m=>{
        const p=m.items.find(x=>protIds.has(x.food.id));
        return p?p.food.id:'';
      });
+ }
+
+
+ function practicalSelectionPenalty(menu){
+   let penalty=0;
+   const strong=menu.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+
+   strong.forEach(m=>{
+     const get=id=>(m.items||[]).find(x=>x.food.id===id);
+     const tortilla=get('AL01');
+     const arroz=get('AL03');
+     const papa=get('AL21');
+     const tostada=get('AL24');
+     const quinoa=get('AL31');
+     const aceite=get('AL13');
+
+     const tq=tortilla?tortilla.qty:0;
+     const aq=arroz?arroz.qty:0;   // 1 unidad = 1/4 taza
+     const pq=papa?papa.qty:0;     // 1 unidad = 100 g
+     const sq=tostada?tostada.qty:0;
+     const qq=quinoa?quinoa.qty:0; // 1 unidad = 1/4 taza
+     const oq=aceite?aceite.qty:0;
+
+     // Estas son preferencias de selección, NO bloqueos.
+     if(tq>4) penalty+=(tq-4)*25;
+     if(sq>4) penalty+=(sq-4)*20;
+
+     // Favorecer porciones más naturales entre los menús ya válidos.
+     if(aq>6) penalty+=(aq-6)*18;  // >1.5 tazas arroz
+     if(pq>2.5) penalty+=(pq-2.5)*45; // >250 g papa
+     if(qq>4) penalty+=(qq-4)*28; // >1 taza quinoa
+
+     if(oq>1) penalty+=(oq-1)*15;
+   });
+
+   // También favorecer reparto razonable de energía entre tiempos.
+   const shares={desayuno:0.30,comida:0.40,cena:0.30};
+   strong.forEach(m=>{
+     const target=calories*shares[m.key];
+     penalty += Math.abs(m.totals.kcal-target)/Math.max(target,1)*6;
+   });
+
+   return penalty;
  }
 
  function diversityPenalty(menu,selected){
@@ -1946,24 +2825,33 @@ function generateMenus(){
 
      const pprots=proteinsByMeal(prev);
      prots.forEach((p,idx)=>{
-       if(p && p===pprots[idx]) penalty+=8; // same protein in same meal slot
+       if(p && p===pprots[idx]) penalty+=(idx===1?28:12); // más castigo en comida
      });
 
-     // Penalize repeated template names across the whole day.
-     const currTemplates=menu.meals
-       .filter(m=>['desayuno','comida','cena'].includes(m.key))
-       .map(m=>m.templateName||'');
-     const prevTemplates=prev.meals
-       .filter(m=>['desayuno','comida','cena'].includes(m.key))
-       .map(m=>m.templateName||'');
+     // Penalizar fuerte repetir el mismo platillo en el mismo tiempo.
+     const currStrong=menu.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+     const prevStrong=prev.meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
+     currStrong.forEach((m,idx)=>{
+       const t=m.templateName||'';
+       const pt=prevStrong[idx]?.templateName||'';
+       if(t && t===pt) penalty+=(idx===1?90:45);
+     });
+
+     // También penalizar que el mismo template aparezca en cualquier otro tiempo del día.
+     const currTemplates=currStrong.map(m=>m.templateName||'');
+     const prevTemplates=prevStrong.map(m=>m.templateName||'');
      currTemplates.forEach(t=>{
-       if(t && prevTemplates.includes(t)) penalty+=4;
+       if(t && prevTemplates.includes(t)) penalty+=8;
      });
    });
 
    // Favor closeness to target as secondary criterion.
    penalty += Math.abs(menu.daily.kcal-calories)/10;
    penalty += Math.abs(menu.daily.p-protein)*2;
+
+   // V30: among menus that ALREADY passed all clinical limits,
+   // choose the ones with more practical portions.
+   penalty += practicalSelectionPenalty(menu);
 
    return penalty;
  }
@@ -2003,7 +2891,7 @@ function renderMenus(menus,goalCal,goalP,restrictions=[]){
  const infoTr=document.createElement('tr');
  const infoTd=document.createElement('td');
  infoTd.colSpan=6;
- const labels=restrictions.map(r=>RESTRICTION_LABELS[r]||r);
+ const labels=restrictions.map(r=>r==='__fodmap__'?'Dieta baja en FODMAPs':(RESTRICTION_LABELS[r]||r));
  infoTd.innerHTML='<strong>Restricciones aplicadas:</strong> '+(labels.length?labels.join(' · '):'Ninguna');
  infoTd.style.fontSize='13px';
  infoTd.style.padding='10px';
@@ -2037,10 +2925,17 @@ function renderMenus(menus,goalCal,goalP,restrictions=[]){
      }else{
        const friendly=formatPatientMeal(meal.items);
        if(meal.templateName){ friendly.title=safePreparationTitle(meal.templateName, meal.items); }
+       const fodmapDrink = restrictions.includes('__fodmap__')
+         ? '<div class="prep-accomp"><strong>Bebida:</strong> agua natural o té de manzanilla con limón/yerbabuena (sin azúcar)</div>'
+         : '';
+       const visibleComponents=formatVisibleComponentsForTitle(friendly.title, meal.items, friendly.components);
+       const cleanAccomp=cleanDuplicateAccomp(friendly.accomp, visibleComponents);
+       const displayTitle=cleanFriendlyTitle(friendly.title, meal.items);
        td.innerHTML=
-         '<div class="prep-title">'+friendly.title+'</div>'+
-         '<div class="prep-components">'+formatVisibleComponentsForTitle(friendly.title, meal.items, friendly.components)+'</div>'+
-         (friendly.accomp?'<div class="prep-accomp">'+friendly.accomp+'</div>':'')+
+         '<div class="prep-title">'+displayTitle+'</div>'+
+         '<div class="prep-components">'+visibleComponents+'</div>'+
+         (cleanAccomp?'<div class="prep-accomp">'+cleanAccomp+'</div>':'')+
+         fodmapDrink+
          '<div class="meta">'+
          Math.round(mt.kcal)+' kcal · '+mt.p.toFixed(1)+' g proteína · '+
          mt.c.toFixed(1)+' g HC · '+mt.f.toFixed(1)+' g grasa'+
