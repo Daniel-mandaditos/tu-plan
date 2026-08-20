@@ -2062,8 +2062,8 @@ button.primary:hover,.tp-save:hover,.tp-tab-btn.active:hover,#generateBtn:hover,
           <div>
             <h2 style="margin-bottom:6px;">Mi perfil profesional</h2>
             <p class="tp-profile-note">
-              Captura tus datos una sola vez. Se guardan en este navegador y se usarán automáticamente
-              en el encabezado del plan al imprimir o guardar PDF.
+              Captura tus datos una sola vez. Se guardan en tu perfil de TU PLAN y se cargarán automáticamente
+              al iniciar sesión, también en otro dispositivo.
             </p>
           </div>
           <div class="tp-profile-badge">Datos del membrete</div>
@@ -4214,7 +4214,8 @@ function showTuPlanTab(which){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-const TP_PROFILE_KEY='tuplan_profile_v2';
+let TP_PROFILE_CACHE={};
+let TP_PENDING_LOGO='';
 
 function escText(v){
   return String(v||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -4229,31 +4230,110 @@ function setDefaultPlanDate(){
   }
 }
 
-function loadProfessionalProfile(){
-  try{
-    const p=JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}');
-    ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline'].forEach(id=>{
-      const el=document.getElementById(id); if(el) el.value=p[id]||'';
-    });
-    if(p.logo){
-      const img=document.getElementById('proLogoPreview');
-      if(img){img.src=p.logo;img.style.display='block';}
-    }
-  }catch(e){}
-  setDefaultPlanDate();
+function clearProfessionalProfileUI(){
+  ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  TP_PROFILE_CACHE={};
+  TP_PENDING_LOGO='';
+  const img=document.getElementById('proLogoPreview');
+  if(img){img.removeAttribute('src');img.style.display='none';}
+  const input=document.getElementById('proLogo'); if(input) input.value='';
   updatePrintHeader();
 }
 
-function saveProfessionalProfile(){
-  const current=(()=>{try{return JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}')}catch(e){return {}}})();
-  const p={...current};
-  ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline'].forEach(id=>{
-    p[id]=(document.getElementById(id)?.value||'').trim();
+function profileRowToUI(p){
+  TP_PROFILE_CACHE=p||{};
+  TP_PENDING_LOGO=p?.logo||'';
+  const map={
+    proName:p?.nombre||'',
+    proTitle:p?.titulo||p?.especialidad||'',
+    proLicense:p?.cedula||'',
+    proPhone:p?.telefono||'',
+    proEmail:p?.correo||'',
+    proOffice:p?.consultorio||'',
+    proSocial:p?.redes||'',
+    proLocation:p?.ubicacion||'',
+    proTagline:p?.frase||''
+  };
+  Object.entries(map).forEach(([id,value])=>{
+    const el=document.getElementById(id); if(el) el.value=value;
   });
-  localStorage.setItem(TP_PROFILE_KEY,JSON.stringify(p));
-  const msg=document.getElementById('profileSavedMsg');
-  if(msg){msg.textContent='✓ Datos guardados';setTimeout(()=>msg.textContent='',2200);}
+  const img=document.getElementById('proLogoPreview');
+  if(img){
+    if(TP_PENDING_LOGO){img.src=TP_PENDING_LOGO;img.style.display='block';}
+    else{img.removeAttribute('src');img.style.display='none';}
+  }
   updatePrintHeader();
+}
+
+async function loadProfessionalProfile(){
+  setDefaultPlanDate();
+  const client=window.tuPlanSupabase;
+  if(!client){updatePrintHeader();return;}
+  try{
+    const {data:{user},error:userError}=await client.auth.getUser();
+    if(userError || !user){return;}
+    const {data,error}=await client
+      .from('perfiles_profesionales')
+      .select('*')
+      .eq('id',user.id)
+      .maybeSingle();
+    if(error) throw error;
+    if(data) profileRowToUI(data);
+    else{
+      clearProfessionalProfileUI();
+      const emailEl=document.getElementById('proEmail');
+      if(emailEl && user.email) emailEl.value=user.email;
+      updatePrintHeader();
+    }
+  }catch(err){
+    console.error('Error al cargar perfil profesional:',err);
+    const msg=document.getElementById('profileSavedMsg');
+    if(msg) msg.textContent='No fue posible cargar el perfil';
+  }
+}
+
+async function saveProfessionalProfile(){
+  const client=window.tuPlanSupabase;
+  const msg=document.getElementById('profileSavedMsg');
+  if(!client){if(msg) msg.textContent='No hay conexión con Supabase';return;}
+  if(msg) msg.textContent='Guardando...';
+  try{
+    const {data:{user},error:userError}=await client.auth.getUser();
+    if(userError || !user) throw new Error('Sesión no disponible');
+
+    const row={
+      id:user.id,
+      nombre:(document.getElementById('proName')?.value||'').trim(),
+      titulo:(document.getElementById('proTitle')?.value||'').trim(),
+      especialidad:(document.getElementById('proTitle')?.value||'').trim(),
+      cedula:(document.getElementById('proLicense')?.value||'').trim(),
+      telefono:(document.getElementById('proPhone')?.value||'').trim(),
+      correo:(document.getElementById('proEmail')?.value||user.email||'').trim(),
+      consultorio:(document.getElementById('proOffice')?.value||'').trim(),
+      redes:(document.getElementById('proSocial')?.value||'').trim(),
+      ubicacion:(document.getElementById('proLocation')?.value||'').trim(),
+      frase:(document.getElementById('proTagline')?.value||'').trim(),
+      logo:TP_PENDING_LOGO||TP_PROFILE_CACHE.logo||null,
+      actualizado_en:new Date().toISOString()
+    };
+
+    const {data,error}=await client
+      .from('perfiles_profesionales')
+      .upsert(row,{onConflict:'id'})
+      .select()
+      .single();
+    if(error) throw error;
+
+    TP_PROFILE_CACHE=data||row;
+    TP_PENDING_LOGO=TP_PROFILE_CACHE.logo||'';
+    if(msg){msg.textContent='✓ Perfil guardado en TU PLAN';setTimeout(()=>msg.textContent='',2500);}
+    updatePrintHeader();
+  }catch(err){
+    console.error('Error al guardar perfil profesional:',err);
+    if(msg) msg.textContent='No fue posible guardar. Intenta nuevamente.';
+  }
 }
 
 function handleProfessionalLogo(ev){
@@ -4265,30 +4345,27 @@ function handleProfessionalLogo(ev){
   }
   const reader=new FileReader();
   reader.onload=()=>{
-    try{
-      const p=JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}');
-      p.logo=reader.result;
-      localStorage.setItem(TP_PROFILE_KEY,JSON.stringify(p));
-      const img=document.getElementById('proLogoPreview');
-      img.src=reader.result; img.style.display='block';
-      updatePrintHeader();
-    }catch(e){ alert('No fue posible guardar el logotipo en este navegador.'); }
+    TP_PENDING_LOGO=String(reader.result||'');
+    const img=document.getElementById('proLogoPreview');
+    if(img){img.src=TP_PENDING_LOGO;img.style.display='block';}
+    updatePrintHeader();
+    const msg=document.getElementById('profileSavedMsg');
+    if(msg) msg.textContent='Logotipo listo. Pulsa Guardar perfil.';
   };
   reader.readAsDataURL(file);
 }
 
 function updatePrintHeader(){
-  let p={};
-  try{p=JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}')}catch(e){}
-  const name=(document.getElementById('proName')?.value||p.proName||'').trim();
-  const title=(document.getElementById('proTitle')?.value||p.proTitle||'Nutrióloga/o').trim();
-  const license=(document.getElementById('proLicense')?.value||p.proLicense||'').trim();
-  const phone=(document.getElementById('proPhone')?.value||p.proPhone||'').trim();
-  const email=(document.getElementById('proEmail')?.value||p.proEmail||'').trim();
-  const office=(document.getElementById('proOffice')?.value||p.proOffice||'').trim();
-  const social=(document.getElementById('proSocial')?.value||p.proSocial||'').trim();
-  const location=(document.getElementById('proLocation')?.value||p.proLocation||'').trim();
-  const tagline=(document.getElementById('proTagline')?.value||p.proTagline||'').trim();
+  const p=TP_PROFILE_CACHE||{};
+  const name=(document.getElementById('proName')?.value||p.nombre||'').trim();
+  const title=(document.getElementById('proTitle')?.value||p.titulo||p.especialidad||'Nutrióloga/o').trim();
+  const license=(document.getElementById('proLicense')?.value||p.cedula||'').trim();
+  const phone=(document.getElementById('proPhone')?.value||p.telefono||'').trim();
+  const email=(document.getElementById('proEmail')?.value||p.correo||'').trim();
+  const office=(document.getElementById('proOffice')?.value||p.consultorio||'').trim();
+  const social=(document.getElementById('proSocial')?.value||p.redes||'').trim();
+  const location=(document.getElementById('proLocation')?.value||p.ubicacion||'').trim();
+  const tagline=(document.getElementById('proTagline')?.value||p.frase||'').trim();
 
   document.getElementById('printProName').innerHTML=escText(name||'Profesional de nutrición');
   document.getElementById('printProOffice').innerHTML='<span class="tp-print-role">'+escText(title||'Nutrióloga/o')+'</span>'+(office?'<br><span class="tp-print-office-name">'+escText(office)+'</span>':'');
@@ -4302,7 +4379,7 @@ function updatePrintHeader(){
   document.getElementById('printProTagline').innerHTML=tagline?escText(tagline):'';
   document.getElementById('printProLocation').innerHTML=location?escText(location):'';
 
-  const logo=p.logo||'';
+  const logo=TP_PENDING_LOGO||p.logo||'';
   const li=document.getElementById('printProLogo');
   if(logo){li.src=logo;li.style.display='block';}else{li.removeAttribute('src');li.style.display='none';}
 
@@ -4320,7 +4397,7 @@ function updatePrintHeader(){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-  loadProfessionalProfile();
+  setDefaultPlanDate();
   document.getElementById('proLogo')?.addEventListener('change',handleProfessionalLogo);
   ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline','patientName','planDate'].forEach(id=>{
     document.getElementById(id)?.addEventListener('input',updatePrintHeader);
@@ -4328,6 +4405,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 });
 window.addEventListener('beforeprint',updatePrintHeader);
+window.loadProfessionalProfile=loadProfessionalProfile;
+window.saveProfessionalProfile=saveProfessionalProfile;
+window.clearProfessionalProfileUI=clearProfessionalProfileUI;
 
 function generateMenus(){
  generationRunCounter++;
@@ -4855,6 +4935,7 @@ function printMenus(){
       }
     }
   );
+  window.tuPlanSupabase = client;
 
   const gate=document.getElementById('tuplanLoginGate');
   const form=document.getElementById('tuplanLoginForm');
@@ -4868,6 +4949,7 @@ function printMenus(){
     document.body.classList.remove('tuplan-login-locked');
     gate.hidden=true;
     logout.hidden=false;
+    setTimeout(()=>window.loadProfessionalProfile?.(),0);
   }
 
   function showLogin(){
@@ -4877,6 +4959,7 @@ function printMenus(){
     pass.value='';
     error.textContent='';
     setTimeout(()=>email.focus(),60);
+    window.clearProfessionalProfileUI?.();
   }
 
   async function initializeAuth(){
