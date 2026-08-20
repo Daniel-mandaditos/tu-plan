@@ -1791,6 +1791,52 @@ button.primary:hover,.tp-save:hover,.tp-tab-btn.active:hover,#generateBtn:hover,
   }
 </style>
 
+
+<style id="tuplan-ios-login-fix">
+  .tp-login-input-wrap{
+    position:relative;
+    cursor:text;
+  }
+  .tp-login-input{
+    position:relative;
+    z-index:2;
+    display:block;
+    -webkit-appearance:none;
+    appearance:none;
+    -webkit-user-select:text;
+    user-select:text;
+    pointer-events:auto !important;
+    touch-action:manipulation;
+  }
+  .tp-login-usericon,
+  .tp-login-lockicon{
+    z-index:3;
+    pointer-events:none !important;
+  }
+  .tp-login-eye{
+    z-index:4;
+    width:38px;
+    min-width:38px;
+    height:38px;
+    line-height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+
+  @media (max-width:680px), (hover:none) and (pointer:coarse){
+    #tuplanPass{
+      padding-right:18px !important;
+    }
+    #tuplanTogglePass{
+      display:none !important;
+      pointer-events:none !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
@@ -5035,6 +5081,38 @@ function printMenus(){
   });
 
   initializeAuth();
+})();
+</script>
+
+
+<script id="tuplan-ios-focus-fix">
+(function(){
+  function bindLoginFocus(){
+    ['tuplanUser','tuplanPass'].forEach(function(id){
+      const input=document.getElementById(id);
+      if(!input) return;
+      const wrap=input.closest('.tp-login-input-wrap');
+      if(!wrap) return;
+
+      const focusInput=function(ev){
+        if(ev && ev.target && ev.target.closest && ev.target.closest('button')) return;
+        try{
+          input.focus({preventScroll:true});
+        }catch(e){
+          input.focus();
+        }
+      };
+
+      wrap.addEventListener('click',focusInput);
+      wrap.addEventListener('touchend',focusInput,{passive:true});
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',bindLoginFocus);
+  }else{
+    bindLoginFocus();
+  }
 })();
 </script>
 
