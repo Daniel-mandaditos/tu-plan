@@ -1805,11 +1805,11 @@ button.primary:hover,.tp-save:hover,.tp-tab-btn.active:hover,#generateBtn:hover,
       <h2 class="tp-login-title">Bienvenida de nuevo</h2>
       <p class="tp-login-subtitle">Ingresa tu usuario y contraseña para continuar</p>
 
-      <label class="tp-login-label" for="tuplanUser">Usuario</label>
+      <label class="tp-login-label" for="tuplanUser">Correo electrónico</label>
       <div class="tp-login-input-wrap">
         <span class="tp-login-usericon">♙</span>
-        <input class="tp-login-input" id="tuplanUser" type="text" autocomplete="username"
-               placeholder="Ingresa tu usuario" required>
+        <input class="tp-login-input" id="tuplanUser" type="email" autocomplete="username"
+               placeholder="Ingresa tu correo electrónico" required>
       </div>
 
       <label class="tp-login-label" for="tuplanPass">Contraseña</label>
@@ -4838,48 +4838,96 @@ function printMenus(){
 </script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script id="tuplan-login-approved-js">
 (function(){
-  // Acceso local únicamente para pruebas.
-  const DEMO_USER='prueba';
-  const DEMO_PASS='tuplan123';
-  const SESSION_KEY='tuplan_demo_session_v26';
+  const SUPABASE_URL = 'https://iilwftgyhqchewmawwmh.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_NxBq1-6AECYMvOCj0Mc1Kg_I1tnoEvs';
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
 
   const gate=document.getElementById('tuplanLoginGate');
   const form=document.getElementById('tuplanLoginForm');
-  const user=document.getElementById('tuplanUser');
+  const email=document.getElementById('tuplanUser');
   const pass=document.getElementById('tuplanPass');
   const error=document.getElementById('tuplanLoginError');
   const logout=document.getElementById('tuplanLogout');
   const toggle=document.getElementById('tuplanTogglePass');
 
-  function unlock(){
-    sessionStorage.setItem(SESSION_KEY,'1');
+  function showApp(){
     document.body.classList.remove('tuplan-login-locked');
     gate.hidden=true;
     logout.hidden=false;
   }
 
-  function lock(){
-    sessionStorage.removeItem(SESSION_KEY);
+  function showLogin(){
     document.body.classList.add('tuplan-login-locked');
     gate.hidden=false;
     logout.hidden=true;
     pass.value='';
     error.textContent='';
-    setTimeout(()=>user.focus(),60);
+    setTimeout(()=>email.focus(),60);
   }
 
-  if(sessionStorage.getItem(SESSION_KEY)==='1') unlock();
-  else lock();
+  async function initializeAuth(){
+    try {
+      const { data, error:sessionError } = await client.auth.getSession();
+      if(sessionError) throw sessionError;
+      if(data.session) showApp();
+      else showLogin();
+    } catch(err) {
+      console.error('Error al iniciar Supabase Auth:', err);
+      showLogin();
+      error.textContent='No fue posible conectar con el acceso. Intenta nuevamente.';
+    }
+  }
 
-  form.addEventListener('submit',function(e){
+  form.addEventListener('submit', async function(e){
     e.preventDefault();
     error.textContent='';
-    if(user.value.trim()===DEMO_USER && pass.value===DEMO_PASS){
-      unlock();
-    }else{
-      error.textContent='Usuario o contraseña incorrectos.';
+
+    const userEmail=email.value.trim();
+    const password=pass.value;
+
+    if(!userEmail || !password){
+      error.textContent='Ingresa tu correo electrónico y contraseña.';
+      return;
+    }
+
+    const submit=form.querySelector('.tp-login-button');
+    const originalText=submit.textContent;
+    submit.disabled=true;
+    submit.textContent='Ingresando...';
+
+    try {
+      const { data, error:signInError } = await client.auth.signInWithPassword({
+        email:userEmail,
+        password:password
+      });
+
+      if(signInError) throw signInError;
+
+      if(data.session){
+        showApp();
+      } else {
+        error.textContent='No fue posible iniciar sesión.';
+      }
+    } catch(err) {
+      console.error('Error de acceso:', err);
+      error.textContent='Correo electrónico o contraseña incorrectos.';
+    } finally {
+      submit.disabled=false;
+      submit.textContent=originalText;
     }
   });
 
@@ -4890,7 +4938,20 @@ function printMenus(){
     toggle.setAttribute('aria-label',show?'Ocultar contraseña':'Mostrar contraseña');
   });
 
-  logout.addEventListener('click',lock);
+  logout.addEventListener('click', async function(){
+    try {
+      await client.auth.signOut();
+    } finally {
+      showLogin();
+    }
+  });
+
+  client.auth.onAuthStateChange(function(event, session){
+    if(session) showApp();
+    else showLogin();
+  });
+
+  initializeAuth();
 })();
 </script>
 
