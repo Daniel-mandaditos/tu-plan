@@ -441,6 +441,245 @@ td{
   }
 }
 
+
+/* ===== TU PLAN V2 · Perfil profesional + paciente ===== */
+.tp-profile-grid,.tp-patient-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;
+}
+.tp-profile-grid .field,.tp-patient-grid .field{margin:0}
+.tp-profile-grid input,.tp-patient-grid input{
+  width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #ccd8d4;
+  border-radius:9px;font:inherit;background:#fff;
+}
+.tp-profile-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.tp-save{
+  background:#17345A;color:white;border:0;border-radius:9px;padding:11px 16px;
+  font-weight:700;cursor:pointer;
+}
+.tp-saved{font-size:13px;color:#4f6f60}
+.tp-logo-preview{
+  width:92px;height:58px;object-fit:contain;border:1px dashed #bdcbc5;border-radius:8px;
+  background:#fff;padding:5px;display:none;margin-top:8px;
+}
+#printProfessionalHeader{display:none}
+@media(max-width:720px){
+  .tp-profile-grid,.tp-patient-grid{grid-template-columns:1fr}
+}
+@media print{
+  #results > h2{display:none !important;}
+  #results table thead th{background:#78A942 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+  #printProfessionalHeader{
+    display:block !important;
+    margin:0 0 12px 0;padding:0 0 10px 0;border-bottom:2px solid #17345A;
+    page-break-inside:avoid;
+  }
+  .tp-print-top{display:flex;align-items:center;gap:14px}
+  .tp-print-logo{width:88px;height:58px;object-fit:contain;display:none}
+  .tp-print-name{font-size:18px;font-weight:700;color:#17345A}
+  .tp-print-details{font-size:10px;line-height:1.35;color:#3f4f59}
+  .tp-print-plan{margin-top:9px;font-size:13px}
+  .tp-print-plan strong{color:#17345A}
+}
+
+
+/* ===== TU PLAN V2 PRUEBA 02 · Pestañas + membrete profesional ===== */
+.tp-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px 0;
+}
+.tp-tab-btn{
+  border:1px solid #cfdad6;background:#fff;color:#17345A;
+  padding:11px 18px;border-radius:10px;font-weight:700;cursor:pointer;
+}
+.tp-tab-btn.active{
+  background:#17345A;color:#fff;border-color:#17345A;
+}
+.tp-tab-panel{display:none}
+.tp-tab-panel.active{display:block}
+
+.tp-profile-intro{
+  display:flex;justify-content:space-between;gap:20px;align-items:flex-start;
+  margin-bottom:14px;
+}
+.tp-profile-note{
+  font-size:13px;color:var(--muted);max-width:720px;margin:0;
+}
+.tp-profile-badge{
+  font-size:12px;font-weight:700;color:#557a63;background:#eef8f2;
+  border:1px solid #d5eadc;border-radius:999px;padding:7px 10px;white-space:nowrap;
+}
+
+/* Print header */
+@media print{
+  #printProfessionalHeader{
+    display:block !important;
+    margin:0 0 9px 0;padding:0 0 8px 0;border-bottom:1.5px solid #17345A;
+  }
+  .tp-print-top{
+    display:grid;
+    grid-template-columns:82px minmax(0,1fr) auto;
+    align-items:center;
+    column-gap:12px;
+  }
+  .tp-print-logo{
+    width:78px;height:54px;object-fit:contain;display:none;
+  }
+  .tp-print-main{min-width:0}
+  .tp-print-name{
+    font-size:16px;font-weight:700;line-height:1.15;color:#17345A;margin-bottom:3px;
+  }
+  .tp-print-office{
+    font-size:9.5px;line-height:1.2;color:#4d5e68;margin-bottom:2px;
+  }
+  .tp-print-details{
+    font-size:8.5px;line-height:1.28;color:#4d5e68;
+  }
+  .tp-print-contact{
+    text-align:right;font-size:8.5px;line-height:1.35;color:#4d5e68;
+    max-width:205px;
+  }
+  .tp-print-plan{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    margin-top:8px;font-size:9.5px;line-height:1.25;
+  }
+  .tp-print-plan-title{
+    font-size:11px;font-weight:700;color:#17345A;white-space:nowrap;
+  }
+  .tp-print-plan-meta{
+    text-align:right;color:#263746;
+  }
+}
+
+
+:root{
+  --tp-navy:#17345A;
+  --tp-green:#6C9B45;
+  --tp-green-soft:#EEF4E9;
+  --tp-line:#D8E1D4;
+  --tp-text:#263746;
+}
+
+/* Brand header */
+header{
+  background:#fff !important;
+  color:var(--tp-navy) !important;
+  border-bottom:1px solid #d9e2dc;
+  box-shadow:0 2px 10px rgba(23,52,90,.05);
+}
+header .wrap{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+}
+.tp-brand-lockup{
+  display:flex;align-items:center;gap:14px;min-width:0;
+}
+.tp-brand-logo{
+  height:82px;width:auto;max-width:500px;object-fit:contain;display:block;
+}
+.tp-brand-copy{
+  display:none;
+}
+@media(max-width:760px){
+  .tp-brand-logo{height:58px;max-width:78vw}
+}
+
+/* Main brand accents */
+h2,.section-title,.menu-title,.prep-title{color:var(--tp-navy) !important}
+button.primary,.tp-save,.tp-tab-btn.active,#generateBtn,.generate-btn{
+  background:var(--tp-navy) !important;
+}
+button.primary:hover,.tp-save:hover,.tp-tab-btn.active:hover,#generateBtn:hover,.generate-btn:hover{
+  filter:brightness(.96);
+}
+.tp-tab-btn{
+  color:var(--tp-navy);border-color:#cfd9d3;
+}
+.tp-tab-btn.active{
+  color:white;border-color:var(--tp-navy);
+}
+.notice{border-color:#cfdcc8 !important;background:#f7faf5 !important;color:#586d50 !important}
+.card{border-color:#dfe6e2 !important}
+.results thead th{background:#1F7569 !important}
+
+/* Hide diagnostics entirely */
+#diagnosticPanel,
+.diagnostic,
+.diagnostics,
+[class*="diagnostic"],
+[id*="diagnostic"]{
+  display:none !important;
+}
+
+/* Compact print: force one landscape letter page for 5 menus */
+@media print{
+  @page{size:Letter landscape;margin:5mm}
+  html,body{width:100%;margin:0 !important;padding:0 !important;background:#fff !important}
+  body{font-size:7.1px !important;line-height:1.12 !important}
+  header,.no-print,.notice,footer,.tp-tabs,.tp-tab-panel:not(.active){display:none !important}
+  #tabPlan{display:none !important}
+  .wrap,.container,main{max-width:none !important;width:100% !important;margin:0 !important;padding:0 !important}
+  .card{box-shadow:none !important;border:0 !important;padding:0 !important;margin:0 !important}
+  #printProfessionalHeader{margin:0 0 3mm 0 !important;padding-bottom:2mm !important}
+  .tp-print-top{grid-template-columns:60px minmax(0,1fr) 190px !important;column-gap:8px !important}
+  .tp-print-logo{width:58px !important;height:38px !important}
+  .tp-print-name{font-size:11px !important;margin-bottom:1px !important}
+  .tp-print-office,.tp-print-details,.tp-print-contact{font-size:6.8px !important;line-height:1.12 !important}
+  .tp-print-plan{margin-top:3px !important;font-size:7.4px !important}
+  .tp-print-plan-title{font-size:8.8px !important}
+  #results{display:block !important;margin:0 !important;padding:0 !important}
+  #results h2{font-size:10px !important;margin:2px 0 3px !important}
+  #results table{
+    width:100% !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    font-size:6.4px !important;
+    line-height:1.05 !important;
+  }
+  #results th,#results td{
+    padding:2.2px 3px !important;
+    vertical-align:top !important;
+  }
+  #results th:first-child,#results td:first-child{width:55px !important}
+  .prep-title,.menu-title{
+    font-size:7.3px !important;
+    line-height:1.05 !important;
+    margin:0 0 1px !important;
+  }
+  .prep-components,.prep-accomp,.meta{
+    font-size:6.1px !important;
+    line-height:1.05 !important;
+    margin:0 !important;
+  }
+  #results tr{page-break-inside:avoid !important}
+  #results .restrictions-row,
+  #results tr:first-child{page-break-inside:avoid !important}
+  #results *{max-height:none !important}
+}
+
+
+@media print{
+  #tabPlan,#tabProfile,.tp-tabs,
+  form,.config-card,.restrictions-card,
+  #restrictionsPanel,
+  .actions,.controls,.toolbar{
+    display:none !important;
+  }
+
+  #printProfessionalHeader,
+  #results{
+    display:block !important;
+  }
+
+  /* Use the full first page immediately */
+  #printProfessionalHeader{
+    break-before:auto !important;
+    page-break-before:auto !important;
+  }
+  #results{
+    break-before:auto !important;
+    page-break-before:auto !important;
+  }
+}
+
 </style>
 
 <style id="print-v166-fix">
@@ -633,20 +872,993 @@ td{
 }
 </style>
 
+
+<style id="tuplan-print-reference-final">
+@media print {
+  @page { size: Letter landscape; margin: 5mm; }
+
+  /* Only professional header + menu table */
+  body > * { display:none !important; }
+  main { display:block !important; margin:0 !important; padding:0 !important; }
+  main > * { display:none !important; }
+  #printProfessionalHeader,
+  #results { display:block !important; }
+
+  /* Professional header — larger, like the approved reference */
+  #printProfessionalHeader{
+    margin:0 0 3mm 0 !important;
+    padding:0 0 2.5mm 0 !important;
+    border-bottom:1.3px solid #78A942 !important;
+    color:#17345A !important;
+  }
+
+  .tp-print-brandrow{
+    display:grid !important;
+    grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr) minmax(0,.85fr) !important;
+    align-items:center !important;
+    gap:7mm !important;
+    min-height:22mm !important;
+  }
+
+  .tp-print-identity{
+    display:flex !important;
+    align-items:center !important;
+    gap:4mm !important;
+    min-width:0 !important;
+  }
+
+  .tp-print-logo{
+    display:block;
+    width:24mm !important;
+    height:20mm !important;
+    object-fit:contain !important;
+    flex:0 0 auto !important;
+  }
+
+  .tp-print-main{min-width:0 !important}
+  .tp-print-name{
+    font-size:12.5pt !important;
+    line-height:1.05 !important;
+    font-weight:700 !important;
+    color:#17345A !important;
+    margin:0 0 1mm 0 !important;
+  }
+  .tp-print-office{
+    font-size:8.4pt !important;
+    line-height:1.05 !important;
+    font-weight:700 !important;
+    color:#78A942 !important;
+    margin:0 0 1mm 0 !important;
+  }
+  .tp-print-license{
+    font-size:7.2pt !important;
+    line-height:1.05 !important;
+    color:#263746 !important;
+  }
+
+  .tp-print-contact{
+    border-left:1px solid #78A942 !important;
+    padding-left:6mm !important;
+    text-align:left !important;
+    font-size:7.3pt !important;
+    line-height:1.45 !important;
+    color:#263746 !important;
+    max-width:none !important;
+  }
+
+  .tp-print-taglinebox{
+    border-left:1px solid #78A942 !important;
+    padding-left:6mm !important;
+    text-align:left !important;
+    min-height:14mm !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+  }
+  .tp-print-tagline{
+    font-size:8.5pt !important;
+    line-height:1.18 !important;
+    color:#5E8F35 !important;
+    font-style:italic !important;
+  }
+  .tp-print-location{
+    margin-top:1.5mm !important;
+    font-size:6.8pt !important;
+    color:#52616B !important;
+  }
+
+  .tp-print-titleline{
+    display:flex !important;
+    justify-content:space-between !important;
+    align-items:center !important;
+    gap:5mm !important;
+    margin-top:2.5mm !important;
+  }
+  .tp-print-plan-title{
+    font-size:9.6pt !important;
+    line-height:1 !important;
+    font-weight:700 !important;
+    color:#17345A !important;
+  }
+  .tp-print-plan-meta{
+    text-align:right !important;
+    font-size:7.4pt !important;
+    line-height:1 !important;
+    color:#263746 !important;
+  }
+
+  /* Remove "Opciones de menú" to save vertical space */
+  #results > h2 { display:none !important; }
+
+  #results{
+    margin:0 !important;padding:0 !important;border:0 !important;
+    box-shadow:none !important;background:#fff !important;
+    width:100% !important;max-width:none !important;
+  }
+  #results .table-wrapper{display:block !important;overflow:visible !important;width:100% !important}
+
+  #results table{
+    width:100% !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    font-size:7.1pt !important;
+    line-height:1.10 !important;
+  }
+  #results thead th{
+    background:#78A942 !important;
+    color:#fff !important;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+    font-size:7.3pt !important;
+    font-weight:700 !important;
+    padding:2.2mm 1.7mm !important;
+    border:0 !important;
+  }
+  #results th:first-child,#results td:first-child{width:9% !important}
+  #results th:not(:first-child),#results td:not(:first-child){width:18.2% !important}
+
+  #results td{
+    padding:2.0mm 1.7mm !important;
+    vertical-align:top !important;
+    border-bottom:.35px solid #d7e2d2 !important;
+  }
+
+  #results .prep-title{
+    font-size:7.5pt !important;
+    line-height:1.08 !important;
+    margin:0 0 .8mm 0 !important;
+    color:#17345A !important;
+  }
+  #results .prep-components,
+  #results .prep-accomp{
+    font-size:6.7pt !important;
+    line-height:1.10 !important;
+    margin:0 0 .6mm 0 !important;
+  }
+
+  /* Hide technical rows and macros as before */
+  #results .meta{display:none !important}
+  #menuTableBody > tr:first-child{display:none !important}
+  #menuTableBody > tr:last-child{display:none !important}
+
+  /* Keep five meal rows on one page */
+  #results,#results table,#results tbody,#results tr,#results td{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  /* Compact but readable row heights */
+  #menuTableBody > tr:nth-child(2){height:31mm !important}
+  #menuTableBody > tr:nth-child(3){height:14mm !important}
+  #menuTableBody > tr:nth-child(4){height:39mm !important}
+  #menuTableBody > tr:nth-child(5){height:14mm !important}
+  #menuTableBody > tr:nth-child(6){height:31mm !important}
+}
+</style>
+
+
+<style id="tuplan-print-header-large-final">
+@media print {
+  /* Professional header: deliberately larger and more like stationery */
+  #printProfessionalHeader{
+    min-height:28mm !important;
+    margin:0 0 2.5mm 0 !important;
+    padding:0 0 2.5mm 0 !important;
+    border-bottom:1.6px solid #78A942 !important;
+  }
+
+  .tp-print-brandrow{
+    display:grid !important;
+    grid-template-columns:44% 28% 28% !important;
+    gap:0 !important;
+    min-height:23mm !important;
+    align-items:center !important;
+  }
+
+  .tp-print-identity{
+    display:grid !important;
+    grid-template-columns:31mm minmax(0,1fr) !important;
+    align-items:center !important;
+    gap:4mm !important;
+    padding-right:6mm !important;
+  }
+
+  .tp-print-logo{
+    display:block !important;
+    width:29mm !important;
+    height:23mm !important;
+    object-fit:contain !important;
+  }
+
+  .tp-print-name{
+    font-size:15pt !important;
+    line-height:1.0 !important;
+    font-weight:700 !important;
+    letter-spacing:.1px !important;
+    margin:0 0 1.2mm 0 !important;
+    color:#17345A !important;
+  }
+
+  .tp-print-office{
+    margin:0 0 1mm 0 !important;
+    line-height:1.1 !important;
+  }
+  .tp-print-role{
+    color:#78A942 !important;
+    font-size:9pt !important;
+    font-weight:700 !important;
+    text-transform:uppercase !important;
+    letter-spacing:.7px !important;
+  }
+  .tp-print-office-name{
+    color:#52616B !important;
+    font-size:7.2pt !important;
+    font-weight:400 !important;
+  }
+  .tp-print-license{
+    font-size:7.5pt !important;
+    color:#263746 !important;
+  }
+
+  .tp-print-contact{
+    min-height:18mm !important;
+    border-left:1.2px solid #78A942 !important;
+    padding:1mm 5mm !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    text-align:left !important;
+    font-size:8pt !important;
+    line-height:1.55 !important;
+    color:#263746 !important;
+  }
+
+  .tp-print-taglinebox{
+    min-height:18mm !important;
+    border-left:1.2px solid #78A942 !important;
+    padding:1mm 0 1mm 6mm !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+  }
+  .tp-print-tagline{
+    font-size:10.5pt !important;
+    line-height:1.18 !important;
+    color:#5E8F35 !important;
+    font-style:italic !important;
+    font-weight:500 !important;
+  }
+  .tp-print-location{
+    margin-top:1.5mm !important;
+    font-size:7.2pt !important;
+    color:#52616B !important;
+  }
+
+  .tp-print-titleline{
+    margin-top:2.5mm !important;
+    min-height:6mm !important;
+  }
+  .tp-print-plan-title{
+    font-size:10.5pt !important;
+  }
+  .tp-print-plan-meta{
+    font-size:7.6pt !important;
+  }
+
+  /* Reclaim space from table, while keeping legibility */
+  #results table{
+    font-size:6.7pt !important;
+    line-height:1.07 !important;
+  }
+  #results thead th{
+    font-size:7pt !important;
+    padding:1.8mm 1.4mm !important;
+  }
+  #results td{
+    padding:1.5mm 1.4mm !important;
+  }
+  #results .prep-title{
+    font-size:7.2pt !important;
+    margin-bottom:.5mm !important;
+  }
+  #results .prep-components,
+  #results .prep-accomp{
+    font-size:6.3pt !important;
+    line-height:1.07 !important;
+  }
+
+  /* Let rows use natural height; avoids shrinking the whole page unnecessarily */
+  #menuTableBody > tr:nth-child(2),
+  #menuTableBody > tr:nth-child(3),
+  #menuTableBody > tr:nth-child(4),
+  #menuTableBody > tr:nth-child(5),
+  #menuTableBody > tr:nth-child(6){
+    height:auto !important;
+  }
+}
+</style>
+
+
+<style id="tuplan-prueba08-print-final">
+#printPlanFooter{display:none}
+
+@media print{
+  @page{size:Letter landscape;margin:4.5mm}
+
+  html,body{
+    margin:0 !important;
+    padding:0 !important;
+    width:100% !important;
+    background:#fff !important;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+
+  /* Print only the professional stationery + plan. */
+  header,.tp-tabs,#tabPlan,#tabProfile,.no-print,.notice,footer,
+  form,.actions,.controls,.toolbar,#diagnosticPanel{
+    display:none !important;
+  }
+  main{
+    display:block !important;
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #printProfessionalHeader,#results,#printPlanFooter{
+    display:block !important;
+  }
+
+  /* ===== PROFESSIONAL LETTERHEAD ===== */
+  #printProfessionalHeader{
+    width:100% !important;
+    min-height:31mm !important;
+    margin:0 0 3mm 0 !important;
+    padding:0 0 2.5mm 0 !important;
+    border:0 !important;
+    border-bottom:1.4px solid #79A943 !important;
+    box-sizing:border-box !important;
+  }
+
+  .tp-print-brandrow{
+    display:grid !important;
+    grid-template-columns:42% 29% 29% !important;
+    min-height:22mm !important;
+    align-items:center !important;
+    gap:0 !important;
+  }
+
+  .tp-print-identity{
+    display:grid !important;
+    grid-template-columns:34mm minmax(0,1fr) !important;
+    gap:4.5mm !important;
+    align-items:center !important;
+    min-width:0 !important;
+    padding-right:6mm !important;
+    box-sizing:border-box !important;
+  }
+
+  .tp-print-logo{
+    display:block !important;
+    width:32mm !important;
+    height:25mm !important;
+    max-width:32mm !important;
+    max-height:25mm !important;
+    object-fit:contain !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  .tp-print-main{
+    min-width:0 !important;
+    padding:0 !important;
+  }
+
+  .tp-print-name{
+    font-family:Arial,Helvetica,sans-serif !important;
+    font-size:16.5pt !important;
+    line-height:1.02 !important;
+    font-weight:700 !important;
+    color:#16345A !important;
+    margin:0 0 1.2mm 0 !important;
+    white-space:normal !important;
+  }
+
+  .tp-print-office{
+    font-family:Arial,Helvetica,sans-serif !important;
+    margin:0 0 1.2mm 0 !important;
+    line-height:1.12 !important;
+  }
+  .tp-print-role{
+    display:inline-block !important;
+    color:#79A943 !important;
+    font-size:9.5pt !important;
+    font-weight:700 !important;
+    letter-spacing:.75px !important;
+    text-transform:uppercase !important;
+  }
+  .tp-print-office-name{
+    display:inline-block !important;
+    margin-top:.6mm !important;
+    color:#4D5D66 !important;
+    font-size:7.8pt !important;
+    font-weight:400 !important;
+  }
+  .tp-print-license{
+    font-size:8pt !important;
+    line-height:1.05 !important;
+    color:#263746 !important;
+  }
+
+  .tp-print-contact{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    min-height:19mm !important;
+    border-left:1.1px solid #79A943 !important;
+    padding:0 6mm !important;
+    box-sizing:border-box !important;
+    text-align:left !important;
+    font-size:8.6pt !important;
+    line-height:1.55 !important;
+    color:#263746 !important;
+    max-width:none !important;
+  }
+
+  .tp-print-taglinebox{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    min-height:19mm !important;
+    border-left:1.1px solid #79A943 !important;
+    padding:0 0 0 7mm !important;
+    box-sizing:border-box !important;
+    text-align:left !important;
+  }
+  .tp-print-tagline{
+    color:#5B8B35 !important;
+    font-size:11pt !important;
+    line-height:1.18 !important;
+    font-weight:500 !important;
+    font-style:italic !important;
+  }
+  .tp-print-location{
+    margin-top:1.5mm !important;
+    color:#52616B !important;
+    font-size:7.6pt !important;
+    line-height:1.15 !important;
+  }
+
+  .tp-print-titleline{
+    display:grid !important;
+    grid-template-columns:1fr auto !important;
+    align-items:center !important;
+    gap:5mm !important;
+    min-height:7mm !important;
+    margin:2.2mm 0 0 0 !important;
+    padding:0 1.5mm !important;
+    box-sizing:border-box !important;
+  }
+  .tp-print-plan-title{
+    color:#16345A !important;
+    font-size:12pt !important;
+    line-height:1 !important;
+    font-weight:800 !important;
+  }
+  .tp-print-plan-meta{
+    color:#263746 !important;
+    font-size:8.4pt !important;
+    line-height:1 !important;
+    font-weight:400 !important;
+    white-space:nowrap !important;
+  }
+  .tp-print-plan-meta strong{
+    color:#16345A !important;
+    font-weight:800 !important;
+  }
+
+  /* ===== MEAL GRID ===== */
+  #results{
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    box-shadow:none !important;
+    background:#fff !important;
+  }
+  #results > h2{display:none !important}
+  #results .table-wrapper{
+    width:100% !important;
+    overflow:visible !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #results table{
+    width:100% !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    margin:0 !important;
+    font-family:Arial,Helvetica,sans-serif !important;
+  }
+  #results thead th{
+    background:#79A943 !important;
+    color:#fff !important;
+    font-size:9pt !important;
+    line-height:1 !important;
+    font-weight:700 !important;
+    text-align:left !important;
+    padding:3mm 2.3mm !important;
+    border-right:.4px solid rgba(255,255,255,.45) !important;
+  }
+  #results th:first-child,#results td:first-child{width:10% !important}
+  #results th:not(:first-child),#results td:not(:first-child){width:18% !important}
+
+  #results td{
+    vertical-align:top !important;
+    padding:2.6mm 2.3mm !important;
+    border:0 !important;
+    border-right:.35px solid #D5E0D0 !important;
+    border-bottom:.45px solid #C9D7C3 !important;
+    color:#15243D !important;
+    box-sizing:border-box !important;
+    overflow:visible !important;
+  }
+
+  #results tbody tr:nth-child(2),
+  #results tbody tr:nth-child(4),
+  #results tbody tr:nth-child(6){
+    background:#fff !important;
+  }
+  #results tbody tr:nth-child(3),
+  #results tbody tr:nth-child(5){
+    background:#FCFDFB !important;
+  }
+
+  /* Give the page the same generous visual rhythm as the approved mockup */
+  #menuTableBody > tr:nth-child(2){height:36mm !important}
+  #menuTableBody > tr:nth-child(3){height:16mm !important}
+  #menuTableBody > tr:nth-child(4){height:42mm !important}
+  #menuTableBody > tr:nth-child(5){height:16mm !important}
+  #menuTableBody > tr:nth-child(6){height:36mm !important}
+
+  #results td:first-child{
+    color:#315D1D !important;
+    font-size:9.5pt !important;
+    line-height:1.1 !important;
+    font-weight:700 !important;
+    vertical-align:middle !important;
+    text-align:left !important;
+    padding-left:3.5mm !important;
+  }
+
+  /* Simple print icons for meal periods, no dependence on external images */
+  #menuTableBody > tr:nth-child(2) td:first-child::before{
+    content:"☀";
+    display:block;
+    color:#5C9535;
+    font-size:16pt;
+    margin-bottom:1.4mm;
+  }
+  #menuTableBody > tr:nth-child(3) td:first-child::before{
+    content:"◇";
+    color:#5C9535;
+    font-size:12pt;
+    margin-right:1.5mm;
+  }
+  #menuTableBody > tr:nth-child(4) td:first-child::before{
+    content:"≋";
+    display:block;
+    color:#5C9535;
+    font-size:17pt;
+    line-height:.8;
+    margin-bottom:1.5mm;
+  }
+  #menuTableBody > tr:nth-child(5) td:first-child::before{
+    content:"❧";
+    color:#5C9535;
+    font-size:12pt;
+    margin-right:1.5mm;
+  }
+  #menuTableBody > tr:nth-child(6) td:first-child::before{
+    content:"☾";
+    display:block;
+    color:#5C9535;
+    font-size:16pt;
+    margin-bottom:1.4mm;
+  }
+
+  #results .prep-title{
+    color:#142747 !important;
+    font-size:8.7pt !important;
+    line-height:1.14 !important;
+    font-weight:700 !important;
+    margin:0 0 1.2mm 0 !important;
+  }
+  #results .prep-components,
+  #results .prep-accomp{
+    color:#172233 !important;
+    font-size:7.5pt !important;
+    line-height:1.20 !important;
+    margin:0 0 .9mm 0 !important;
+  }
+  #results .prep-accomp strong{
+    color:#285F25 !important;
+    font-weight:700 !important;
+  }
+
+  /* Hide restrictions summary and totals/macros in patient printout */
+  #menuTableBody > tr:first-child,
+  #menuTableBody > tr:last-child,
+  #results .meta{
+    display:none !important;
+  }
+
+  #results table,#results tbody,#results tr,#results td{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  /* ===== FOOTER ===== */
+  #printPlanFooter{
+    display:block !important;
+    margin:2.3mm 0 0 0 !important;
+    padding:0 !important;
+    text-align:center !important;
+    color:#3C7330 !important;
+    font-family:Arial,Helvetica,sans-serif !important;
+    font-size:7.4pt !important;
+    line-height:1 !important;
+  }
+}
+</style>
+
+
+<style id="tuplan-login-approved-css">
+  body.tuplan-login-locked { overflow:hidden !important; }
+
+  #tuplanLoginGate {
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:34px 20px;
+    box-sizing:border-box;
+    overflow:auto;
+    background:#fbfcfb;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  #tuplanLoginGate[hidden] { display:none !important; }
+
+  .tp-login-stage {
+    position:relative;
+    width:min(760px,calc(100vw - 40px));
+    padding:0;
+  }
+
+  /* Organic decoration stays outside/behind the white card */
+  .tp-login-stage::before {
+    content:"";
+    position:absolute;
+    z-index:0;
+    right:-92px;
+    top:28px;
+    width:245px;
+    height:390px;
+    background:rgba(218,231,206,.76);
+    border-radius:55% 45% 55% 45% / 42% 48% 52% 58%;
+    transform:rotate(18deg);
+  }
+  .tp-login-stage::after {
+    content:"";
+    position:absolute;
+    z-index:0;
+    left:-88px;
+    bottom:-58px;
+    width:220px;
+    height:235px;
+    background:rgba(228,239,220,.86);
+    border-radius:44% 56% 49% 51%;
+    transform:rotate(-16deg);
+  }
+
+  .tp-login-card {
+    position:relative;
+    z-index:2;
+    width:min(620px,100%);
+    margin:0 auto;
+    padding:44px 56px 38px;
+    box-sizing:border-box;
+    background:#fff;
+    border:1px solid #e5ebe8;
+    border-radius:24px;
+    box-shadow:0 22px 58px rgba(17,48,72,.13);
+  }
+
+  .tp-login-logo {
+    width:min(430px,94%);
+    height:auto;
+    display:block;
+    margin:0 auto;
+  }
+  .tp-login-generator {
+    margin-top:-4px;
+    text-align:center;
+    color:#717985;
+    font-size:18px;
+    font-weight:400;
+  }
+  .tp-login-divider {
+    height:1px;
+    width:100%;
+    margin:28px 0 32px;
+    background:#e2e7e5;
+  }
+
+  .tp-login-title {
+    margin:0 0 9px;
+    text-align:center;
+    color:#0B2B50;
+    font-size:29px;
+    line-height:1.15;
+    font-weight:800;
+  }
+  .tp-login-subtitle {
+    margin:0 0 29px;
+    text-align:center;
+    color:#727b87;
+    font-size:15px;
+    line-height:1.45;
+  }
+
+  .tp-login-label {
+    display:block;
+    margin:17px 0 8px;
+    color:#0B2B50;
+    font-size:15px;
+    font-weight:800;
+  }
+
+  .tp-login-input-wrap {
+    position:relative;
+  }
+  .tp-login-input {
+    width:100%;
+    height:56px;
+    padding:0 48px;
+    box-sizing:border-box;
+    border:1px solid #d5dfda;
+    border-radius:11px;
+    background:#fff;
+    color:#24364b;
+    font-size:16px;
+    outline:none;
+  }
+  .tp-login-input::placeholder { color:#808896; }
+  .tp-login-input:focus {
+    border-color:#5A9A33;
+    box-shadow:0 0 0 3px rgba(90,154,51,.12);
+  }
+
+  .tp-login-usericon,
+  .tp-login-lockicon {
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#5A9A33;
+    font-size:21px;
+    line-height:1;
+    pointer-events:none;
+  }
+  .tp-login-eye {
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    border:0;
+    background:transparent;
+    color:#7c8490;
+    padding:5px;
+    font-size:19px;
+    cursor:pointer;
+  }
+
+  .tp-login-button {
+    width:100%;
+    height:58px;
+    margin-top:25px;
+    border:0;
+    border-radius:10px;
+    background:#5A9A33;
+    color:#fff;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 7px 16px rgba(90,154,51,.20);
+  }
+  .tp-login-button:hover { filter:brightness(1.04); }
+
+  #tuplanLoginError {
+    min-height:18px;
+    margin-top:9px;
+    text-align:center;
+    color:#a33b39;
+    font-size:13px;
+  }
+
+  .tp-login-forgot {
+    display:flex;
+    align-items:center;
+    gap:14px;
+    width:100%;
+    margin:8px 0 22px;
+    color:#4f922d;
+    font-size:14px;
+    white-space:nowrap;
+  }
+  .tp-login-forgot::before,
+  .tp-login-forgot::after {
+    content:"";
+    height:1px;
+    flex:1;
+    background:#dce3df;
+  }
+
+  .tp-login-help {
+    text-align:center;
+    color:#3f4853;
+    font-size:15px;
+  }
+  .tp-login-help .icon {
+    color:#5A9A33;
+    font-size:21px;
+    vertical-align:-2px;
+    margin-right:8px;
+  }
+  .tp-login-help strong { color:#4f922d; }
+
+  #tuplanLogout {
+    position:fixed;
+    top:12px;
+    right:14px;
+    z-index:50000;
+    border:1px solid #d6e2dd;
+    background:#fff;
+    color:#17345A;
+    border-radius:9px;
+    padding:8px 12px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 16px rgba(0,0,0,.08);
+  }
+  #tuplanLogout[hidden] { display:none !important; }
+
+  @media(max-height:820px) {
+    #tuplanLoginGate { align-items:flex-start; padding-top:20px; padding-bottom:20px; }
+    .tp-login-card { padding-top:31px; padding-bottom:27px; }
+    .tp-login-logo { width:min(370px,92%); }
+    .tp-login-generator { font-size:16px; }
+    .tp-login-divider { margin:20px 0 22px; }
+    .tp-login-subtitle { margin-bottom:18px; }
+    .tp-login-input { height:51px; }
+    .tp-login-button { height:53px; margin-top:19px; }
+    .tp-login-forgot { margin-bottom:15px; }
+  }
+
+  @media(max-width:680px) {
+    #tuplanLoginGate { padding:18px 14px; }
+    .tp-login-stage { width:100%; }
+    .tp-login-card { padding:34px 28px 30px; border-radius:21px; }
+    .tp-login-logo { width:min(390px,96%); }
+    .tp-login-generator { font-size:15px; }
+    .tp-login-title { font-size:24px; }
+    .tp-login-stage::before { right:-130px; }
+    .tp-login-stage::after { left:-135px; }
+  }
+
+  @media(max-width:430px) {
+    .tp-login-card { padding:28px 20px 25px; }
+    .tp-login-title { font-size:22px; }
+    .tp-login-forgot { gap:8px; font-size:12.5px; }
+  }
+
+  @media print {
+    #tuplanLoginGate,#tuplanLogout { display:none !important; }
+  }
+</style>
+
 </head>
 
 <body>
 
+<div id="tuplanLoginGate" role="dialog" aria-modal="true">
+  <div class="tp-login-stage">
+    <form id="tuplanLoginForm" class="tp-login-card">
+      <img class="tp-login-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MjAiIGhlaWdodD0iMTcwIiB2aWV3Qm94PSIwIDAgNjIwIDE3MCI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIgOSkiPgogICAgPHBhdGggZD0iTTIyIDRoNzJsMzQgMzR2MTA4SDIyYy0xMCAwLTE4LTgtMTgtMThWMjJDNCAxMiAxMiA0IDIyIDR6IgogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNUE5QTMzIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNOTQgNHYzNGgzNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNUE5QTMzIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMzIgNjJoNDRNMzIgODhoMjIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVBOUEzMyIgc3Ryb2tlLXdpZHRoPSIxMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNNzAgMTAxbDE2IDE2IDMxLTM2IiBmaWxsPSJub25lIiBzdHJva2U9IiMwQjJCNTAiIHN0cm9rZS13aWR0aD0iMTIiCiAgICAgICAgICBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPHRleHQgeD0iMTc2IiB5PSI3OSIgZm9udC1mYW1pbHk9IkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjY3IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjMEIyQjUwIj5UdTwvdGV4dD4KICA8dGV4dCB4PSIyNzAiIHk9Ijc5IiBmb250LWZhbWlseT0iQXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNjciIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiM1QTlBMzMiPlBsYW48L3RleHQ+CiAgPHRleHQgeD0iMTc3IiB5PSIxMjEiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgZm9udC13ZWlnaHQ9IjUwMCIgZmlsbD0iIzVBOUEzMyI+VHUgY29uc3VsdGEsIG3DoXMgc2ltcGxlLjwvdGV4dD4KPC9zdmc+" alt="Tu Plan - Tu consulta, más simple.">
+      <div class="tp-login-generator">Generador de menús nutricionales</div>
+      <div class="tp-login-divider"></div>
+
+      <h2 class="tp-login-title">Bienvenida de nuevo</h2>
+      <p class="tp-login-subtitle">Ingresa tu usuario y contraseña para continuar</p>
+
+      <label class="tp-login-label" for="tuplanUser">Usuario</label>
+      <div class="tp-login-input-wrap">
+        <span class="tp-login-usericon">♙</span>
+        <input class="tp-login-input" id="tuplanUser" type="text" autocomplete="username"
+               placeholder="Ingresa tu usuario" required>
+      </div>
+
+      <label class="tp-login-label" for="tuplanPass">Contraseña</label>
+      <div class="tp-login-input-wrap">
+        <span class="tp-login-lockicon">♙</span>
+        <input class="tp-login-input" id="tuplanPass" type="password" autocomplete="current-password"
+               placeholder="Ingresa tu contraseña" required>
+        <button class="tp-login-eye" id="tuplanTogglePass" type="button" aria-label="Mostrar contraseña">◉</button>
+      </div>
+
+      <button class="tp-login-button" type="submit">Iniciar sesión</button>
+      <div id="tuplanLoginError" aria-live="polite"></div>
+
+      <div class="tp-login-forgot">¿Olvidaste tu contraseña?</div>
+      <div class="tp-login-help"><span class="icon">♧</span>¿Necesitas ayuda? <strong>Contáctanos</strong></div>
+    </form>
+  </div>
+</div>
+
+<button id="tuplanLogout" type="button" hidden>Cerrar sesión</button>
+
+
 <header>
-    <div class="header-inner">
-        <h1>Generador de Menús Nutricionales</h1>
-        <p>Herramienta de apoyo para la elaboración de planes alimentarios</p>
+  <div class="wrap">
+    <div class="tp-brand-lockup">
+      <img class="tp-brand-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MjAiIGhlaWdodD0iMTkwIiB2aWV3Qm94PSIwIDAgNzIwIDE5MCI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIgMTQpIj4KICAgIDxwYXRoIGQ9Ik0yNCA0aDc2bDM2IDM2djExMkgyNGMtMTEgMC0yMC05LTIwLTIwVjI0QzQgMTMgMTMgNCAyNCA0eiIKICAgICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVBOUEzMyIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTEwMCA0djM2aDM2IiBmaWxsPSJub25lIiBzdHJva2U9IiM1QTlBMzMiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0zNCA2Nmg0Nk0zNCA5MmgyMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNUE5QTMzIiBzdHJva2Utd2lkdGg9IjExIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik03MyAxMDVsMTcgMTcgMzMtMzgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBCMkI1MCIgc3Ryb2tlLXdpZHRoPSIxMiIKICAgICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDwvZz4KICA8dGV4dCB4PSIxODEiIHk9IjkyIiBmb250LWZhbWlseT0iQXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMwQjJCNTAiPlR1PC90ZXh0PgogIDx0ZXh0IHg9IjI4MiIgeT0iOTIiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC1zaXplPSI3MiIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzVBOUEzMyI+UGxhbjwvdGV4dD4KICA8dGV4dCB4PSIxODMiIHk9IjEzNyIgZm9udC1mYW1pbHk9IkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI5IiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjNUE5QTMzIj5UdSBjb25zdWx0YSwgbcOhcyBzaW1wbGUuPC90ZXh0Pgo8L3N2Zz4=" alt="TU PLAN - Tu consulta, más simple.">
     </div>
+  </div>
 </header>
 
 <main>
 
-    <section class="card">
+
+
+    <div class="tp-tabs no-print" role="tablist" aria-label="Secciones de TU PLAN">
+      <button type="button" class="tp-tab-btn active" id="tabPlanBtn" onclick="showTuPlanTab('plan')">Plan de alimentación</button>
+      <button type="button" class="tp-tab-btn" id="tabProfileBtn" onclick="showTuPlanTab('profile')">Mi perfil profesional</button>
+    </div>
+
+    <div id="tabPlan" class="tp-tab-panel active">
+      <section class="card no-print">
+        <h2>Datos del paciente</h2>
+        <div class="tp-patient-grid">
+          <div class="field"><label for="patientName">Nombre del paciente (opcional)</label><input id="patientName" type="text" placeholder="Ej. María López"></div>
+          <div class="field"><label for="planDate">Fecha</label><input id="planDate" type="date"></div>
+        </div>
+      </section>
+
+      <section class="card">
 
         <h2>Configuración de la dieta</h2>
 
@@ -832,18 +2044,78 @@ td{
 
         </div>
 
-        <div class="notice">
-            V1.7 PRUEBA 37B FODMAP EJEMPLO CLÍNICO CORREGIDA — FODMAP estricto + ajuste progresivo + porciones prácticas + Bajo IG — incluye biblioteca FODMAP estricta basada solo en alimentos verdes, filtro Bajo IG corregido y Sin fruta en la noche; conserva la salida limpia para imprimir o guardar los menús como PDF. Algunos alimentos añadidos para ampliar variedad
-            permanecen marcados internamente como PROVISIONALES y deberán validarse
-            antes de considerarse base clínica definitiva.
-        </div>
+        <div class="notice no-print" style="display:none;"></div>
 
     </section>
 
     
-<div id="diagnosticPanel" class="no-print" style="display:block;margin:14px 0;padding:14px;border:1px solid #d9e2df;border-radius:10px;background:#f8fbfa;font-size:13px;line-height:1.45;">
-  <strong>Diagnóstico del motor</strong>
-  <div id="diagnosticText" style="margin-top:8px;">Listo para diagnóstico. Genera FODMAP 1600 kcal / 90 g y aquí aparecerá el resultado.</div>
+
+</div>
+
+
+
+    </div><!-- /tabPlan -->
+
+    <div id="tabProfile" class="tp-tab-panel">
+      <section class="card no-print">
+        <div class="tp-profile-intro">
+          <div>
+            <h2 style="margin-bottom:6px;">Mi perfil profesional</h2>
+            <p class="tp-profile-note">
+              Captura tus datos una sola vez. Se guardan en este navegador y se usarán automáticamente
+              en el encabezado del plan al imprimir o guardar PDF.
+            </p>
+          </div>
+          <div class="tp-profile-badge">Datos del membrete</div>
+        </div>
+
+        <div class="tp-profile-grid">
+          <div class="field"><label for="proName">Nombre profesional</label><input id="proName" type="text" placeholder="Ej. LN. Ana Martínez"></div>
+          <div class="field"><label for="proTitle">Título / profesión</label><input id="proTitle" type="text" placeholder="Ej. Nutrióloga"></div>
+          <div class="field"><label for="proLicense">Cédula profesional</label><input id="proLicense" type="text" placeholder="Ej. 12345678"></div>
+          <div class="field"><label for="proPhone">Teléfono / WhatsApp</label><input id="proPhone" type="text" placeholder="Ej. 442 000 0000"></div>
+          <div class="field"><label for="proEmail">Correo</label><input id="proEmail" type="email" placeholder="Ej. consulta@correo.com"></div>
+          <div class="field"><label for="proOffice">Consultorio (opcional)</label><input id="proOffice" type="text" placeholder="Nombre del consultorio"></div>
+          <div class="field"><label for="proSocial">Redes sociales (opcional)</label><input id="proSocial" type="text" placeholder="@usuario"></div>
+          <div class="field"><label for="proLocation">Ubicación (opcional)</label><input id="proLocation" type="text" placeholder="Ej. Querétaro, Qro."></div>
+          <div class="field"><label for="proTagline">Frase profesional (opcional)</label><input id="proTagline" type="text" placeholder="Ej. Alimentación que transforma tu día."></div>
+          <div class="field">
+            <label for="proLogo">Logotipo (opcional)</label>
+            <input id="proLogo" type="file" accept="image/png,image/jpeg,image/webp">
+            <img id="proLogoPreview" class="tp-logo-preview" alt="Vista previa del logotipo">
+          </div>
+        </div>
+
+        <div class="tp-profile-actions">
+          <button type="button" class="tp-save" onclick="saveProfessionalProfile()">GUARDAR MIS DATOS</button>
+          <span id="profileSavedMsg" class="tp-saved"></span>
+        </div>
+      </section>
+    </div><!-- /tabProfile -->
+
+<div id="printProfessionalHeader">
+  <div class="tp-print-brandrow">
+    <div class="tp-print-identity">
+      <img id="printProLogo" class="tp-print-logo" alt="">
+      <div class="tp-print-main">
+        <div id="printProName" class="tp-print-name"></div>
+        <div id="printProOffice" class="tp-print-office"></div>
+        <div id="printProLicense" class="tp-print-license"></div>
+      </div>
+    </div>
+
+    <div id="printProContact" class="tp-print-contact"></div>
+
+    <div class="tp-print-taglinebox">
+      <div id="printProTagline" class="tp-print-tagline"></div>
+      <div id="printProLocation" class="tp-print-location"></div>
+    </div>
+  </div>
+
+  <div class="tp-print-titleline">
+    <div class="tp-print-plan-title">PLAN DE ALIMENTACIÓN</div>
+    <div class="tp-print-plan-meta"><span id="printPatient"></span><span id="printDate"></span></div>
+  </div>
 </div>
 
 <section
@@ -860,11 +2132,11 @@ td{
                 <thead>
                     <tr>
                         <th>Tiempo</th>
-                        <th>Menú 1</th>
-                        <th>Menú 2</th>
-                        <th>Menú 3</th>
-                        <th>Menú 4</th>
-                        <th>Menú 5</th>
+                        <th>Opción 1</th>
+                        <th>Opción 2</th>
+                        <th>Opción 3</th>
+                        <th>Opción 4</th>
+                        <th>Opción 5</th>
                     </tr>
                 </thead>
 
@@ -888,10 +2160,15 @@ td{
 
     </section>
 
+
+<div id="printPlanFooter">
+  ♡ &nbsp; Plan elaborado con base en tus objetivos y necesidades. Consulta a tu nutrióloga/o ante cualquier duda.
+</div>
+
 </main>
 
 <footer>
-    Generador de Menús Nutricionales — V1.7 PRUEBA 37B FODMAP EJEMPLO CLÍNICO CORREGIDA — MOTOR RÁPIDO — No sustituye la versión publicada
+    Generador de Menús Nutricionales — TU PLAN V2 PRUEBA 21 · FODMAP DIVERSIDAD DESAYUNO — MOTOR RÁPIDO — No sustituye la versión publicada
 </footer>
 
 
@@ -1048,7 +2325,7 @@ function restrictionCatalogNotes(restrictions){
     .map(r=>RESTRICTION_STATUS[r].note);
 }
 
-const FODMAP_GREEN_IDS = new Set(['AL01','AL02','AL03','AL04','AL08','AL09','AL10','AL11','AL13','AL15','AL16','AL17','AL18','AL19','AL21','AL24','AL25','AL27','AL29','AL31','AL32','AL33','AL34','AL38','AL39','AL40']);
+const FODMAP_GREEN_IDS = new Set(['AL01','AL02','AL03','AL04','AL08','AL09','AL10','AL11','AL13','AL15','AL16','AL17','AL18','AL19','AL21','AL22','AL24','AL25','AL27','AL29','AL31','AL32','AL33','AL34','AL38','AL39','AL40']);
 const LOW_IG_IDS = new Set(['AL02','AL04','AL07','AL08','AL09','AL10','AL11','AL13','AL14','AL15','AL16','AL17','AL18','AL19','AL25','AL26','AL27','AL28','AL29','AL30','AL31','AL32','AL33','AL34','AL35','AL36','AL37']);
 
 function filteredFoods(restrictions){
@@ -1383,10 +2660,191 @@ MEAL_TEMPLATES.cena.push(
  {name:'Pavo con arroz integral y verduras',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL35',min:2,max:6,step:1},{id:'AL33',min:1,max:2,step:0.5}]}
 );
 
+
+// PRUEBA 11 — Ampliación FODMAP práctica.
+// Solo usa ingredientes ya presentes en FOOD_DB y autorizados como verdes.
+// Objetivo: ampliar variedad y abrir rutas energéticas para objetivos altos sin ingredientes raros.
+MEAL_TEMPLATES.desayuno.push(
+  {name:'Tacos de pavo con calabacita',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL01',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5}]},
+  {name:'Tostadas de pavo con tomate',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL24',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5}]},
+  {name:'Camote con claras y tomate',items:[{id:'AL02',min:2,max:4,step:0.5},{id:'AL22',min:1,max:3,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]},
+  {name:'Camote con pollo y calabacita',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL22',min:1,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+  {name:'Quinoa con pavo y zanahoria',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL31',min:2,max:5,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]}
+);
+
+MEAL_TEMPLATES.comida.push(
+  {name:'Pollo con camote y calabacita',items:[{id:'AL11',min:2,max:4.5,step:0.5},{id:'AL22',min:1,max:3.5,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+  {name:'Pavo con camote y zanahoria',items:[{id:'AL34',min:2,max:4.5,step:0.5},{id:'AL22',min:1,max:3.5,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+  {name:'Pescado blanco con camote y ejotes',items:[{id:'AL04',min:2,max:4.5,step:0.5},{id:'AL22',min:1,max:3.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+  {name:'Salmón con papa y zanahoria',items:[{id:'AL38',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+  {name:'Salmón con quinoa y ejotes',items:[{id:'AL38',min:1.5,max:3.5,step:0.5},{id:'AL31',min:2,max:5,step:0.5},{id:'AL08',min:1,max:2,step:0.5}]},
+  {name:'Cerdo magro con arroz y calabacita',items:[{id:'AL18',min:1.5,max:3.5,step:0.5},{id:'AL03',min:3,max:8,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}]},
+  {name:'Res magra con camote y zanahoria',items:[{id:'AL16',min:1.5,max:3.5,step:0.5},{id:'AL22',min:1,max:3.5,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+  {name:'Camarones con papa y calabacita',items:[{id:'AL19',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5}]},
+  {name:'Atún con papa, pepino y tomate',items:[{id:'AL15',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1,max:3,step:0.5},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]}
+);
+
+MEAL_TEMPLATES.cena.push(
+  {name:'Tacos de pollo con calabacita y zanahoria',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL01',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+  {name:'Tacos de pavo con tomate',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL01',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5}]},
+  {name:'Tostadas de atún con pepino y tomate',items:[{id:'AL15',min:1.5,max:3,step:0.5},{id:'AL24',min:2,max:4,step:1},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]},
+  {name:'Pollo con arroz y calabacita cena',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL03',min:2,max:7,step:1},{id:'AL09',min:1,max:2,step:0.5}]},
+  {name:'Pavo con papa y ejotes cena',items:[{id:'AL34',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1,max:2.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5}]},
+  {name:'Pescado con camote y zanahoria',items:[{id:'AL04',min:1.5,max:3.5,step:0.5},{id:'AL22',min:1,max:3,step:0.5},{id:'AL33',min:1,max:2,step:0.5}]},
+  {name:'Salmón con papa y ejotes cena',items:[{id:'AL38',min:1.5,max:3,step:0.5},{id:'AL21',min:1,max:2.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5}]},
+  {name:'Pollo con quinoa y tomate cena',items:[{id:'AL11',min:1.5,max:3.5,step:0.5},{id:'AL31',min:2,max:5,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5}]}
+);
+
+
+
+// PRUEBA 15 — Plantillas FODMAP de alta energía.
+// Se activan únicamente desde 2200 kcal. Las combinaciones de almidones son deliberadas,
+// no añadidas automáticamente por el optimizador.
+MEAL_TEMPLATES.desayuno.push(
+  {name:'Tacos de pollo con papa y calabacita',highEnergy:true,items:[
+    {id:'AL11',min:1,max:3,step:0.5},{id:'AL01',min:3,max:4,step:1},
+    {id:'AL21',min:1.5,max:3,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Tacos de pavo con papa y tomate',highEnergy:true,items:[
+    {id:'AL34',min:1,max:3,step:0.5},{id:'AL01',min:3,max:4,step:1},
+    {id:'AL21',min:1.5,max:3,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Claras con papa y tortilla',highEnergy:true,items:[
+    {id:'AL02',min:2,max:4,step:0.5},{id:'AL21',min:1.5,max:3,step:0.5},
+    {id:'AL01',min:3,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Tostadas de pollo con papa y tomate',highEnergy:true,items:[
+    {id:'AL11',min:1,max:3,step:0.5},{id:'AL24',min:3,max:4,step:1},
+    {id:'AL21',min:1.5,max:3,step:0.5},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pavo con quinoa y tortilla',highEnergy:true,items:[
+    {id:'AL34',min:1,max:3,step:0.5},{id:'AL31',min:3,max:5,step:0.5},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]}
+);
+
+MEAL_TEMPLATES.comida.push(
+  {name:'Pollo con arroz, tortilla y calabacita',highEnergy:true,items:[
+    {id:'AL11',min:1.5,max:4,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pavo con arroz, tortilla y ejotes',highEnergy:true,items:[
+    {id:'AL34',min:1.5,max:4,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pescado con arroz, tortilla y zanahoria',highEnergy:true,items:[
+    {id:'AL04',min:1.5,max:4,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Cerdo con papa, arroz y ejotes',highEnergy:true,items:[
+    {id:'AL18',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1.5,max:3,step:0.5},
+    {id:'AL03',min:4,max:7,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Res con papa, arroz y calabacita',highEnergy:true,items:[
+    {id:'AL16',min:1.5,max:3.5,step:0.5},{id:'AL21',min:1.5,max:3,step:0.5},
+    {id:'AL03',min:4,max:7,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Camarones con arroz, tortilla y calabacita',highEnergy:true,items:[
+    {id:'AL19',min:1.5,max:3.5,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Salmón con arroz y quinoa',highEnergy:true,items:[
+    {id:'AL38',min:1,max:3,step:0.5},{id:'AL03',min:4,max:7,step:1},
+    {id:'AL31',min:2,max:5,step:0.5},{id:'AL33',min:1,max:2,step:0.5}
+  ]}
+);
+
+MEAL_TEMPLATES.cena.push(
+  {name:'Tacos de pollo con papa y zanahoria',highEnergy:true,items:[
+    {id:'AL11',min:1,max:3,step:0.5},{id:'AL01',min:3,max:4,step:1},
+    {id:'AL21',min:1.5,max:2.5,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Tacos de pavo con papa y ejotes',highEnergy:true,items:[
+    {id:'AL34',min:1,max:3,step:0.5},{id:'AL01',min:3,max:4,step:1},
+    {id:'AL21',min:1.5,max:2.5,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pescado con arroz, tortilla y calabacita',highEnergy:true,items:[
+    {id:'AL04',min:1,max:3,step:0.5},{id:'AL03',min:4,max:7,step:1},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Atún con tostadas y papa',highEnergy:true,items:[
+    {id:'AL15',min:1,max:3,step:0.5},{id:'AL24',min:3,max:4,step:1},
+    {id:'AL21',min:1.5,max:2.5,step:0.5},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Salmón con papa y tortilla',highEnergy:true,items:[
+    {id:'AL38',min:1,max:2.5,step:0.5},{id:'AL21',min:1.5,max:2.5,step:0.5},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL08',min:1,max:2,step:0.5}
+  ]},
+  {name:'Pollo con quinoa y tortilla',highEnergy:true,items:[
+    {id:'AL11',min:1,max:3,step:0.5},{id:'AL31',min:3,max:5,step:0.5},
+    {id:'AL01',min:2,max:4,step:1},{id:'AL29',min:0.5,max:1,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]}
+);
+
+
+
+// PRUEBA 16 — Variedad alta energía.
+// Se agregan alternativas con pollo, pavo, pescado, res, cerdo, atún y camarón
+// con estructuras energéticas comparables a las opciones de salmón.
+MEAL_TEMPLATES.comida.push(
+  {name:'Pollo con arroz, quinoa y zanahoria',highEnergy:true,items:[
+    {id:'AL11',min:1,max:2.5,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL31',min:3,max:6,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pavo con arroz, quinoa y ejotes',highEnergy:true,items:[
+    {id:'AL34',min:1,max:2.5,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL31',min:3,max:6,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pescado con arroz, quinoa y calabacita',highEnergy:true,items:[
+    {id:'AL04',min:1.5,max:3,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL31',min:3,max:6,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Cerdo con arroz, quinoa y zanahoria',highEnergy:true,items:[
+    {id:'AL18',min:1,max:2.5,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL31',min:3,max:6,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Res con arroz, quinoa y calabacita',highEnergy:true,items:[
+    {id:'AL16',min:1,max:2.5,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL31',min:3,max:6,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Camarones con arroz, quinoa y ejotes',highEnergy:true,items:[
+    {id:'AL19',min:1,max:2.5,step:0.5},{id:'AL03',min:5,max:8,step:1},
+    {id:'AL31',min:3,max:6,step:0.5},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]}
+);
+
+MEAL_TEMPLATES.cena.push(
+  {name:'Pollo con arroz, quinoa y calabacita cena',highEnergy:true,items:[
+    {id:'AL11',min:1,max:2.5,step:0.5},{id:'AL03',min:4,max:7,step:1},
+    {id:'AL31',min:2,max:5,step:0.5},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pavo con arroz, quinoa y zanahoria cena',highEnergy:true,items:[
+    {id:'AL34',min:1,max:2.5,step:0.5},{id:'AL03',min:4,max:7,step:1},
+    {id:'AL31',min:2,max:5,step:0.5},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Pescado con papa, tortilla y ejotes cena',highEnergy:true,items:[
+    {id:'AL04',min:1.5,max:3,step:0.5},{id:'AL21',min:2,max:3,step:0.5},
+    {id:'AL01',min:3,max:4,step:1},{id:'AL08',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Atún con arroz, tortilla y pepino cena',highEnergy:true,items:[
+    {id:'AL15',min:1,max:2.5,step:0.5},{id:'AL03',min:4,max:7,step:1},
+    {id:'AL01',min:3,max:4,step:1},{id:'AL32',min:0.5,max:1,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Cerdo con papa, tortilla y zanahoria cena',highEnergy:true,items:[
+    {id:'AL18',min:1,max:2.5,step:0.5},{id:'AL21',min:2,max:3,step:0.5},
+    {id:'AL01',min:3,max:4,step:1},{id:'AL33',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]},
+  {name:'Res con arroz, tortilla y calabacita cena',highEnergy:true,items:[
+    {id:'AL16',min:1,max:2.5,step:0.5},{id:'AL03',min:4,max:7,step:1},
+    {id:'AL01',min:3,max:4,step:1},{id:'AL09',min:1,max:2,step:0.5},{id:'AL13',min:0,max:1,step:1}
+  ]}
+);
+
+
 const FODMAP_TEMPLATE_NAMES = {
- desayuno:new Set(['Tostadas de pollo con tomate','Tacos de pollo con calabacita','Tacos de pavo con tomate','Claras con calabacita y tortilla','Claras con tomate y tortilla','Quinoa con pollo y calabacita','Papa con claras y tomate','Tostadas de atún con pepino','Claras con chayote y tortilla','Pollo asado con zanahoria y tortilla','Claras con ejotes y tortilla','Claras con zanahoria y tortilla','Bistec con papa y tortilla']),
- comida:new Set(['Pollo con arroz y calabacita','Pollo con papa y zanahoria','Pollo con quinoa y calabacita','Pavo con arroz y ejotes','Pavo con papa y calabacita','Pescado blanco con arroz y zanahoria','Pescado blanco con papa y ejotes','Atún con arroz, pepino y tomate','Camarones con arroz y calabacita','Camarones con quinoa y zanahoria','Cerdo magro con papa y ejotes','Res magra con arroz y calabacita','Res magra con papa y zanahoria','Tacos de pescado con tomate y pepino','Tacos de pollo con calabacita','Pavo con quinoa y zanahoria','Salmón con arroz, ejotes y zanahoria','Pollo muslo/pierna con arroz y zanahoria','Caldo de pollo con chayote, zanahoria, arroz y tortilla','Res con espinaca, papa y arroz','Lomo de cerdo con nopales, papa y arroz','Fideo sin gluten con res, espinaca y papa']),
- cena:new Set(['Pollo con calabacita y zanahoria','Pollo con pepino y tomate','Pescado blanco con calabacita','Pescado con ejotes y zanahoria','Atún con pepino y tomate','Camarones con calabacita','Pavo con ejotes','Res magra con calabacita','Claras con tomate y calabacita','Pollo con calabacita y quinoa','Pescado con ejotes y arroz','Pavo con tomate y quinoa','Tortillas con pechuga de pollo','Tortillas con pescado asado','Tostadas de pollo deshebrado','Tacos de papa con nopales y pollo','Tostadas de pollo con ejotes'])
+ desayuno:new Set(['Tacos de pollo con papa y calabacita','Tacos de pavo con papa y tomate','Claras con papa y tortilla','Tostadas de pollo con papa y tomate','Pavo con quinoa y tortilla','Tacos de pavo con calabacita','Tostadas de pavo con tomate','Camote con claras y tomate','Camote con pollo y calabacita','Quinoa con pavo y zanahoria','Tostadas de pollo con tomate','Tacos de pollo con calabacita','Tacos de pavo con tomate','Claras con calabacita y tortilla','Claras con tomate y tortilla','Quinoa con pollo y calabacita','Papa con claras y tomate','Tostadas de atún con pepino','Claras con chayote y tortilla','Pollo asado con zanahoria y tortilla','Claras con ejotes y tortilla','Claras con zanahoria y tortilla','Bistec con papa y tortilla']),
+ comida:new Set(['Pollo con arroz, quinoa y zanahoria','Pavo con arroz, quinoa y ejotes','Pescado con arroz, quinoa y calabacita','Cerdo con arroz, quinoa y zanahoria','Res con arroz, quinoa y calabacita','Camarones con arroz, quinoa y ejotes','Pollo con arroz, tortilla y calabacita','Pavo con arroz, tortilla y ejotes','Pescado con arroz, tortilla y zanahoria','Cerdo con papa, arroz y ejotes','Res con papa, arroz y calabacita','Camarones con arroz, tortilla y calabacita','Salmón con arroz y quinoa','Pollo con camote y calabacita','Pavo con camote y zanahoria','Pescado blanco con camote y ejotes','Salmón con papa y zanahoria','Salmón con quinoa y ejotes','Cerdo magro con arroz y calabacita','Res magra con camote y zanahoria','Camarones con papa y calabacita','Atún con papa, pepino y tomate','Pollo con arroz y calabacita','Pollo con papa y zanahoria','Pollo con quinoa y calabacita','Pavo con arroz y ejotes','Pavo con papa y calabacita','Pescado blanco con arroz y zanahoria','Pescado blanco con papa y ejotes','Atún con arroz, pepino y tomate','Camarones con arroz y calabacita','Camarones con quinoa y zanahoria','Cerdo magro con papa y ejotes','Res magra con arroz y calabacita','Res magra con papa y zanahoria','Tacos de pescado con tomate y pepino','Tacos de pollo con calabacita','Pavo con quinoa y zanahoria','Salmón con arroz, ejotes y zanahoria','Pollo muslo/pierna con arroz y zanahoria','Caldo de pollo con chayote, zanahoria, arroz y tortilla','Res con espinaca, papa y arroz','Lomo de cerdo con nopales, papa y arroz','Fideo sin gluten con res, espinaca y papa']),
+ cena:new Set(['Pollo con arroz, quinoa y calabacita cena','Pavo con arroz, quinoa y zanahoria cena','Pescado con papa, tortilla y ejotes cena','Atún con arroz, tortilla y pepino cena','Cerdo con papa, tortilla y zanahoria cena','Res con arroz, tortilla y calabacita cena','Tacos de pollo con papa y zanahoria','Tacos de pavo con papa y ejotes','Pescado con arroz, tortilla y calabacita','Atún con tostadas y papa','Salmón con papa y tortilla','Pollo con quinoa y tortilla','Tacos de pollo con calabacita y zanahoria','Tacos de pavo con tomate','Tostadas de atún con pepino y tomate','Pollo con arroz y calabacita cena','Pavo con papa y ejotes cena','Pescado con camote y zanahoria','Salmón con papa y ejotes cena','Pollo con quinoa y tomate cena','Pollo con calabacita y zanahoria','Pollo con pepino y tomate','Pescado blanco con calabacita','Pescado con ejotes y zanahoria','Atún con pepino y tomate','Camarones con calabacita','Pavo con ejotes','Res magra con calabacita','Claras con tomate y calabacita','Pollo con calabacita y quinoa','Pescado con ejotes y arroz','Pavo con tomate y quinoa','Tortillas con pechuga de pollo','Tortillas con pescado asado','Tostadas de pollo deshebrado','Tacos de papa con nopales y pollo','Tostadas de pollo con ejotes'])
 };
 
 function templateAllowed(template, foods){
@@ -1459,7 +2917,7 @@ function makeMealFromTemplate(template,key,name,foods,rng){
     totals:totals(items)
   };
 }
-function buildDay(calories,protein,restrictions,seed,expanded=false){
+function buildDay(calories,protein,restrictions,seed,expanded=false,forcedTemplates=null){
  const foods=filteredFoods(restrictions);
  if(!foods.length) return {meals:[],daily:{kcal:0,p:0,c:0,f:0}};
 
@@ -1493,9 +2951,9 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
  }
 
  const fodmapMode=restrictions.includes('__fodmap__');
- const availableBreakfast=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.desayuno.has(t.name))).map(t=>expanded?expandedTemplate(t,'desayuno'):t);
- const availableLunch=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.comida.has(t.name))).map(t=>expanded?expandedTemplate(t,'comida'):t);
- const availableDinner=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.cena.has(t.name))).map(t=>expanded?expandedTemplate(t,'cena'):t);
+ const availableBreakfast=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!t.highEnergy || calories>=2200) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.desayuno.has(t.name))).map(t=>expanded?expandedTemplate(t,'desayuno'):t);
+ const availableLunch=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!t.highEnergy || calories>=2200) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.comida.has(t.name))).map(t=>expanded?expandedTemplate(t,'comida'):t);
+ const availableDinner=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods) && hasSingleMainProtein(t,foods) && (!t.highEnergy || calories>=2200) && (!fodmapMode || FODMAP_TEMPLATE_NAMES.cena.has(t.name))).map(t=>expanded?expandedTemplate(t,'cena'):t);
 
  if(!availableBreakfast.length || !availableLunch.length || !availableDinner.length){
    return {meals:[],daily:{kcal:0,p:0,c:0,f:0},error:'No hay suficientes plantillas compatibles con las restricciones.'};
@@ -1607,15 +3065,15 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
          if(!byId[id]) continue;
          // FODMAP: aumentar únicamente el cereal/tubérculo que ya pertenece al platillo.
          // Así evitamos agregar una segunda guarnición solo para completar calorías.
-         if(fodmapMode && ['AL01','AL03','AL21','AL24','AL31'].includes(id) && !getItem(meal,id)) continue;
+         if(fodmapMode && ['AL01','AL03','AL21','AL22','AL24','AL31'].includes(id) && !getItem(meal,id)) continue;
          let lim=addonLimits[meal.key]?.[id];
          if(!lim) continue;
          if(fodmapMode){
            const practicalFodmapCaps={
              // AL03 = 1/4 taza arroz; AL21 = 100 g papa; AL31 = 1/4 taza quinoa.
-             desayuno:{AL01:5,AL03:6,AL21:2,AL24:4,AL31:4,AL13:1},
-             comida:{AL01:5,AL03:7,AL21:2.5,AL24:4,AL31:5,AL13:1},
-             cena:{AL01:4,AL03:6,AL21:2,AL24:3,AL31:4,AL13:1}
+             desayuno:{AL01:5,AL03:6,AL21:2.5,AL22:3,AL24:4,AL31:4,AL13:1},
+             comida:{AL01:5,AL03:7,AL21:3,AL22:3.5,AL24:4,AL31:5,AL13:1},
+             cena:{AL01:4,AL03:6,AL21:2.5,AL22:3,AL24:3,AL31:4,AL13:1}
            };
            if(practicalFodmapCaps[meal.key]?.[id]!=null) lim=Math.min(lim,practicalFodmapCaps[meal.key][id]);
          }
@@ -1687,7 +3145,7 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
    let practicalBurden=0;
    mainMeals.forEach(meal=>{
      if(fodmapMode){
-       const starchIds=['AL01','AL03','AL21','AL24','AL31'];
+       const starchIds=['AL01','AL03','AL21','AL22','AL24','AL31'];
        const starchFamilies=meal.items.filter(x=>starchIds.includes(x.food.id) && x.qty>0).length;
        if(starchFamilies>1) practicalBurden += (starchFamilies-1)*7;
      }
@@ -1748,10 +3206,14 @@ function buildDay(calories,protein,restrictions,seed,expanded=false){
 
  let best=null;
 
- for(let attempt=0;attempt<(expanded?(fodmapMode?520:700):(fodmapMode?380:900));attempt++){
-   const bt=availableBreakfast[Math.floor(rng()*availableBreakfast.length)];
-   const lt=availableLunch[Math.floor(rng()*availableLunch.length)];
-   const dt=availableDinner[Math.floor(rng()*availableDinner.length)];
+ for(let attempt=0;attempt<(forcedTemplates ? (fodmapMode?180:260) : (expanded?(fodmapMode?520:700):(fodmapMode?380:900)));attempt++){
+   const forcedB=forcedTemplates?.desayuno ? availableBreakfast.find(t=>t.name===forcedTemplates.desayuno) : null;
+   const forcedL=forcedTemplates?.comida ? availableLunch.find(t=>t.name===forcedTemplates.comida) : null;
+   const forcedD=forcedTemplates?.cena ? availableDinner.find(t=>t.name===forcedTemplates.cena) : null;
+
+   const bt=forcedB || availableBreakfast[Math.floor(rng()*availableBreakfast.length)];
+   const lt=forcedL || availableLunch[Math.floor(rng()*availableLunch.length)];
+   const dt=forcedD || availableDinner[Math.floor(rng()*availableDinner.length)];
 
    let breakfast=makeMealFromTemplate(bt,'desayuno','Desayuno',foods,rng);
    let lunch=makeMealFromTemplate(lt,'comida','Comida',foods,rng);
@@ -2063,6 +3525,61 @@ function formatPatientMeal(items){
 
 
 
+
+function cleanSnackDisplay(name, display){
+  const rawName=String(name||'').trim();
+  const rawDisplay=String(display||'').trim();
+  if(!rawName || !rawDisplay) return rawDisplay;
+
+  const norm=v=>String(v||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/\s+/g,' ').trim();
+
+  const n=norm(rawName);
+  let d=norm(rawDisplay);
+
+  // Escape normalized ingredient name for regex.
+  const esc=n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+
+  // Examples:
+  // Manzana / 1 manzana mediana -> 1 pieza mediana
+  // Mandarina / 2 mandarinas pequeñas -> 2 piezas pequeñas
+  let m=d.match(new RegExp('^(\\d+(?:[¼½¾⅓⅔]?)?)\\s+'+esc+'s?\\s+(pequenas?|medianas?|grandes?)$','i'));
+  if(m){
+    let size=m[2]
+      .replace(/^pequena$/,'pequeña').replace(/^pequenas$/,'pequeñas');
+    const qty=m[1];
+    const plural=(qty==='1')?'pieza':'piezas';
+    return `${qty} ${plural} ${size}`;
+  }
+
+  // 1 kiwi mediano, 1 durazno mediano, etc.
+  m=d.match(new RegExp('^(\\d+(?:[¼½¾⅓⅔]?)?)\\s+'+esc+'s?\\s+(pequeno|pequena|mediano|mediana|grande)$','i'));
+  if(m){
+    let size=m[2].replace('pequeno','pequeño').replace('pequena','pequeña');
+    return `${m[1]} pieza ${size.replace(/o$/,'a')}`;
+  }
+
+  // 1 porción de higo / toronja / granada roja -> 1 porción
+  m=d.match(new RegExp('^(\\d+(?:[¼½¾⅓⅔]?)?)\\s+porcion(?:es)?\\s+de\\s+'+esc+'s?$','i'));
+  if(m) return `${m[1]} ${m[1]==='1'?'porción':'porciones'}`;
+
+  // 1 taza de piña / papaya / melón -> 1 taza
+  // 1½ tazas de sandía -> 1½ tazas
+  m=d.match(new RegExp('^([^\\s]+)\\s+(taza|tazas)\\s+de\\s+'+esc+'s?$','i'));
+  if(m) return `${m[1]} ${m[2]}`;
+
+  // 1 pieza de pepino -> 1 pieza
+  m=d.match(new RegExp('^(\\d+)\\s+(pieza|piezas)\\s+de\\s+'+esc+'s?$','i'));
+  if(m) return `${m[1]} ${m[2]}`;
+
+  // 1 naranja / 1 plátano / 1 guayaba -> 1 pieza
+  m=d.match(new RegExp('^(\\d+)\\s+'+esc+'s?$','i'));
+  if(m) return `${m[1]} ${m[1]==='1'?'pieza':'piezas'}`;
+
+  return rawDisplay;
+}
+
 function cleanDuplicateAccomp(accomp, visibleComponents){
   if(!accomp) return '';
   const norm=v=>String(v||'').toLowerCase()
@@ -2080,7 +3597,13 @@ function cleanDuplicateAccomp(accomp, visibleComponents){
     const remaining=parts.filter(p=>!visible.includes(norm(p)));
 
     if(!remaining.length) return '';
-    if(m) return `<strong>${label}:</strong> ${remaining.join(' + ')}`;
+    if(m){
+      const cleanLabel=norm(label);
+      if(['guarnicion','verduras','aceite de oliva'].includes(cleanLabel)){
+        return remaining.join(' + ');
+      }
+      return `<strong>${label}:</strong> ${remaining.join(' + ')}`;
+    }
     return remaining.join(' + ');
   }).filter(Boolean).join('<br>');
 }
@@ -2257,9 +3780,9 @@ function diagnoseFodmapTarget(calories,protein,restrictions){
   const snackAllowed=snackSource.filter(sn=>!restrictions.some(r=>(sn.tags||[]).includes(r)));
   if(!snackAllowed.length) return {...result,error:'No hay colaciones compatibles.'};
 
-  const b=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.desayuno.has(t.name)));
-  const l=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.comida.has(t.name)));
-  const d=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.cena.has(t.name)));
+  const b=MEAL_TEMPLATES.desayuno.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!t.highEnergy||calories>=2200)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.desayuno.has(t.name)));
+  const l=MEAL_TEMPLATES.comida.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!t.highEnergy||calories>=2200)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.comida.has(t.name)));
+  const d=MEAL_TEMPLATES.cena.filter(t=>templateAllowed(t,foods)&&hasSingleMainProtein(t,foods)&&(!t.highEnergy||calories>=2200)&&(!fodmapMode||FODMAP_TEMPLATE_NAMES.cena.has(t.name)));
   result.breakfastCount=b.length; result.lunchCount=l.length; result.dinnerCount=d.length;
 
   const rng=mulberry32(987654);
@@ -2390,7 +3913,7 @@ function secondStageFodmapOptimize(day,calories,protein){
   }));
 
   const mainMeals=meals.filter(m=>['desayuno','comida','cena'].includes(m.key));
-  const starchIds=['AL01','AL03','AL21','AL24','AL31'];
+  const starchIds=['AL01','AL03','AL21','AL22','AL24','AL31'];
   const oilId='AL13';
   const proteinIds=['AL02','AL04','AL11','AL15','AL16','AL17','AL18','AL19','AL34','AL38','AL39'];
 
@@ -2422,20 +3945,53 @@ function secondStageFodmapOptimize(day,calories,protein){
     },0);
   }
 
+  const highCalorieFodmap = calories>=2700;
   const caps={
-    desayuno:{AL01:4,AL03:7,AL21:2.5,AL24:4,AL31:5,AL13:1},
-    comida:{AL01:4,AL03:8,AL21:3,AL24:4,AL31:6,AL13:1},
-    cena:{AL01:4,AL03:7,AL21:2.5,AL24:3,AL31:5,AL13:1}
+    desayuno:{
+      AL01:4,
+      AL03:highCalorieFodmap?8:7,
+      AL21:highCalorieFodmap?3:2.5,
+      AL22:highCalorieFodmap?3.5:3,
+      AL24:4,
+      AL31:highCalorieFodmap?7:5,
+      AL13:1
+    },
+    comida:{AL01:4,AL03:8,AL21:3,AL22:3.5,AL24:4,AL31:6,AL13:1},
+    cena:{
+      AL01:4,
+      AL03:highCalorieFodmap?8:7,
+      AL21:highCalorieFodmap?3:2.5,
+      AL22:highCalorieFodmap?3.5:3,
+      AL24:3,
+      AL31:highCalorieFodmap?6:5,
+      AL13:1
+    }
   };
 
-  // Límites de preferencia práctica. No invalidan el menú:
-  // primero se intenta repartir energía sin rebasarlos.
+  // Límites de preferencia práctica. A kcal altas se reparte un poco más
+  // entre desayuno y cena, para no obligar a que la comida concentre toda la energía.
   const practicalCaps={
-    desayuno:{AL01:4,AL03:5,AL21:2,AL24:4,AL31:4,AL13:1},
-    comida:{AL01:4,AL03:5,AL21:2.5,AL24:4,AL31:4,AL13:1},
-    cena:{AL01:4,AL03:5,AL21:2,AL24:3,AL31:4,AL13:1}
+    desayuno:{
+      AL01:4,
+      AL03:highCalorieFodmap?6:5,
+      AL21:highCalorieFodmap?2.5:2,
+      AL22:highCalorieFodmap?3:2.5,
+      AL24:4,
+      AL31:highCalorieFodmap?5.5:4,
+      AL13:1
+    },
+    comida:{AL01:4,AL03:5,AL21:2.5,AL22:3,AL24:4,AL31:4,AL13:1},
+    cena:{
+      AL01:4,
+      AL03:highCalorieFodmap?6:5,
+      AL21:highCalorieFodmap?2.5:2,
+      AL22:highCalorieFodmap?3:2.5,
+      AL24:3,
+      AL31:highCalorieFodmap?5:4,
+      AL13:1
+    }
   };
-  const steps={AL01:1,AL03:1,AL21:0.5,AL24:1,AL31:0.5,AL13:1};
+  const steps={AL01:1,AL03:1,AL21:0.5,AL22:0.5,AL24:1,AL31:0.5,AL13:1};
 
   const mealShares={desayuno:0.30,comida:0.40,cena:0.30};
   function mealEnergyGap(m){
@@ -2595,6 +4151,7 @@ function secondStageFodmapOptimize(day,calories,protein){
         if(id==='AL03') extraCap += 1;       // +1/4 taza arroz
         if(id==='AL31') extraCap += 0.5;     // +1/8 taza quinoa aprox.
         if(id==='AL21') extraCap += 0.5;     // +50 g papa
+        if(id==='AL22') extraCap += 0.5;     // +50 g camote
         if(id==='AL01') extraCap += 0;       // tortilla conserva tope práctico
         if(id==='AL24') extraCap += 1;       // +1 tostada
 
@@ -2646,6 +4203,132 @@ function secondStageFodmapOptimize(day,calories,protein){
   };
 }
 
+
+
+function showTuPlanTab(which){
+  const plan=which==='plan';
+  document.getElementById('tabPlan')?.classList.toggle('active',plan);
+  document.getElementById('tabProfile')?.classList.toggle('active',!plan);
+  document.getElementById('tabPlanBtn')?.classList.toggle('active',plan);
+  document.getElementById('tabProfileBtn')?.classList.toggle('active',!plan);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const TP_PROFILE_KEY='tuplan_profile_v2';
+
+function escText(v){
+  return String(v||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+function setDefaultPlanDate(){
+  const el=document.getElementById('planDate');
+  if(el && !el.value){
+    const d=new Date();
+    const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);
+    el.value=local.toISOString().slice(0,10);
+  }
+}
+
+function loadProfessionalProfile(){
+  try{
+    const p=JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}');
+    ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.value=p[id]||'';
+    });
+    if(p.logo){
+      const img=document.getElementById('proLogoPreview');
+      if(img){img.src=p.logo;img.style.display='block';}
+    }
+  }catch(e){}
+  setDefaultPlanDate();
+  updatePrintHeader();
+}
+
+function saveProfessionalProfile(){
+  const current=(()=>{try{return JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}')}catch(e){return {}}})();
+  const p={...current};
+  ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline'].forEach(id=>{
+    p[id]=(document.getElementById(id)?.value||'').trim();
+  });
+  localStorage.setItem(TP_PROFILE_KEY,JSON.stringify(p));
+  const msg=document.getElementById('profileSavedMsg');
+  if(msg){msg.textContent='✓ Datos guardados';setTimeout(()=>msg.textContent='',2200);}
+  updatePrintHeader();
+}
+
+function handleProfessionalLogo(ev){
+  const file=ev.target.files && ev.target.files[0];
+  if(!file) return;
+  if(file.size>1500000){
+    alert('El logotipo es demasiado grande. Usa una imagen menor a 1.5 MB.');
+    ev.target.value=''; return;
+  }
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const p=JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}');
+      p.logo=reader.result;
+      localStorage.setItem(TP_PROFILE_KEY,JSON.stringify(p));
+      const img=document.getElementById('proLogoPreview');
+      img.src=reader.result; img.style.display='block';
+      updatePrintHeader();
+    }catch(e){ alert('No fue posible guardar el logotipo en este navegador.'); }
+  };
+  reader.readAsDataURL(file);
+}
+
+function updatePrintHeader(){
+  let p={};
+  try{p=JSON.parse(localStorage.getItem(TP_PROFILE_KEY)||'{}')}catch(e){}
+  const name=(document.getElementById('proName')?.value||p.proName||'').trim();
+  const title=(document.getElementById('proTitle')?.value||p.proTitle||'Nutrióloga/o').trim();
+  const license=(document.getElementById('proLicense')?.value||p.proLicense||'').trim();
+  const phone=(document.getElementById('proPhone')?.value||p.proPhone||'').trim();
+  const email=(document.getElementById('proEmail')?.value||p.proEmail||'').trim();
+  const office=(document.getElementById('proOffice')?.value||p.proOffice||'').trim();
+  const social=(document.getElementById('proSocial')?.value||p.proSocial||'').trim();
+  const location=(document.getElementById('proLocation')?.value||p.proLocation||'').trim();
+  const tagline=(document.getElementById('proTagline')?.value||p.proTagline||'').trim();
+
+  document.getElementById('printProName').innerHTML=escText(name||'Profesional de nutrición');
+  document.getElementById('printProOffice').innerHTML='<span class="tp-print-role">'+escText(title||'Nutrióloga/o')+'</span>'+(office?'<br><span class="tp-print-office-name">'+escText(office)+'</span>':'');
+  document.getElementById('printProLicense').innerHTML=license?'<strong>Cédula:</strong> '+escText(license):'';
+
+  const contact=[];
+  if(phone) contact.push('<strong>Tel./WhatsApp:</strong> '+escText(phone));
+  if(email) contact.push(escText(email));
+  if(social) contact.push(escText(social));
+  document.getElementById('printProContact').innerHTML=contact.join('<br>');
+  document.getElementById('printProTagline').innerHTML=tagline?escText(tagline):'';
+  document.getElementById('printProLocation').innerHTML=location?escText(location):'';
+
+  const logo=p.logo||'';
+  const li=document.getElementById('printProLogo');
+  if(logo){li.src=logo;li.style.display='block';}else{li.removeAttribute('src');li.style.display='none';}
+
+  const patient=(document.getElementById('patientName')?.value||'').trim();
+  document.getElementById('printPatient').innerHTML=patient?'<strong>Paciente:</strong> '+escText(patient):'';
+
+  const dateVal=document.getElementById('planDate')?.value||'';
+  let dateText='';
+  if(dateVal){
+    const [y,m,d]=dateVal.split('-').map(Number);
+    dateText=new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(y,m-1,d));
+  }
+  const dateHtml=dateText?'<strong>Fecha:</strong> '+escText(dateText):'';
+  document.getElementById('printDate').innerHTML=(patient && dateHtml?' &nbsp; · &nbsp; ':'')+dateHtml;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadProfessionalProfile();
+  document.getElementById('proLogo')?.addEventListener('change',handleProfessionalLogo);
+  ['proName','proTitle','proLicense','proPhone','proEmail','proOffice','proSocial','proLocation','proTagline','patientName','planDate'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input',updatePrintHeader);
+    document.getElementById(id)?.addEventListener('change',updatePrintHeader);
+  });
+});
+window.addEventListener('beforeprint',updatePrintHeader);
+
 function generateMenus(){
  generationRunCounter++;
  const generationSeedBase = (Date.now() % 1000000000) + generationRunCounter * 1000003;
@@ -2667,7 +4350,7 @@ function generateMenus(){
  for(let pass=0;pass<2;pass++){
    if(pass===1 && candidates.length>=5) break;
    const expanded=pass===1;
-   const tries=restrictions.includes('__fodmap__') ? (expanded?140:180) : (expanded?24:32);
+   const tries=restrictions.includes('__fodmap__') ? (expanded?700:800) : (expanded?24:32);
 
    for(let i=0;i<tries;i++){
      let day=buildDay(calories,protein,restrictions,generationSeedBase+i+1+pass*10000,expanded);
@@ -2706,7 +4389,7 @@ function generateMenus(){
 
  if(restrictions.includes('__fodmap__') && candidates.length<5){
    const needed=5-candidates.length;
-   for(let i=0;i<120 && candidates.length<5;i++){
+   for(let i=0;i<900 && candidates.length<5;i++){
      let day=buildDay(calories,protein,restrictions,generationSeedBase+50000+i,true);
      if(day && day.meals && day.meals.length){
        day=secondStageFodmapOptimize(day,calories,protein);
@@ -2740,6 +4423,127 @@ function generateMenus(){
      }
    }
  }
+
+
+ // PRUEBA 20 — Diversidad estructural.
+ // Se intenta construir al menos un día válido por cada COMIDA de alta energía.
+ // La comida queda fijada; desayuno y cena se ajustan alrededor de ella.
+ // Así la diversidad se decide ANTES del ajuste nutricional final.
+ if(restrictions.includes('__fodmap__') && calories>=2200){
+   const highL=MEAL_TEMPLATES.comida
+     .filter(t=>t.highEnergy && FODMAP_TEMPLATE_NAMES.comida.has(t.name));
+
+   for(let r=0;r<highL.length;r++){
+     const forcedLunch=highL[r].name;
+     let acceptedForLunch=false;
+
+     for(let j=0;j<12 && !acceptedForLunch;j++){
+       let day=buildDay(
+         calories,protein,restrictions,
+         generationSeedBase+120000+r*97+j*11,
+         true,
+         {comida:forcedLunch}
+       );
+
+       if(day && day.meals && day.meals.length){
+         day=secondStageFodmapOptimize(day,calories,protein);
+       }
+       if(!day || !day.meals || !day.meals.length) continue;
+
+       const fatPct=(day.daily.f*9/day.daily.kcal)*100;
+       const requiredOk=(day.meals||[])
+         .filter(m=>['desayuno','comida','cena'].includes(m.key))
+         .every(m=>hasMandatoryTemplateIngredients(m) && hasNamedVegetableIfRequired(m));
+
+       const actualLunch=(day.meals||[]).find(m=>m.key==='comida');
+       const lunchKept=actualLunch && actualLunch.templateName===forcedLunch;
+
+       const valid =
+         lunchKept &&
+         Math.abs(day.daily.kcal-calories)<=calories*0.02 &&
+         Math.abs(day.daily.p-protein)<=protein*0.02 &&
+         fatPct<=30.0001 &&
+         hasPracticalPortions(day) &&
+         fodmapOilHardLimitOk(day,restrictions) &&
+         requiredOk;
+
+       if(valid){
+         const sig=signature(day);
+         if(!candidates.some(c=>signature(c)===sig)){
+           candidates.push({
+             ...day,
+             diet,
+             number:candidates.length+1,
+             searchMode:'diversidad-estructural'
+           });
+         }
+         acceptedForLunch=true;
+       }
+     }
+   }
+ }
+
+ // PRUEBA 21 — Diversidad dirigida de DESAYUNO.
+ // Conserva intacto el refuerzo estructural de comida de PRUEBA 20.
+ // Para FODMAP >=2200 kcal intenta construir al menos un día válido
+ // por cada desayuno FODMAP de alta energía, fijando SOLO el desayuno.
+ // Comida y cena quedan libres para que el motor cierre kcal/proteína.
+ if(restrictions.includes('__fodmap__') && calories>=2200){
+   const highB=MEAL_TEMPLATES.desayuno
+     .filter(t=>t.highEnergy && FODMAP_TEMPLATE_NAMES.desayuno.has(t.name));
+
+   for(let r=0;r<highB.length;r++){
+     const forcedBreakfast=highB[r].name;
+     let acceptedForBreakfast=false;
+
+     // 12 intentos por desayuno: mismo límite corto usado para comida
+     // para no volver a congelar Chrome.
+     for(let j=0;j<12 && !acceptedForBreakfast;j++){
+       let day=buildDay(
+         calories,protein,restrictions,
+         generationSeedBase+180000+r*101+j*13,
+         true,
+         {desayuno:forcedBreakfast}
+       );
+
+       if(day && day.meals && day.meals.length){
+         day=secondStageFodmapOptimize(day,calories,protein);
+       }
+       if(!day || !day.meals || !day.meals.length) continue;
+
+       const fatPct=(day.daily.f*9/day.daily.kcal)*100;
+       const requiredOk=(day.meals||[])
+         .filter(m=>['desayuno','comida','cena'].includes(m.key))
+         .every(m=>hasMandatoryTemplateIngredients(m) && hasNamedVegetableIfRequired(m));
+
+       const actualBreakfast=(day.meals||[]).find(m=>m.key==='desayuno');
+       const breakfastKept=actualBreakfast && actualBreakfast.templateName===forcedBreakfast;
+
+       const valid =
+         breakfastKept &&
+         Math.abs(day.daily.kcal-calories)<=calories*0.02 &&
+         Math.abs(day.daily.p-protein)<=protein*0.02 &&
+         fatPct<=30.0001 &&
+         hasPracticalPortions(day) &&
+         fodmapOilHardLimitOk(day,restrictions) &&
+         requiredOk;
+
+       if(valid){
+         const sig=signature(day);
+         if(!candidates.some(c=>signature(c)===sig)){
+           candidates.push({
+             ...day,
+             diet,
+             number:candidates.length+1,
+             searchMode:'diversidad-desayuno'
+           });
+         }
+         acceptedForBreakfast=true;
+       }
+     }
+   }
+ }
+
 
  if(!candidates.length){
    if(restrictions.includes('__fodmap__')){
@@ -2781,6 +4585,7 @@ function generateMenus(){
      const tortilla=get('AL01');
      const arroz=get('AL03');
      const papa=get('AL21');
+     const camote=get('AL22');
      const tostada=get('AL24');
      const quinoa=get('AL31');
      const aceite=get('AL13');
@@ -2788,6 +4593,7 @@ function generateMenus(){
      const tq=tortilla?tortilla.qty:0;
      const aq=arroz?arroz.qty:0;   // 1 unidad = 1/4 taza
      const pq=papa?papa.qty:0;     // 1 unidad = 100 g
+     const cq=camote?camote.qty:0; // 1 unidad = 100 g
      const sq=tostada?tostada.qty:0;
      const qq=quinoa?quinoa.qty:0; // 1 unidad = 1/4 taza
      const oq=aceite?aceite.qty:0;
@@ -2799,6 +4605,7 @@ function generateMenus(){
      // Favorecer porciones más naturales entre los menús ya válidos.
      if(aq>6) penalty+=(aq-6)*18;  // >1.5 tazas arroz
      if(pq>2.5) penalty+=(pq-2.5)*45; // >250 g papa
+     if(cq>3) penalty+=(cq-3)*35;     // >300 g camote
      if(qq>4) penalty+=(qq-4)*28; // >1 taza quinoa
 
      if(oq>1) penalty+=(oq-1)*15;
@@ -2825,7 +4632,7 @@ function generateMenus(){
 
      const pprots=proteinsByMeal(prev);
      prots.forEach((p,idx)=>{
-       if(p && p===pprots[idx]) penalty+=(idx===1?28:12); // más castigo en comida
+       if(p && p===pprots[idx]) penalty+=(idx===1?70:(idx===2?55:18)); // más castigo en comida
      });
 
      // Penalizar fuerte repetir el mismo platillo en el mismo tiempo.
@@ -2834,7 +4641,7 @@ function generateMenus(){
      currStrong.forEach((m,idx)=>{
        const t=m.templateName||'';
        const pt=prevStrong[idx]?.templateName||'';
-       if(t && t===pt) penalty+=(idx===1?90:45);
+       if(t && t===pt) penalty+=(idx===1?1600:(idx===2?650:900));
      });
 
      // También penalizar que el mismo template aparezca en cualquier otro tiempo del día.
@@ -2857,19 +4664,48 @@ function generateMenus(){
  }
 
  const selected=[];
+
+ // PRUEBA 18:
+ // Primera pasada = preferir candidatos cuyo desayuno, comida y cena no repitan
+ // el mismo nombre de preparación ya usado en otra columna.
+ // Si no existen suficientes alternativas válidas, se permite repetición como respaldo.
  while(selected.length<5 && candidates.length){
-   let bestIdx=0, bestScore=Infinity;
+   let strictBestIdx=-1, strictBestScore=Infinity;
+   let fallbackBestIdx=-1, fallbackBestScore=Infinity;
+
+   const usedBySlot={
+     desayuno:new Set(),
+     comida:new Set(),
+     cena:new Set()
+   };
+   selected.forEach(prev=>{
+     (prev.meals||[]).filter(m=>['desayuno','comida','cena'].includes(m.key))
+       .forEach(m=>usedBySlot[m.key].add(m.templateName||m.name||''));
+   });
+
    candidates.forEach((m,idx)=>{
-     const s=diversityPenalty(m,selected);
-     if(s<bestScore){
-       bestScore=s;
-       bestIdx=idx;
+     const score=diversityPenalty(m,selected);
+
+     if(score<fallbackBestScore){
+       fallbackBestScore=score;
+       fallbackBestIdx=idx;
+     }
+
+     const strong=(m.meals||[]).filter(x=>['desayuno','comida','cena'].includes(x.key));
+     const repeatsSameSlot=strong.some(x=>usedBySlot[x.key].has(x.templateName||x.name||''));
+
+     if(!repeatsSameSlot && score<strictBestScore){
+       strictBestScore=score;
+       strictBestIdx=idx;
      }
    });
-   selected.push(candidates.splice(bestIdx,1)[0]);
+
+   const pickIdx = strictBestIdx>=0 ? strictBestIdx : fallbackBestIdx;
+   if(pickIdx<0) break;
+   selected.push(candidates.splice(pickIdx,1)[0]);
  }
 
- // If fewer than 5 valid unique-ish menus exist, fill from remaining valid candidates.
+ // Respaldo extremo: si aun así faltan columnas, completar con candidatos válidos.
  while(selected.length<5 && candidates.length){
    selected.push(candidates.shift());
  }
@@ -2920,7 +4756,7 @@ function renderMenus(menus,goalCal,goalP,restrictions=[]){
      if(meal.snack){
        td.innerHTML=
          '<div class="prep-title">'+meal.snack.name+'</div>'+
-         '<div class="prep-components">'+meal.snack.display+'</div>'+
+         '<div class="prep-components">'+cleanSnackDisplay(meal.snack.name,meal.snack.display)+'</div>'+
          '<div class="meta">'+Math.round(mt.kcal)+' kcal</div>';
      }else{
        const friendly=formatPatientMeal(meal.items);
@@ -2977,11 +4813,15 @@ function renderMenus(menus,goalCal,goalP,restrictions=[]){
 function clearForm(){
  document.getElementById('calories').value='';
  document.getElementById('protein').value='';
+ const pn=document.getElementById('patientName'); if(pn) pn.value='';
+ setDefaultPlanDate();
+ updatePrintHeader();
  document.querySelectorAll('#restrictionsPanel input[type="checkbox"]').forEach(x=>x.checked=false);
  document.getElementById('results').classList.remove('visible');
 }
 
 function printMenus(){
+  updatePrintHeader();
   const results =
     document.getElementById('results') ||
     document.querySelector('.results') ||
@@ -2995,6 +4835,63 @@ function printMenus(){
   window.print();
 }
 
+</script>
+
+
+<script id="tuplan-login-approved-js">
+(function(){
+  // Acceso local únicamente para pruebas.
+  const DEMO_USER='prueba';
+  const DEMO_PASS='tuplan123';
+  const SESSION_KEY='tuplan_demo_session_v26';
+
+  const gate=document.getElementById('tuplanLoginGate');
+  const form=document.getElementById('tuplanLoginForm');
+  const user=document.getElementById('tuplanUser');
+  const pass=document.getElementById('tuplanPass');
+  const error=document.getElementById('tuplanLoginError');
+  const logout=document.getElementById('tuplanLogout');
+  const toggle=document.getElementById('tuplanTogglePass');
+
+  function unlock(){
+    sessionStorage.setItem(SESSION_KEY,'1');
+    document.body.classList.remove('tuplan-login-locked');
+    gate.hidden=true;
+    logout.hidden=false;
+  }
+
+  function lock(){
+    sessionStorage.removeItem(SESSION_KEY);
+    document.body.classList.add('tuplan-login-locked');
+    gate.hidden=false;
+    logout.hidden=true;
+    pass.value='';
+    error.textContent='';
+    setTimeout(()=>user.focus(),60);
+  }
+
+  if(sessionStorage.getItem(SESSION_KEY)==='1') unlock();
+  else lock();
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    error.textContent='';
+    if(user.value.trim()===DEMO_USER && pass.value===DEMO_PASS){
+      unlock();
+    }else{
+      error.textContent='Usuario o contraseña incorrectos.';
+    }
+  });
+
+  toggle.addEventListener('click',function(){
+    const show=pass.type==='password';
+    pass.type=show?'text':'password';
+    toggle.textContent=show?'◎':'◉';
+    toggle.setAttribute('aria-label',show?'Ocultar contraseña':'Mostrar contraseña');
+  });
+
+  logout.addEventListener('click',lock);
+})();
 </script>
 
 </body>
